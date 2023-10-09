@@ -25,13 +25,9 @@ export default {
 	input: 'src/app.js', // required
 	plugins: [ includePaths(includePathOptions) ],
 	output: [ {
-		file:'/Users/toby/Sites/work/oe/idg/src/build/assets/js/idg-dev/idgJS-2022.min.js',
+		file: '/Users/toby/Sites/work/oe/idg/src/build/assets/js/idg-dev/nxPlot.min.js',
 		format: 'iife',
-		plugins: [ terser()],
+		plugins: [ terser() ],
 		banner: `/*! ${build} */`
-	}, {
-		file:'/Users/toby/Sites/work/oe/idg/src/build/assets/js/idg-dev/idgJS-2022.js',
-		format: 'iife',
-		banner: `/*! ${build} */`
-	},],
+	} ],
 };

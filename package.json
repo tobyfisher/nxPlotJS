@@ -1,7 +1,7 @@
 {
-  "name": "bloomjs",
+  "name": "nxplotjs",
   "version": "2.0.1",
-  "description": "blueJS",
+  "description": "nxPlotJS",
   "private": true,
   "author": {
     "name": "Toby Fisher",
@@ -10,7 +10,7 @@
   "license": "AGPL-3.0-only",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tobyfisher/blueJS-2022/"
+    "url": "https://github.com/tobyfisher/nxPlotJS/"
   },
   "scripts": {
     "js": "rollup --config --watch"
