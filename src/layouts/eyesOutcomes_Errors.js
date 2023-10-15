@@ -3,144 +3,141 @@ import * as colors from "../colors";
 import * as helpers from "../helpers";
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
+import { coreLayout } from "./coreLayout";
+import { barChart } from "./barChart";
 
-export const eyesOutcome_Errors = {
-	/**
-	 * init from DOM
-	 * if there is a theme change then re-initiate, as this is easier (& more reliable)
-	 * @param oePlotData {Object | Boolean} - agreed data structure passed in from DOM or false on theme change
-	 * @param divID {String}
-	 */
-	init( oePlotData, divID ){
-		// first time store the raw oe data passed in from DOM
-		this.raw = oePlotData;
-		this.div = document.getElementById(divID);
+const eyesOutcome_Errors = Object.create(coreLayout);
 
-		this.buildPlotly();
+/**
+ * Build data traces
+ * @param eye {Object} data
+ * @param colorSeries {Array}
+ * @param titleEye {String}
+ * @returns {Array} for Plot.ly data
+ */
+const buildDataTraces = function ( eye, colorSeries, titleEye ){
+	const CRT = {
+		yaxis: 'y1', // y1 = y = default
+		x: eye.CRT.x,
+		y: eye.CRT.y,
+		name: `CRT ${titleEye}`,
+		hovertemplate: 'Mean ± SD<br>CRT: %{y}<br>(N: %{x})',
+		type: 'scatter',
+		line: helpers.dataLine({
+			color: colorSeries[1],
+			dashed: true,
+		}),
+		error_y: {
+			type: 'data',
+			array: eye.CRT.error_y,
+			visible: true,
+			thickness: 0.5,
+		}
+	};
 
-		/**
-		 * Users changes the theme, re-initialise to re-draw with correct colours
-		 */
-		document.addEventListener('oeThemeChange', () => {
-			this.buildPlotly( );
-		});
-	},
+	const VA = {
+		yaxis: 'y2',
+		x: eye.VA.x,
+		y: eye.VA.y,
+		name: `VA ${titleEye}`,
+		hovertemplate: 'Mean ± SD<br>VA: %{y}<br>(N: %{x})',
+		type: 'scatter',
+		mode: 'lines+markers',
+		line: helpers.dataLine({
+			color: colorSeries[0]
+		}),
+		error_y: {
+			type: 'data',
+			array: eye.VA.error_y,
+			visible: true,
+			thickness: 0.5,
+		}
+	};
 
-	buildPlotly(){
-		/**
-		 * Data - Plot for Left & Right eyes
-		 * Colours for each eye trace have to be set on the data trace
-		 */
-		let data = [];
+	return [ VA, CRT ];
+}
 
-		[ 'R', 'L' ].forEach(rl => {
-			const full = rl === 'R' ? 'right' : 'left';
+eyesOutcome_Errors.buildData = function ( plotData ){
 
-			if ( this.raw.hasOwnProperty(`${full}Eye`) ){
-				data = data.concat(this.buildDataTraces(
-					this.raw[`${full}Eye`],
-					colors.getColorSeries(`${full}EyeSeries`),
-					`(${rl}E)`
-				));
-			}
-		});
-
-		/**
-		 * Axes for layout
-		 */
-		const x1 = getAxis({
-			type: 'x',
-			numTicks: 10,
-			spikes: true,
-			noMirrorLines: true,
-		});
-
-		// CRT
-		const y1 = getAxis({
-			type: 'y',
-			title: 'CRT',
-			range: this.raw.yaxis.CRT, // hard coded range
-			spikes: true,
-		});
-
-		// VA (logMar or whatever is passed in)
-		const y2 = getAxis({
-			type: 'y',
-			title: 'VA',
-			range: this.raw.yaxis.VA, // hard coded range
-			rightSide: 'y1',
-			spikes: true,
-		});
-
-		/**
-		 * Layout
-		 */
-		const layout = getLayout({
-			legend: true,
-			xaxis: x1,
-			yaxes: [ y1, y2 ],
-			rangeSlider: true,
-		});
-
-		/**
-		 * Standard initiate Plot.ly
-		 * Use "react" for new (or re-build)
-		 */
-		Plotly.react(
-			this.div,
-			data,
-			layout,
-			{ displayModeBar: false, responsive: true }
-		);
-	},
-
-	/**
-	 * Build data traces
-	 * @param eye {Object} data
-	 * @param colorSeries {Array}
-	 * @param titleEye {String}
-	 * @returns {Array} for Plot.ly data
-	 */
-	buildDataTraces( eye, colorSeries, titleEye ){
-
-		const CRT = {
-			yaxis: 'y1', // y1 = y = default
-			x: eye.CRT.x,
-			y: eye.CRT.y,
-			name: `CRT ${titleEye}`,
-			hovertemplate: 'Mean ± SD<br>CRT: %{y}<br>(N: %{x})',
-			type: 'scatter',
-			line: helpers.dataLine({
-				color: colorSeries[1],
-				dashed: true,
-			}),
-			error_y: {
-				type: 'data',
-				array: eye.CRT.error_y,
-				visible: true,
-				thickness: 0.5,
-			}
-		};
-
-		const VA = {
-			yaxis: 'y2',
-			x: eye.VA.x,
-			y: eye.VA.y,
-			name: `VA ${titleEye}`,
-			hovertemplate: 'Mean ± SD<br>VA: %{y}<br>(N: %{x})',
-			type: 'scatter',
-			mode: 'lines+markers',
-			line: helpers.dataLine({
-				color: colorSeries[0]
-			}),
-			error_y: {
-				type: 'data',
-				array: eye.VA.error_y,
-				visible: true,
-				thickness: 0.5,
-			}
-		};
-
-		return [ VA, CRT ];
+	// store layout data for rebuilding on theme change
+	if( !this.stored.has("plot" ) ){
+		this.stored.set("plot", plotData);
 	}
+
+	let data = [];
+	/**
+	 * Data - Plot for Left & Right eyes
+	 * Colours for each eye trace have to be set on the data trace
+	 */
+	[ 'R', 'L' ].forEach(eye => {
+		const full = eye === 'R' ? 'right' : 'left';
+
+		if ( plotData.hasOwnProperty(`${full}Eye`) ){
+
+			const traces = buildDataTraces(
+				plotData[`${full}Eye`],
+				colors.getColorSeries(`${full}EyeSeries`),
+				`(${eye}E)`
+			);
+
+			data = data.concat(traces)
+		}
+	});
+
+	this.data = data;
+}
+
+eyesOutcome_Errors.buildLayout = function ( layoutData ){
+
+	// store layout data for rebuilding on theme change
+	if( !this.stored.has("layout" ) ){
+		this.stored.set("layout", layoutData);
+	}
+
+	const x1 = getAxis({
+		type: 'x',
+		numTicks: 10,
+		spikes: true,
+		noMirrorLines: true,
+	});
+
+	// CRT
+	const y1 = getAxis({
+		type: 'y',
+		title: layoutData.yaxis.y1.title,
+		range: layoutData.yaxis.y1.range, // hard coded range
+		spikes: true,
+	});
+
+	// VA (logMar or whatever is passed in)
+	const y2 = getAxis({
+		type: 'y',
+		title: layoutData.yaxis.y2.title,
+		range: layoutData.yaxis.y2.range, // hard coded range
+		rightSide: 'y1',
+		spikes: true,
+	});
+
+	/**
+	 * Layout
+	 */
+	this.layout = getLayout({
+		legend: true,
+		xaxis: x1,
+		yaxes: [ y1, y2 ],
+		rangeSlider: true,
+	});
 };
+
+/**
+ * Build or re-build plotly (if there is a theme change)
+ * A complete rebuild is easier (more reliable) than trying to
+ * individually go through all the API and change specific colours
+ */
+eyesOutcome_Errors.plotlyThemeChange = function (){
+	eyesOutcome_Errors.buildLayout(this.stored.get("layout")); // rebuild the layout
+	eyesOutcome_Errors.buildData(this.stored.get("plot")); // rebuild the layout
+	this.plotlyReact();
+}
+
+export { eyesOutcome_Errors }

@@ -1,5 +1,5 @@
 import { getAxis } from "./getAxis";
-import * as debug from "../debug";
+import * as debug from "./debug";
 
 /**
  * User selected units require the right Yaxis scale
@@ -42,7 +42,7 @@ export const getSelectableAxis = ( selectableUnits, selected, domainLayout, pref
 		return axis;
 
 	} else {
-		debug.error('getSelectableAxis', `Unknown selected unit: ${selected}`);
+		debug.error(`Unknown selected unit: ${selected}`);
 		return false;
 	}
 }

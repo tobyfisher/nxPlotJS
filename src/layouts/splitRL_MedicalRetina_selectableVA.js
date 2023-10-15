@@ -5,7 +5,6 @@ import { getLayout } from "../getLayout";
 import { addLayoutHorizontals } from "../layoutAnnotations";
 import { toolBar } from "../toolBar";
 import * as helpers from "../helpers";
-import * as debug from "../../debug";
 import { getSelectableAxis } from "../getSelectableAxis";
 
 /**

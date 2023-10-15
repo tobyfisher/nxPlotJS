@@ -1,49 +1,59 @@
-import * as debug from "debug";
-import * as layoutPlots from "./layouts";
+import * as debug from "./debug";
+import * as layouts from "./layouts";
+
+debug.log(`nxPlot is available - Plot.ly v${Plotly.version}`);
 
 /**
- * newbluePlot - Facade pattern
- * A "black box" to correctly, and consistently, display all plot.ly charts in OE.
- * All required data for a chart is passed in agreed JSON format for the requested layout template.
- * This replaces a previous, simpler oePlotly helper in "newblue"
- * see: newblue/plotlyJS/oePlotly_v1.js
+ * nxPlotJS - Facade pattern
+ * A wrapper around plotly.js to correctly, and consistently, display all plot.ly charts in OE.
+ * nxPlotJS provides a simple API from which it builds a Plot.ly chart
  *
  * https://plot.ly/javascript/reference/
- * @namespace "newbluePlot" - publicly available
+ * @namespace "nxPlot" - publicly available
  *
- * Important, if User changes the theme this must generate a broadcast Event
+ * Note: if User changes the theme generate a broadcast Event to let nxPlot know about it
  */
-debug.listModule("newbluePlot");
 
-/**
- * Initated from within DOM
- * @param templateName {string} requested template layout
- * @param plotJSON {JSON} - correct agreed format for template
- * @param divID {String} id for <div> (optional)
- */
-const nbp = ( templateName, plotJSON, divID = false ) => {
-	debug.log(`newbluePlot | plotLayout: ${templateName}`);
+const templates = new Map();
 
-	const templates = new Map();
-	// data all on one single plot
-	templates.set("barChart", layoutPlots.barChart);
-	templates.set("eyesOutcomes_Errors", layoutPlots.eyesOutcome_Errors);
-	templates.set("eyesOutcomes_offScale_selectableVA", layoutPlots.eyesOutcomes_offScale_selectableVA);
-	templates.set("outcomes_Errors", layoutPlots.outcomes_Errors);
+// data all on one single plot
+templates.set("barChart", layouts.barChart);
+templates.set("eyesOutcomes_Errors", layouts.eyesOutcome_Errors);
+templates.set("eyesOutcomes_offScale_selectableVA", layouts.eyesOutcomes_offScale_selectableVA);
+templates.set("outcomes_Errors", layouts.outcomes_Errors);
 
-	// split data into 2 different plots for Right and Left eye
-	templates.set("splitRL_Adherence", layoutPlots.splitRL_Adherence);
-	templates.set("splitRL_Glaucoma_selectableVA", layoutPlots.splitRL_Glaucoma_selectableVA);
-	templates.set("splitRL_MedicalRetina_selectableVA", layoutPlots.splitRL_MedicalRetina_selectableVA);
+// split data into 2 different plots for Right and Left eye
+templates.set("splitRL_Adherence", layouts.splitRL_Adherence);
+templates.set("splitRL_Glaucoma_selectableVA", layouts.splitRL_Glaucoma_selectableVA);
+templates.set("splitRL_MedicalRetina_selectableVA", layouts.splitRL_MedicalRetina_selectableVA);
 
-	if ( templates.has(templateName) ){
-		templates.get(templateName).init(plotJSON, divID);
+
+const nxPlot = ( requestedPlotLayout, divID = false ) => {
+
+	if ( templates.has(requestedPlotLayout) ){
+
+		const nxLayout = templates.get(requestedPlotLayout);
+		nxLayout.setPlotlyDiv(divID);
+
+		/**
+		 * Users changes the theme
+		 * re-build to re-draw plot with correct colours
+		 */
+		document.addEventListener('oeThemeChange', () => {
+			nxLayout.plotlyThemeChange();
+		});
+
+		return nxLayout;
+
 	} else {
-		debug.error('newbluePlot', `Requested plot template: "${templateName}" is invalid \nValid templates are: ${Array.from(templates.keys()).join(", ")}`);
+		console.error(`Requested plot template: "${requestedPlotLayout}" is invalid.
+			Valid templates are: ${Array.from(templates.keys()).join(", ")}`);
+
+		return false;
 	}
 }
 
-Object.defineProperty(window, 'newbluePlot', {
-	value: nbp,
+Object.defineProperty(window, 'nxPlot', {
+	value: nxPlot,
 	writable: false
 });

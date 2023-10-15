@@ -1,5 +1,4 @@
 import * as debug from "debug";
-import { customEvent } from "core";
 
 /**
  * Custom Events
@@ -22,6 +21,7 @@ export const addEvent = ( eventType, div, eye ) => {
 			y: point.y
 		};
 
-		customEvent(`oePlot_${eventType}`, obj);
+		const event = new CustomEvent(`oePlot_${eventType}`, { detail: obj });
+		document.dispatchEvent(event);
 	});
 }
