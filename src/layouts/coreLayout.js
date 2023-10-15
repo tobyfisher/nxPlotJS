@@ -1,4 +1,5 @@
 import { addLayoutVerticals } from "../layoutAnnotations";
+import { barChart } from "./barChart";
 
 export const coreLayout = {
 	div: null,
@@ -45,5 +46,21 @@ export const coreLayout = {
 	addVerticalMarkers( arrayOfVerticals, plotHeight ){
 		this.verticalLineMarkers.verticals = arrayOfVerticals;
 		this.verticalLineMarkers.h = plotHeight;
+	},
+
+	/**
+	 * Build or re-build plotly (if there is a theme change)
+	 * A complete rebuild is easier (more reliable) than trying to
+	 * individually go through all the API and change specific colours
+	 */
+	plotlyThemeChange(){
+		if( this.stored.has("plot")){
+			this.buildData( this.stored.get("plot"));
+		}
+		if( this.stored.has("layout")){
+			this.buildLayout( this.stored.get("layout"));
+		}
+
+		this.plotlyReact();
 	}
 }

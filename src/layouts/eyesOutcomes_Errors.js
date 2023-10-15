@@ -1,10 +1,8 @@
-import * as debug from "debug";
 import * as colors from "../colors";
 import * as helpers from "../helpers";
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
 import { coreLayout } from "./coreLayout";
-import { barChart } from "./barChart";
 
 const eyesOutcome_Errors = Object.create(coreLayout);
 
@@ -128,16 +126,5 @@ eyesOutcome_Errors.buildLayout = function ( layoutData ){
 		rangeSlider: true,
 	});
 };
-
-/**
- * Build or re-build plotly (if there is a theme change)
- * A complete rebuild is easier (more reliable) than trying to
- * individually go through all the API and change specific colours
- */
-eyesOutcome_Errors.plotlyThemeChange = function (){
-	eyesOutcome_Errors.buildLayout(this.stored.get("layout")); // rebuild the layout
-	eyesOutcome_Errors.buildData(this.stored.get("plot")); // rebuild the layout
-	this.plotlyReact();
-}
 
 export { eyesOutcome_Errors }

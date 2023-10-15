@@ -1,4 +1,3 @@
-import * as debug from "debug";
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
 import { coreLayout } from "./coreLayout";
@@ -32,15 +31,16 @@ barChart.buildLayout = function( layoutData ){
 	const x1 = getAxis({
 		type: 'x',
 		numTicks: 20,
+		title: layoutData.xaxis.title
 	});
 
 	const y1 = getAxis({
 		type: 'y',
 		numTicks: 20,
+		title: layoutData.yaxis.y1.title
 	});
 
-	if ( layoutData.titles.hasOwnProperty('x') ) x1.title = layoutData.titles.x;
-	if ( layoutData.titles.hasOwnProperty('y') ) y1.title = layoutData.titles.y;
+
 
 	this.layout = getLayout({
 		plotTitle: layoutData.plotHeader,
@@ -49,16 +49,5 @@ barChart.buildLayout = function( layoutData ){
 		barmode: "stack"
 	});
 };
-
-/**
- * Build or re-build plotly (if there is a theme change)
- * A complete rebuild is easier (more reliable) than trying to
- * individually go through all the API and change specific colours
- */
-barChart.plotlyThemeChange = function(){
-	barChart.buildLayout( this.stored.get("layout")); // rebuild the layout
-	this.plotlyReact();
-}
-
 
 export { barChart };
