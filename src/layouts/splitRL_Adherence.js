@@ -1,5 +1,3 @@
-import * as utils from "utils";
-import * as colors from "../colors";
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
 import { addLayoutHorizontals } from "../layoutAnnotations";

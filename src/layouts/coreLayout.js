@@ -1,5 +1,4 @@
 import { addLayoutVerticals } from "../layoutAnnotations";
-import { barChart } from "./barChart";
 
 export const coreLayout = {
 	div: null,
