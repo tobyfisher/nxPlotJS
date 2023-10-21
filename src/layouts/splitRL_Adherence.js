@@ -75,7 +75,9 @@ splitRL_Adherence.buildPlot = function( eye, plotData ){
 		}, this.layout)
 	));
 
-	this.splitPlots.set(`${eye}`, plot );
+	plot.set('storedPlotData', plotData );
+
+	this.plots.set(`${eye}`, plot );
 }
 
 splitRL_Adherence.buildRightData = function( plotData ){

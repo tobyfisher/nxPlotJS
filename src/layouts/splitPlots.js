@@ -2,15 +2,15 @@ import { corePlot } from "./corePlot";
 
 const splitPlots = Object.create(corePlot);
 
-splitPlots.splitPlots = new Map();
+splitPlots.plots = new Map();
 
 splitPlots.plotlyReact = function(){
-
-	this.drawLines();
-
 	[ 'R', 'L' ].forEach(eye => {
-		if ( this.splitPlots.has(`${eye}`) ){
-			const side = this.splitPlots.get(`${eye}`);
+		if ( this.plots.has(eye) ){
+			const side = this.plots.get(eye);
+
+			this.drawLines( side.get('layout'));
+
 			Plotly.react(
 				side.get('div'),
 				side.get('data'),
@@ -22,15 +22,32 @@ splitPlots.plotlyReact = function(){
 };
 
 /**
+ * Build or re-build plotly (if there is a theme change)
+ * A complete rebuild is easier (more reliable) than trying to
+ * individually go through all the API and change specific colours
+ */
+splitPlots.plotlyThemeChange = function(){
+	['R','L'].forEach( eye => {
+		if ( this.plots.has(eye) ){
+			const side = this.plots.get(eye);
+			this.buildPlot(eye, side.get('storedPlotData'));
+		}
+	});
+
+	this.plotlyReact();
+};
+
+/**
  * If User adjust the layout options for a split view plot
  */
 splitPlots.listenForSplitLayoutChange = function(){
 	document.addEventListener('oesLayoutChange', () => {
 		[ 'R', 'L' ].forEach(eye => {
-			if ( this.split.has(`${eye}`) ){
+			if ( this.plots.has(eye) ){
+				const side = this.plots.get(eye);
 				Plotly.relayout(
-					this.split.get(`${eye}`).get('div'),
-					this.split.get(`${eye}`).get('layout')
+					side.get('div'),
+					side.get('layout')
 				);
 			}
 		});

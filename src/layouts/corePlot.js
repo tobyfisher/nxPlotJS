@@ -30,7 +30,7 @@ export const corePlot = {
 
 	plotlyReact(){
 
-		this.drawLines();
+		this.drawLines( this.layout );
 
 		/**
 		 * Standard initiate Plot.ly
@@ -48,16 +48,16 @@ export const corePlot = {
 	/**
 	 * Draw any vertical or horizontal line markers
 	 */
-	drawLines(){
+	drawLines( plotLayout ){
 		if ( this.lines.v.verticals.length ){
 			addLayoutVerticals(
-				this.layout,
+				plotLayout,
 				this.lines.v.verticals,
 				this.lines.v.h);
 		}
 		if( this.lines.horizontals.length ){
 			addLayoutHorizontals(
-				this.layout,
+				plotLayout,
 				this.lines.horizontals
 			)
 		}

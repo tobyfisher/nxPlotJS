@@ -7,7 +7,7 @@ import * as utils from "utils";
  */
 export const toolBar = {
 	plot: null,
-	hoverMode: 'closest',
+	hoverMode: 'closest', // but shown as 'Single'
 	selectedUnit: "",
 
 	/**
