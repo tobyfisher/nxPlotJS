@@ -6,49 +6,58 @@ import * as utils from "utils";
  * And expose some of Plotly API,
  */
 export const toolBar = {
+	plot: null,
 	hoverMode: 'closest',
 	selectedUnit: "",
 
 	/**
 	 * Setup - hard link with the current layout object
- 	 * @param layout {Object} - pass in current layout object
+ 	 * @param plot {Object} - pass in current layout object
 	 */
-	setup( layout ){
-		// hard link to layout facade to be able to call the rebuild on changes
-		this.plotLayout = layout;
+	linkToPlot( plot ){
+		// hard link to plot facade to be able to call the rebuild on changes
+		this.plot = plot;
 		this.toolBarDiv = utils.buildDiv('oeplot-toolbar');
+		this.demoTabularDataBtn();
+		this.appendToolbarDiv();
 
+		/**
+		 * Listen for any changes in the toolbar select options
+		 */
+		this.toolBarDiv.addEventListener('change', ( { target } ) => {
+			if( target.name === "hover"){
+				this.hoverMode = target.options[target.selectedIndex].value
+				this.plot.layout.hoverMode = this.hoverMode;
+				this.plot.plotlyReact();
+			}
+			if( target.name === "selectable"){
+				this.selectedUnit = target.options[target.selectedIndex].value;
+				this.plot.plotlyReact();
+			}
+		}, { capture: true });
+	},
+
+	appendToolbarDiv(){
 		const wrapper = document.querySelector('.oeplot');
 		wrapper.classList.add('with-toolbar');
-		wrapper.append( this.toolBarDiv ); // reflow!
+		wrapper.append( this.toolBarDiv );
+	},
 
+	demoTabularDataBtn(){
 		// add tabular button to the toolbar
 		const tabularBtn = utils.buildElem('button', false, "View as tabular data");
 		tabularBtn.onclick = function(){
 			alert("Show a tabular version of all the plot data in an overlay popup (no iDG demo of this as yet)");
 		}
 		this.toolBarDiv.append(tabularBtn);
-
-		/**
-		 * Listener for User changes to hovermode
-		 */
-		this.toolBarDiv.addEventListener('change', ( { target } ) => {
-			if( target.name === "hover"){
-				this.hoverMode = target.options[target.selectedIndex].value;
-			}
-			if( target.name === "selectable"){
-				this.selectedUnit = target.options[target.selectedIndex].value;
-			}
-
-			this.plotLayout.buildPlotly();
-		}, { capture: true });
 	},
+
 
 	/**
 	 * Expose the plotly API for 'hovermode' options as dropdown
 	 * [key, name] - key is what Plotly API uses.
 	 */
-	showHoverMode(){
+	allowUserToChangeHoverMode(){
 		this.buildDropDown("hover",[
 			['closest','Single'], // default "closest"
 			['x','Closest'],
@@ -60,7 +69,7 @@ export const toolBar = {
 	 * Build dropdown, first one is default
 	 * @param selectableUnitRanges {Object}
 	 */
-	showSelectableUnits( selectableUnitRanges, label ){
+	allUserToSelectUnits( selectableUnitRanges, label ){
 		const opts = [];
 		// set up all the available options for selectable VA units
 		for ( const yUnit in selectableUnitRanges ){

@@ -2,9 +2,9 @@ import * as debug from "debug";
 import * as colors from "../colors";
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
-import { coreLayout } from "./coreLayout";
+import { corePlot } from "./corePlot";
 
-const outcomes_Errors = Object.create(coreLayout);
+const outcomes_Errors = Object.create(corePlot);
 
 /**
  * Build data trace format for Glaucoma outcomes

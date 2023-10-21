@@ -1,8 +1,8 @@
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
-import { coreLayout } from "./coreLayout";
+import { corePlot } from "./corePlot";
 
-const barChart = Object.create(coreLayout);
+const barChart = Object.create(corePlot);
 
 barChart.buildData = function( plotData ){
 	/**

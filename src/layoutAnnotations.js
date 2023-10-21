@@ -1,4 +1,4 @@
-import {getBlue} from "./colors";
+import { getBlue } from "./colors";
 
 /**
  * Add vertical annotations to plotly
@@ -10,7 +10,7 @@ const addLayoutVerticals = ( layout, verticals, height ) => {
 	if ( !Array.isArray(verticals) ) throw new Error('addLayoutVerticals - must be an Array');
 
 	/**
-		Map verticals against the templates:
+	 * Map verticals against the templates:
 	 */
 	const line = ( { x } ) => {
 		return {
@@ -58,31 +58,31 @@ const addLayoutVerticals = ( layout, verticals, height ) => {
  * @param {Array} horizontals - e.g. [ 'name' => 'Target IOP', 'y' => 15 ]
  * @param {String} yaxis - e.g. 'y3'
  */
-const addLayoutHorizontals = ( layout, horizontals, yaxis ) => {
+const addLayoutHorizontals = ( layout, horizontals ) => {
 	if ( !Array.isArray(horizontals) ) throw new Error('[oePlot] addLayoutVerticals - must be an Array');
 
 	/**
-		Map horizontals against the templates:
+	 * Map horizontals against the templates:
 	 */
-		// expecting an array of objects here
-	const line = ( { y } ) => {
-			return {
-				type: 'line',
-				layer: 'below', // or "below"
-				xref: "paper", // this means x & x0 are ratios of area (paper)
-				yref: yaxis, // assign to a yaxis
-				x0: 0,
-				y0: y,
-				x1: 1,
-				y1: y,
-				line: {
-					color: getBlue(),
-					width: 2,
-					dash: "3px,12px",
-				}
-			};
+	const line = ( { y, yaxis } ) => {
+		return {
+			type: 'line',
+			layer: 'below', // or "below"
+			xref: "paper", // this means x & x0 are ratios of area (paper)
+			yref: yaxis, // assign to a yaxis
+			x0: 0,
+			y0: y,
+			x1: 1,
+			y1: y,
+			line: {
+				color: getBlue(),
+				width: 2,
+				dash: "3px,12px",
+			}
 		};
-	const annotate = ( { name, y } ) => {
+	};
+
+	const annotate = ( { name, y, yaxis } ) => {
 		return {
 			showarrow: false,
 			text: name,
@@ -93,7 +93,7 @@ const addLayoutHorizontals = ( layout, horizontals, yaxis ) => {
 			borderpad: 2,
 			xref: "paper",
 			x: 0,
-			yshift: 8, // shift over so label isnt' too close to the axis
+			yshift: 8, // shift over so label isn't too close to the axis
 			yref: yaxis, // assign to the yaxis
 			y: y
 		};

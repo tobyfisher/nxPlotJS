@@ -43,6 +43,8 @@ const nxPlot = ( requestedPlotLayout, divID = false ) => {
 			nxLayout.plotlyThemeChange();
 		});
 
+		debug.log(`Building: ${ requestedPlotLayout}`);
+
 		return nxLayout;
 
 	} else {

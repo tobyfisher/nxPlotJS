@@ -2,9 +2,9 @@ import * as colors from "../colors";
 import * as helpers from "../helpers";
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
-import { coreLayout } from "./coreLayout";
+import { corePlot } from "./corePlot";
 
-const eyesOutcome_Errors = Object.create(coreLayout);
+const eyesOutcome_Errors = Object.create(corePlot);
 
 /**
  * Build data traces
