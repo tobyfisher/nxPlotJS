@@ -27,11 +27,11 @@ export const toolBar = {
 		this.toolBarDiv.addEventListener('change', ( { target } ) => {
 			if( target.name === "hover"){
 				this.hoverMode = target.options[target.selectedIndex].value
-				this.plot.plotlyThemeChange();
+				this.plot.plotlyThemeChange(); // need to run the rebuild through this
 			}
 			if( target.name === "selectable"){
 				this.selectedUnit = target.options[target.selectedIndex].value;
-				this.plot.plotlyThemeChange();
+				this.plot.plotlyThemeChange(); // need to run the rebuild through this
 			}
 		}, { capture: true });
 	},

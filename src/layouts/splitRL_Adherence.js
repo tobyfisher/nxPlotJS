@@ -19,7 +19,6 @@ const splitRL_Adherence = Object.create( splitPlots);
  * Build data traces
  */
 const buildDataTraces = ( eye ) => {
-
 	/**
 	 * Daily adherence will have the same Drug name as
 	 * the Events, make sure they have unique Map Keys!
@@ -68,21 +67,17 @@ splitRL_Adherence.buildPlot = function( eye, plotData ){
 	plot.set('storedPlotData', plotData ); // Store for theme change, data and layout both need rebuilding
 	plot.set('div', document.querySelector(`.oes-${side}-side`));
 	plot.set('data', buildDataTraces( plotData ));
-
-	/**
-	 * Use this layout as base options for each side
-	 */
 	plot.set('layout', getLayout(
 		Object.assign({
 			colors: `${side}EyeSeries`,
 			plotTitle: `${eye + side.substring(1)} eye`,
-		}, this.layout)
+		}, this.baseLayoutOptions)
 	));
 
 	if( this.hasToolBar){
 		plot.get('layout').hovermode = toolBar.hoverMode;
 	}
-	
+
 	this.plots.set(`${eye}`, plot );
 }
 
@@ -141,7 +136,7 @@ splitRL_Adherence.buildLayout = function ( layoutData ){
 	 * as the base options for getLayout are the same
 	 * for R & L hold these and customise for each side
 	 */
-	this.layout = {
+	this.baseLayoutOptions = {
 		legend: {
 			yanchor: 'bottom',
 			y: domainLayout[1][1], // position relative to subplots

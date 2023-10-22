@@ -5,7 +5,6 @@ const splitPlots = Object.create(corePlot);
 splitPlots.plots = new Map();
 
 splitPlots.plotlyReact = function (){
-	console.log('plotReact');
 	[ 'R', 'L' ].forEach(eye => {
 		if ( this.plots.has(eye) ){
 			const side = this.plots.get(eye);
@@ -28,7 +27,7 @@ splitPlots.plotlyReact = function (){
  * individually go through all the API and change specific colours
  */
 splitPlots.plotlyThemeChange = function (){
-	// layout options are used by both sides
+	// as layout options are used by both sides
 	this.buildLayout( this.stored.get('layout'));
 
 	[ 'R', 'L' ].forEach(eye => {
