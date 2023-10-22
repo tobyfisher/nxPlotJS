@@ -65,9 +65,13 @@ const buildDataTraces = ( eye ) => {
 splitRL_Adherence.buildPlot = function( eye, plotData ){
 	const side = eye === 'R' ? 'right' : 'left';
 	const plot = new Map();
-
+	plot.set('storedPlotData', plotData ); // Store for theme change, data and layout both need rebuilding
 	plot.set('div', document.querySelector(`.oes-${side}-side`));
 	plot.set('data', buildDataTraces( plotData ));
+
+	/**
+	 * Use this layout as base options for each side
+	 */
 	plot.set('layout', getLayout(
 		Object.assign({
 			colors: `${side}EyeSeries`,
@@ -75,8 +79,10 @@ splitRL_Adherence.buildPlot = function( eye, plotData ){
 		}, this.layout)
 	));
 
-	plot.set('storedPlotData', plotData );
-
+	if( this.hasToolBar){
+		plot.get('layout').hovermode = toolBar.hoverMode;
+	}
+	
 	this.plots.set(`${eye}`, plot );
 }
 
@@ -88,17 +94,19 @@ splitRL_Adherence.buildLeftData = function( plotData ){
 	this.buildPlot('L', plotData);
 }
 
-/**
- * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
- * e.g. sub-plotting within plot.ly - Navigator is outside this
- * note: 0.06 gap between sub-plots:
- */
-splitRL_Adherence.domainLayout = [
-	[ 0.7, 1 ], // Events - y2
-	[ 0, 0.64 ]	// 24hrs - y1 (y)
-];
-
 splitRL_Adherence.buildLayout = function ( layoutData ){
+	// Store for theme change, data and layout both need rebuilding
+	this.stored.set('layout', layoutData );
+
+	/**
+	 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
+	 * e.g. sub-plotting within plot.ly - Navigator is outside this
+	 * note: 0.06 gap between sub-plots:
+	 */
+	const domainLayout = [
+		[ 0.7, 1 ], // Events - y2
+		[ 0, 0.64 ]	// 24hrs - y1 (y)
+	];
 
 	const x1 = getAxis({
 		type: 'x',
@@ -111,7 +119,7 @@ splitRL_Adherence.buildLayout = function ( layoutData ){
 	// Daily adherence
 	const y1 = getAxis({
 		type: 'y',
-		domain: this.domainLayout[1],
+		domain: domainLayout[1],
 		title: layoutData.yaxis.y1.title,
 		range: layoutData.yaxis.y1.range,
 		spikes: true,
@@ -120,7 +128,7 @@ splitRL_Adherence.buildLayout = function ( layoutData ){
 	// Events
 	const y2 = getAxis({
 		type: 'y',
-		domain: this.domainLayout[0],
+		domain: domainLayout[0],
 		useCategories: {
 			categoryarray: layoutData.allEvents,
 			rangeFit: "pad", // "exact", etc
@@ -136,26 +144,24 @@ splitRL_Adherence.buildLayout = function ( layoutData ){
 	this.layout = {
 		legend: {
 			yanchor: 'bottom',
-			y: this.domainLayout[1][1], // position relative to subplots
+			y: domainLayout[1][1], // position relative to subplots
 		},
 		xaxis: x1,
 		yaxes: [ y1, y2 ],
-		subplot: splitRL_Adherence.domainLayout.length, // num of sub-plots
+		subplot: domainLayout.length, // num of sub-plots
 		rangeSlider: true,
 		dateRangeButtons: true,
 	};
 }
 
+/**
+ * Summary toolBar exposes some of plotly API to User
+ * by adding a fixed toolbar DOM to the page.
+ */
 splitRL_Adherence.showPlotToolbar = function(){
-	/**
-	 * Summary toolBar exposes some of plotly API to User
-	 * by adding a fixed toolbar DOM to the page.
-	 */
 	toolBar.linkToPlot( this );
 	toolBar.allowUserToChangeHoverMode();
-
-	// check toolBar for User selected hoverMode
-	this.layout.hovermode = toolBar.hoverMode;
+	this.hasToolBar = true;
 }
 
 export { splitRL_Adherence }

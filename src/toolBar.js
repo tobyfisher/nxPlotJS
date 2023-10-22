@@ -27,12 +27,11 @@ export const toolBar = {
 		this.toolBarDiv.addEventListener('change', ( { target } ) => {
 			if( target.name === "hover"){
 				this.hoverMode = target.options[target.selectedIndex].value
-				this.plot.layout.hoverMode = this.hoverMode;
-				this.plot.plotlyReact();
+				this.plot.plotlyThemeChange();
 			}
 			if( target.name === "selectable"){
 				this.selectedUnit = target.options[target.selectedIndex].value;
-				this.plot.plotlyReact();
+				this.plot.plotlyThemeChange();
 			}
 		}, { capture: true });
 	},
@@ -51,7 +50,6 @@ export const toolBar = {
 		}
 		this.toolBarDiv.append(tabularBtn);
 	},
-
 
 	/**
 	 * Expose the plotly API for 'hovermode' options as dropdown
