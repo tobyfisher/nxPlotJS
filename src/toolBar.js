@@ -1,4 +1,5 @@
 import * as utils from "utils";
+import * as debug from "debug";
 
 /**
  * Summary Toolbar
@@ -39,6 +40,10 @@ export const toolBar = {
 
 	appendToolbarDiv(){
 		const wrapper = document.querySelector('.oeplot');
+		if( wrapper === null ){
+			debug.error(`toolBar requires a div.oeplot`);
+			return;
+		}
 		wrapper.classList.add('with-toolbar');
 		wrapper.append(this.toolBarDiv);
 	},
@@ -57,7 +62,7 @@ export const toolBar = {
 	 * [key, name] - key is what Plotly API uses.
 	 */
 	allowUserToChangeHoverMode(){
-		this.buildDropDown("hoverMode", 'Show plot labels as:', [
+		this.buildDropDown("hoverMode", 'Show labels as:', [
 			[ 'Single', 'closest' ],
 			[ 'Closest', 'x' ],
 			[ 'Grouped', 'x unified' ]
@@ -65,7 +70,7 @@ export const toolBar = {
 	},
 
 	/**
-	 * Build dropdown, first one is default
+	 * Selectable units
 	 * @param selectableUnits {Object}
 	 * @param label {String}
 	 */
@@ -86,10 +91,6 @@ export const toolBar = {
 		return this.selectableUnits.get( this.selectableKey );
 	},
 
-	/**
-	 * @param name {String}
-	 * @param options {Array>}
-	 */
 	buildDropDown( name, label, options ){
 		// build dropdown
 		const div = utils.buildDiv('plot-tool');

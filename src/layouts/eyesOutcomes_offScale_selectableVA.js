@@ -1,5 +1,6 @@
 import * as colors from "../colors";
 import * as helpers from "../helpers";
+import * as debug from "../debug";
 import { getAxis } from "../getAxis";
 import { getAxisTypeForRange } from "../getAxisTypeForRange";
 import { getLayout } from "../getLayout";
@@ -54,7 +55,12 @@ const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 
 	/**
 	 * VA trace depends on the User selected unit in the Toolbar
+	 * units in VA must match the selectableKey set in the layout
 	 */
+	if(eye.VA.units[toolBar.selectableKey] === undefined){
+		debug.error(`unable to find trace date for '${toolBar.selectableKey}'`);
+	}
+
 	const VA = selectableVA(
 		eye.VA.units[toolBar.selectableKey],
 		colorSeries[2],
