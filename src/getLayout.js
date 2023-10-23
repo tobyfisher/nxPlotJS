@@ -27,7 +27,6 @@ export const getLayout = function ( options ){
 	// build the Plotly layout obj
 	const layout = {
 		isDark: dark, // store OE dark theme in layout
-		hovermode: 'closest', // "x" | "y" | "closest" | false | "x unified" | "y unified"
 		autosize: true, // onResize change chart size
 		margin: {
 			l: 50, // 80 default, if Y axis has a title this will need more
@@ -63,6 +62,15 @@ export const getLayout = function ( options ){
 		shapes: [],
 		annotations: []
 	};
+
+	/*
+	Customise hovermode
+	*/
+	if( options.hovermode ){
+		layout.hovermode =  options.hovermode
+	} else {
+		layout.hovermode = 'closest'; // "x" | "y" | "closest" | false | "x unified" | "y unified"
+	}
 
 	/*
 	Colour theme

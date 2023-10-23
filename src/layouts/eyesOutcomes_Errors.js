@@ -63,19 +63,21 @@ eyesOutcome_Errors.buildData = function ( plotData ){
 	}
 
 	let data = [];
-	/**
-	 * Data - Plot for Left & Right eyes
-	 * Colours for each eye trace have to be set on the data trace
-	 */
-	[ 'R', 'L' ].forEach(eye => {
-		const full = eye === 'R' ? 'right' : 'left';
 
-		if ( plotData.hasOwnProperty(`${full}Eye`) ){
+	let eyeTraces = new Map([
+		[ 'R', 'rightEye' ],
+		[ 'L', 'leftEye' ],
+		[ 'BEO', 'BEO' ],
+	]);
+
+	eyeTraces.forEach(( eyeData, eye ) => {
+
+		if ( plotData.hasOwnProperty(eyeData) ){
 
 			const traces = buildDataTraces(
-				plotData[`${full}Eye`],
-				colors.getColorSeries(`${full}EyeSeries`),
-				`(${eye}E)`
+				plotData[eyeData],
+				colors.getColorSeries(`${eyeData}Series`),
+				`(${eye})`
 			);
 
 			data = data.concat(traces)

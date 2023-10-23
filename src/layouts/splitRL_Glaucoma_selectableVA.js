@@ -1,6 +1,5 @@
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
-import { getSelectableAxis } from "../getSelectableAxis";
 import { addLayoutHorizontals, addLayoutVerticals } from "../layoutAnnotations";
 import { toolBar } from "../toolBar";
 import * as helpers from "../helpers";
@@ -132,12 +131,12 @@ export const splitRL_Glaucoma_selectableVA = {
 		/**
 		 * Dynamic axis - VA units used depends on selected unit in toolBar
 		 */
-		let y3 = getSelectableAxis(
-			this.raw.yaxis.selectableUnits,
-			toolBar.selectedUnit,
-			domainLayout[1],
-			'VA - '
-		);
+		// let y3 = getSelectableAxis(
+		// 	this.raw.yaxis.selectableUnits,
+		// 	toolBar.selectedUnit,
+		// 	domainLayout[1],
+		// 	'VA - '
+		// );
 
 		/**
 		 * Data - Separate data for each side plot.

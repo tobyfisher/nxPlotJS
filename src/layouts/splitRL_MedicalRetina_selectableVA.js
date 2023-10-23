@@ -5,7 +5,6 @@ import { getLayout } from "../getLayout";
 import { addLayoutHorizontals } from "../layoutAnnotations";
 import { toolBar } from "../toolBar";
 import * as helpers from "../helpers";
-import { getSelectableAxis } from "../getSelectableAxis";
 
 /**
  * OES(Summary) Adherence template
@@ -123,12 +122,12 @@ export const splitRL_MedicalRetina_selectableVA = {
 		 * Dynamic axis - VA units used depends on selected unit in toolBar
 		 */
 
-		let y3 = getSelectableAxis(
-			this.raw.yaxis.selectableUnits,
-			toolBar.selectedUnit,
-			domainLayout[1],
-			'VA - '
-		);
+		// let y3 = getSelectableAxis(
+		// 	this.raw.yaxis.selectableUnits,
+		// 	toolBar.selectedUnit,
+		// 	domainLayout[1],
+		// 	'VA - '
+		// );
 
 		/**
 		 * Data - Separate data for each side plot.
