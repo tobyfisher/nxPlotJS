@@ -6,11 +6,12 @@ import { splitPlots } from "./splitPlots";
 import { getAxisTypeForRange } from "../getAxisTypeForRange";
 
 /**
- * OES(Summary) Adherence template
+ * OES(Summary) Glaucoma
  * 2 Individual Plots: Right Eye AND Left Eye
  * Sub-plot data layout
- * |- Events: Injection, Images (OCT), Management (Inj Mgmt & Clinical Mgmt)
- * |- 24hr plots of drug application
+ * |- Events: Images (OCT), Drugs, etc
+ * |- IOP
+ * |- VFI | VA
  * |- [Navigator]
  */
 const splitRL_Glaucoma_selectableVA = Object.create(splitPlots);
