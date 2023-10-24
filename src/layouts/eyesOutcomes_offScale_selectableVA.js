@@ -9,13 +9,24 @@ import { corePlot } from "./corePlot";
 
 const eyesOutcomes_offScale_selectableVA = Object.create(corePlot);
 
-eyesOutcomes_offScale_selectableVA.setup = function(){
-	toolBar.linkToPlot( this );
+eyesOutcomes_offScale_selectableVA.setup = function (){
+	toolBar.linkToPlot(this);
 	toolBar.allowUserToChangeHoverMode();
-	this.hasToolBar = true;
 }
 
-const selectableVA = ( selectedVA, color, titleSuffix ) => {
+const selectableVA = ( unitsForVA, color, titleSuffix ) => {
+
+	/**
+	 * VA trace depends on the User selected unit in the Toolbar
+	 * units in VA must match the selectableKey set in the layout
+	 */
+	const selectedVA = unitsForVA[toolBar.selectableKey];
+
+	if ( selectedVA === undefined ){
+		debug.error(`unable to find trace date for '${toolBar.selectableKey}'`);
+		return false;
+	}
+
 	return {
 		yaxis: 'y3',
 		x: selectedVA.x,
@@ -59,16 +70,8 @@ const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 		}),
 	};
 
-	/**
-	 * VA trace depends on the User selected unit in the Toolbar
-	 * units in VA must match the selectableKey set in the layout
-	 */
-	if(eye.VA.units[toolBar.selectableKey] === undefined){
-		debug.error(`unable to find trace date for '${toolBar.selectableKey}'`);
-	}
-
 	const VA = selectableVA(
-		eye.VA.units[toolBar.selectableKey],
+		eye.VA.units,
 		colorSeries[2],
 		titleSuffix
 	);
@@ -78,7 +81,7 @@ const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 
 eyesOutcomes_offScale_selectableVA.buildLayout = function ( layoutData ){
 	// store layout data for rebuilding on theme change
-	if( !this.stored.has("layout" ) ){
+	if ( !this.stored.has("layout") ){
 		this.stored.set("layout", layoutData);
 	}
 	/**
@@ -127,15 +130,15 @@ eyesOutcomes_offScale_selectableVA.buildLayout = function ( layoutData ){
 	 * Dynamic selectable unit Y axis
 	 * VA units used can be changed by the User
 	 */
-	const selectedUnit = toolBar.allowUserToSelectUnits( layoutData.yaxis.selectableUnits, 'Select VA Units' );
+	const selectedUnit = toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits, 'Select VA Units');
 	const y3 = getAxis(
-		Object.assign( {
+		Object.assign({
 			type: 'y',
 			title: `VA - ${selectedUnit.name}`,
 			domain: domainLayout[1],
 			rightSide: 'y2',
 			spikes: true,
-		}, getAxisTypeForRange( selectedUnit.range ))
+		}, getAxisTypeForRange(selectedUnit.range))
 	)
 
 	/**

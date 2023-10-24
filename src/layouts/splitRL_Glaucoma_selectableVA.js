@@ -1,10 +1,8 @@
-import { getAxis } from "../getAxis";
-import { getLayout } from "../getLayout";
-import { addLayoutHorizontals, addLayoutVerticals } from "../layoutAnnotations";
-import { toolBar } from "../toolBar";
-import * as helpers from "../helpers";
-import { splitPlots } from "./splitPlots";
 import * as debug from "../debug";
+import * as helpers from "../helpers";
+import { getAxis } from "../getAxis";
+import { toolBar } from "../toolBar";
+import { splitPlots } from "./splitPlots";
 import { getAxisTypeForRange } from "../getAxisTypeForRange";
 
 /**
@@ -25,9 +23,21 @@ splitRL_Glaucoma_selectableVA.setup = function ( options ){
 	toolBar.allowUserToChangeHoverMode();
 
 	this.listenForViewLayoutChange();
+	this.procedureVericalHeight = 0.77 // DomainLayout[1][1]
 }
 
-const selectableVA = ( selectedVA ) => {
+const selectableVA = ( unitsForVA ) => {
+	/**
+	 * VA trace depends on the User selected unit in the Toolbar
+	 * units in VA must match the selectableKey set in the layout
+	 */
+	const selectedVA = unitsForVA[toolBar.selectableKey];
+
+	if ( selectedVA === undefined ){
+		debug.error(`unable to find trace date for '${toolBar.selectableKey}'`);
+		return false;
+	}
+
 	return {
 		yaxis: 'y3',
 		x: selectedVA.x,
@@ -72,15 +82,7 @@ splitRL_Glaucoma_selectableVA.buildDataTraces = function( eye ){
 		mode: 'lines+markers',
 	};
 
-	/**
-	 * VA trace depends on the User selected unit in the Toolbar
-	 * units in VA must match the selectableKey set in the layout
-	 */
-	if ( eye.VA.units[toolBar.selectableKey] === undefined ){
-		debug.error(`unable to find trace date for '${toolBar.selectableKey}'`);
-	}
-
-	const VA = selectableVA(eye.VA.units[toolBar.selectableKey]);
+	const VA = selectableVA(eye.VA.units);
 
 	const dataForSide = [ offScale, VFI, IOP, VA ];
 

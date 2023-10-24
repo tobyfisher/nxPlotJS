@@ -1,8 +1,6 @@
-import { getAxis } from "../getAxis";
-import { getLayout } from "../getLayout";
-import { toolBar } from "../toolBar";
 import * as helpers from "../helpers";
-
+import { getAxis } from "../getAxis";
+import { toolBar } from "../toolBar";
 import { splitPlots } from "./splitPlots";
 
 /**

@@ -1,5 +1,6 @@
 import { corePlot } from "./corePlot";
 import { getLayout } from "../getLayout";
+import { addLayoutVerticals } from "../layoutAnnotations";
 
 const splitPlots = Object.create(corePlot);
 
@@ -17,6 +18,11 @@ splitPlots.buildPlot = function ( eye, plotData ){
 			plotTitle: `${eye + side.substring(1)} eye`,
 		}, this.baseLayoutOptions)
 	));
+
+	// Procedures
+	if( plotData.procedures ){
+		addLayoutVerticals( plot.get('layout'), Object.values( plotData.procedures ), this.procedureVericalHeight);
+	}
 
 	this.plots.set(`${eye}`, plot);
 }

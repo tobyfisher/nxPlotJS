@@ -1,5 +1,5 @@
-import { addLayoutHorizontals, addLayoutVerticals } from "../layoutAnnotations";
 import * as debug from "../debug";
+import { addLayoutHorizontals, addLayoutVerticals } from "../layoutAnnotations";
 
 export const corePlot = {
 	div: null,

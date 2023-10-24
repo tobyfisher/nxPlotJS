@@ -1,5 +1,3 @@
-import * as debug from "debug";
-import * as colors from "../colors";
 import { getAxis } from "../getAxis";
 import { getLayout } from "../getLayout";
 import { corePlot } from "./corePlot";
