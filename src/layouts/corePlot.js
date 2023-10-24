@@ -14,6 +14,10 @@ export const corePlot = {
 	},
 	stored: new Map(),
 
+	setup(){
+		// if setup is required it will be set in the template
+	},
+
 	setPlotlyDiv( divID ){
 		if( divID === false){
 			debug.log(`assuming split view DOM`);
@@ -86,18 +90,5 @@ export const corePlot = {
 		}
 
 		this.plotlyReact();
-	},
-
-	listenForSplitLayoutChange(){
-		document.addEventListener('oesLayoutChange', () => {
-			[ 'R', 'L' ].forEach(eye => {
-				if ( this.plot.has(`${eye}`) ){
-					Plotly.relayout(
-						this.plot.get(`${eye}`).get('div'),
-						this.plot.get(`${eye}`).get('layout')
-					);
-				}
-			});
-		});
 	}
 }

@@ -13,13 +13,24 @@ import { splitPlots } from "./splitPlots";
  * |- 24hr plots of drug application
  * |- [Navigator]
  */
-const splitRL_Adherence = Object.create( splitPlots);
+const splitRL_Adherence = Object.create(splitPlots);
+
+/**
+ * Options could be exposed in API, currently it's all preset
+ * @param options
+ */
+splitRL_Adherence.setup = function ( options ){
+	toolBar.linkToPlot(this);
+	toolBar.allowUserToChangeHoverMode();
+
+	this.listenForViewLayoutChange();
+}
 
 /**
  * Build data traces
  */
-const buildDataTraces = ( eye ) => {
-	/**
+splitRL_Adherence.buildDataTraces = function( eye ){
+	/**.
 	 * Daily adherence will have the same Drug name as
 	 * the Events, make sure they have unique Map Keys!
 	 */
@@ -41,57 +52,29 @@ const buildDataTraces = ( eye ) => {
 	 * extra data for the popup can be passed in with customdata
 	 */
 	Object.values(eye.events).forEach(( event ) => {
-
-		const newEventTrace = Object.assign({
-			oeEventType: event.event, // store event type
-			x: event.x,
-			y: event.y,
-			customdata: event.customdata,
-			name: event.name,
-			yaxis: 'y2',
-			hovertemplate: event.customdata ?
-				'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-			type: 'scatter',
-			showlegend: false,
-		}, helpers.eventStyle(event.event));
-
-		dataForSide.push(newEventTrace);
+		dataForSide.push(
+			Object.assign({
+					oeEventType: event.event, // store event type
+					x: event.x,
+					y: event.y,
+					customdata: event.customdata,
+					name: event.name,
+					yaxis: 'y2',
+					hovertemplate: event.customdata ?
+						'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
+					type: 'scatter',
+					showlegend: false,
+				}, helpers.eventStyle(event.event)
+			)
+		);
 	});
 
 	return dataForSide
 }
 
-splitRL_Adherence.buildPlot = function( eye, plotData ){
-	const side = eye === 'R' ? 'right' : 'left';
-	const plot = new Map();
-	plot.set('storedPlotData', plotData ); // Store for theme change, data and layout both need rebuilding
-	plot.set('div', document.querySelector(`.oes-${side}-side`));
-	plot.set('data', buildDataTraces( plotData ));
-	plot.set('layout', getLayout(
-		Object.assign({
-			colors: `${side}EyeSeries`,
-			plotTitle: `${eye + side.substring(1)} eye`,
-		}, this.baseLayoutOptions)
-	));
-
-	if( this.hasToolBar){
-		plot.get('layout').hovermode = toolBar.hoverMode;
-	}
-
-	this.plots.set(`${eye}`, plot );
-}
-
-splitRL_Adherence.buildRightData = function( plotData ){
-	this.buildPlot('R', plotData);
-}
-
-splitRL_Adherence.buildLeftData = function( plotData ){
-	this.buildPlot('L', plotData);
-}
-
 splitRL_Adherence.buildLayout = function ( layoutData ){
 	// Store for theme change, data and layout both need rebuilding
-	this.stored.set('layout', layoutData );
+	this.stored.set('layout', layoutData);
 
 	/**
 	 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -146,17 +129,8 @@ splitRL_Adherence.buildLayout = function ( layoutData ){
 		subplot: domainLayout.length, // num of sub-plots
 		rangeSlider: true,
 		dateRangeButtons: true,
+		hovermode: toolBar.hoverMode
 	};
-}
-
-/**
- * Summary toolBar exposes some of plotly API to User
- * by adding a fixed toolbar DOM to the page.
- */
-splitRL_Adherence.showPlotToolbar = function(){
-	toolBar.linkToPlot( this );
-	toolBar.allowUserToChangeHoverMode();
-	this.hasToolBar = true;
 }
 
 export { splitRL_Adherence }

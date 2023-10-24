@@ -10,7 +10,7 @@ export const toolBar = {
 	plot: null,
 	hoverMode: 'closest', // but shown as 'Single'
 	selectableUnits: new Map(),
-	selectableKey: "",
+	selectableKey: false,
 
 	/**
 	 * Setup - hard link with the current layout object
@@ -75,16 +75,22 @@ export const toolBar = {
 	 * @param label {String}
 	 */
 	allowUserToSelectUnits: function ( selectableUnits, label ){
-		const options = [];
-		for ( const [ key, value ] of Object.entries(selectableUnits) ){
-			// build UI select options
-			options.push([ value.name, key ]);
-			// store options in Map
-			this.selectableUnits.set( key, value );
-			// key must be identical to the 'key' in the data traces
-			this.selectableKey = this.selectableKey || key;
+
+		if( this.selectableKey === false ){
+			// only need to set this up once
+			const options = [];
+			for ( const [ key, value ] of Object.entries(selectableUnits) ){
+				// build UI select options
+				options.push([ value.name, key ]);
+				// store options in Map
+				this.selectableUnits.set( key, value );
+				// key must be identical to the 'key' in the data traces
+				this.selectableKey = this.selectableKey || key;
+			}
+			this.buildDropDown("selectableUnits", label, options);
 		}
-		this.buildDropDown("selectableUnits", label, options);
+
+		return this.getSelectedUnit();
 	},
 
 	getSelectedUnit(){

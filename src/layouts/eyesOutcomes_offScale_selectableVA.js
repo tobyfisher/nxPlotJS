@@ -9,12 +9,18 @@ import { corePlot } from "./corePlot";
 
 const eyesOutcomes_offScale_selectableVA = Object.create(corePlot);
 
+eyesOutcomes_offScale_selectableVA.setup = function(){
+	toolBar.linkToPlot( this );
+	toolBar.allowUserToChangeHoverMode();
+	this.hasToolBar = true;
+}
+
 const selectableVA = ( selectedVA, color, titleSuffix ) => {
 	return {
+		yaxis: 'y3',
 		x: selectedVA.x,
 		y: selectedVA.y,
 		name: `${selectedVA.name} ${titleSuffix}`,
-		yaxis: 'y3',
 		hovertemplate: selectedVA.name + ': %{y}<br>%{x}',
 		type: 'scatter',
 		mode: 'lines+markers',
@@ -118,22 +124,10 @@ eyesOutcomes_offScale_selectableVA.buildLayout = function ( layoutData ){
 	});
 
 	/**
-	 * Select units MUST have the toolbar to change
-	 * the VA units. Only need to set this up once
-	 */
-	if( this.hasToolBar === undefined ){
-		toolBar.linkToPlot( this );
-		toolBar.allowUserToChangeHoverMode();
-		toolBar.allowUserToSelectUnits( layoutData.yaxis.selectableUnits, 'Select VA Units' );
-		this.hasToolBar = true;
-	}
-
-	/**
 	 * Dynamic selectable unit Y axis
 	 * VA units used can be changed by the User
 	 */
-	const selectedUnit = toolBar.getSelectedUnit();
-
+	const selectedUnit = toolBar.allowUserToSelectUnits( layoutData.yaxis.selectableUnits, 'Select VA Units' );
 	const y3 = getAxis(
 		Object.assign( {
 			type: 'y',

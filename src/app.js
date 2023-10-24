@@ -34,6 +34,12 @@ const nxPlot = ( requestedPlotLayout, divID = false ) => {
 
 		const nxLayout = templates.get(requestedPlotLayout);
 		nxLayout.setPlotlyDiv(divID);
+		/**
+		 * Some templates require setting up, this could
+		 * be exposed as an API with options but for now
+		 * handle internally
+		 */
+		nxLayout.setup();
 
 		/**
 		 * Users changes the theme

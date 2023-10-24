@@ -40,8 +40,6 @@ barChart.buildLayout = function( layoutData ){
 		title: layoutData.yaxis.y1.title
 	});
 
-
-
 	this.layout = getLayout({
 		plotTitle: layoutData.plotHeader,
 		xaxis: x1,
