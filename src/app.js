@@ -27,7 +27,6 @@ templates.set("splitRL_Adherence", layouts.splitRL_Adherence);
 templates.set("splitRL_Glaucoma_selectableVA", layouts.splitRL_Glaucoma_selectableVA);
 templates.set("splitRL_MedicalRetina_selectableVA", layouts.splitRL_MedicalRetina_selectableVA);
 
-
 const nxPlot = ( requestedPlotLayout, divID = false ) => {
 
 	if ( templates.has(requestedPlotLayout) ){
