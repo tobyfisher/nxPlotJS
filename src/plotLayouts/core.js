@@ -1,5 +1,5 @@
 import * as debug from "../debug";
-import { addLayoutHorizontals, addLayoutVerticals } from "../layoutAnnotations";
+import { addLayoutHorizontals, addLayoutVerticals } from "./layoutAnnotations";
 
 export const core = {
 	div: null,
@@ -26,16 +26,18 @@ export const core = {
 	},
 
 	addVerticalLines( array, plotHeight ){
+		if ( !Array.isArray( array) ) debug.error('core', 'addVerticalLines requires an Array');
 		this.lines.v.verticals = array;
 		this.lines.v.h = plotHeight;
 	},
 
-	addHorizontalLines( horizontals ){
-		this.lines.horizontals = horizontals;
+	addHorizontalLines( array ){
+		if ( !Array.isArray( array) ) debug.error('core', 'addHorizontalLines requires an Array');
+		this.lines.horizontals = array;
 	},
 
 	plotlyReact(){
-		this.drawLines();
+		this.drawLines(this.layout);
 		/**
 		 * Standard initiate Plot.ly
 		 * Use "react" for new plot or re-building a plot
@@ -50,17 +52,18 @@ export const core = {
 
 	/**
 	 * Draw any vertical or horizontal line markers
+	 * @param layout - note: this could be coming from 'splitCore.js'!
 	 */
-	drawLines(){
+	drawLines( layout ){
 		if ( this.lines.v.verticals.length ){
 			addLayoutVerticals(
-				this.layout,
+				layout,
 				this.lines.v.verticals,
 				this.lines.v.h);
 		}
 		if ( this.lines.horizontals.length ){
 			addLayoutHorizontals(
-				this.layout,
+				layout,
 				this.lines.horizontals
 			)
 		}

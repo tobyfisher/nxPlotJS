@@ -1,6 +1,6 @@
 import { core } from "./core";
 import { getLayout } from "../getLayout";
-import { addLayoutVerticals } from "../layoutAnnotations";
+import { addLayoutVerticals } from "./layoutAnnotations";
 
 /**
  * Manage R / L plots shown side by side
@@ -22,10 +22,9 @@ const splitPlots = {
 	},
 
 	/**
-	 * @param eye
+	 * @param eye - side
 	 * @param plotData
 	 */
-
 	buildPlot( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
 		const plot = new Map();

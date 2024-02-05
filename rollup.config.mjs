@@ -27,7 +27,7 @@ export default {
 	output: [ {
 		file: '/Users/toby/Sites/work/oe/idg/src/build/assets/js/idg-dev/nxPlot.min.js',
 		format: 'iife',
-		//plugins: [ terser() ],
+		// plugins: [ terser() ],
 		banner: `/*! ${build} */`
 	} ],
 };

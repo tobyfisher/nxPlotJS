@@ -17,18 +17,6 @@ import { yTrace } from "./parts/yTrace";
  * |- CRT | VA
  * |- [Navigator]
  */
-const splitRL_MedicalRetina_selectableVA = Object.create( splitCore );
-/**
- * Options could be exposed in API, currently it's all preset
- * @param options
- */
-splitRL_MedicalRetina_selectableVA.setup = function ( options ){
-	toolBar.linkToPlot(this);
-	toolBar.allowUserToChangeHoverMode();
-
-	this.listenForViewLayoutChange();
-	this.procedureVericalHeight = 0.64 // DomainLayout[1][1]
-}
 
 const selectableVA = ( unitsForVA ) => {
 	/**
@@ -49,137 +37,146 @@ const selectableVA = ( unitsForVA ) => {
 	};
 }
 
-splitRL_MedicalRetina_selectableVA.buildDataTraces = function( eye ){
+const build = {
+	setup( options ){
+		toolBar.linkToPlot(this);
+		toolBar.allowUserToChangeHoverMode();
 
-	const offScale = {
-		...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name}`),
-		mode: 'lines+markers',
-		hovertemplate: '%{y}<br>%{x}'
-	};
+		this.listenForViewLayoutChange();
+		this.procedureVericalHeight = 0.64 // DomainLayout[1][1]
+	},
 
-	const CRT = {
-		...yTrace( 'y2', eye.CRT, `${eye.CRT.name}`),
-		mode: 'lines+markers',
-		hovertemplate: 'CRT: %{y}<br>%{x}',
-		line: dashedLine()
-	};
+	buildDataTraces( eye ){
 
-	const VA = selectableVA(eye.VA.units);
+		const offScale = {
+			...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name}`),
+			mode: 'lines+markers',
+			hovertemplate: '%{y}<br>%{x}'
+		};
 
-	const dataForSide = [ offScale, CRT, VA ];
+		const CRT = {
+			...yTrace( 'y2', eye.CRT, `${eye.CRT.name}`),
+			mode: 'lines+markers',
+			hovertemplate: 'CRT: %{y}<br>%{x}',
+			line: dashedLine()
+		};
 
-	/**
-	 * Events
-	 * Event data are all individual traces
-	 * all the Y values are are the SAME, so that are shown on a line
-	 * extra data for the popup can be passed in with customdata
-	 */
-	Object.values(eye.events).forEach(( event ) => {
-		dataForSide.push(
-			Object.assign({
-				oeEventType: event.event, // store event type
-				...yTrace('y4', event, event.name),
-				customdata: event.customdata,
-				hovertemplate: event.customdata ?
-					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-				showlegend: false,
-			}, eventStyle(event.event))
-		);
-	});
+		const VA = selectableVA(eye.VA.units);
 
-	return dataForSide;
-}
+		const dataForSide = [ offScale, CRT, VA ];
 
+		/**
+		 * Events
+		 * Event data are all individual traces
+		 * all the Y values are are the SAME, so that are shown on a line
+		 * extra data for the popup can be passed in with customdata
+		 */
+		Object.values(eye.events).forEach(( event ) => {
+			dataForSide.push(
+				Object.assign({
+					oeEventType: event.event, // store event type
+					...yTrace('y4', event, event.name),
+					customdata: event.customdata,
+					hovertemplate: event.customdata ?
+						'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
+					showlegend: false,
+				}, eventStyle(event.event))
+			);
+		});
 
-splitRL_MedicalRetina_selectableVA.buildLayout = function ( layoutData ){
-	// Store for theme change, data and layout both need rebuilding
-	this.stored.set('layout', layoutData);
+		return dataForSide;
+	},
 
-	/**
-	 * Axes
-	 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
-	 * e.g. sub-plotting within plot.ly - Navigator is outside this
-	 * 0.06 gap between sub-plots:
-	 */
-	const domainLayout = [
-		[ 0.7, 1 ], 	// Events		y4
-		[ 0.15, 0.64 ],	// CRT | VA		y2 | y3
-		[ 0, 0.15 ],	// Offscale		y1 (y)
-	];
+	buildLayout( layoutData ){
+		// Store for theme change, data and layout both need rebuilding
+		this.stored.set('layout', layoutData);
 
-	// timeline
-	const x1 = getAxis({
-		type: 'x',
-		numTicks: 10,
-		useDates: true,
-		spikes: true,
-		noMirrorLines: true,
-	});
+		/**
+		 * Axes
+		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
+		 * e.g. sub-plotting within plot.ly - Navigator is outside this
+		 * 0.06 gap between sub-plots:
+		 */
+		const domainLayout = [
+			[ 0.7, 1 ], 	// Events		y4
+			[ 0.15, 0.64 ],	// CRT | VA		y2 | y3
+			[ 0, 0.15 ],	// Offscale		y1 (y)
+		];
 
-	// Off-scale
-	const y1 = getAxis({
-		type: 'y',
-		domain: domainLayout[2],
-		useCategories: {
-			categoryarray:  [ "NPL", "PL", "HM", "CF" ],
-			rangeFit: "padTop", // "exact", etc
-		},
-		spikes: true,
-	});
-
-	// Events
-	const y2 = getAxis({
-		type: 'y',
-		domain: domainLayout[1],
-		title: layoutData.yaxis.y2.title,
-		range: layoutData.yaxis.y2.range,
-		spikes: true,
-	});
-
-	// y4 - Events
-	const y4 = getAxis({
-		type: 'y',
-		domain: domainLayout[0],
-		useCategories: {
-			categoryarray: layoutData.allEvents,
-			rangeFit: "pad", // "exact", etc
-		},
-		spikes: true,
-	});
-
-	/**
-	 * Dynamic selectable unit Y axis
-	 * VA units used can be changed by the User
-	 */
-	const selectedUnit = toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits, 'Select VA Units');
-
-	const y3 = getAxis(
-		Object.assign({
-			type: 'y',
-			title: `VA - ${selectedUnit.name}`,
-			domain: domainLayout[1],
-			rightSide: 'y2',
+		// timeline
+		const x1 = getAxis({
+			type: 'x',
+			numTicks: 10,
+			useDates: true,
 			spikes: true,
-		}, getAxisTypeForRange(selectedUnit.range))
-	);
+			noMirrorLines: true,
+		});
 
-	/**
-	 * Base options for Layout
-	 * as the base options for getLayout are the same
-	 * for R & L hold these and customise for each side
-	 */
-	this.baseLayoutOptions = {
-		legend: {
-			yanchor: 'bottom',
-			y: domainLayout[1][1], // position relative to subplots
-		},
-		xaxis: x1,
-		yaxes: [ y1, y2, y3, y4 ],
-		subplot: domainLayout.length, // num of sub-plots
-		rangeSlider: true,
-		dateRangeButtons: true,
-		hovermode: toolBar.hoverMode
-	};
-}
+		// Off-scale
+		const y1 = getAxis({
+			type: 'y',
+			domain: domainLayout[2],
+			useCategories: {
+				categoryarray:  [ "NPL", "PL", "HM", "CF" ],
+				rangeFit: "padTop", // "exact", etc
+			},
+			spikes: true,
+		});
 
-export { splitRL_MedicalRetina_selectableVA }
+		// Events
+		const y2 = getAxis({
+			type: 'y',
+			domain: domainLayout[1],
+			title: layoutData.yaxis.y2.title,
+			range: layoutData.yaxis.y2.range,
+			spikes: true,
+		});
+
+		// y4 - Events
+		const y4 = getAxis({
+			type: 'y',
+			domain: domainLayout[0],
+			useCategories: {
+				categoryarray: layoutData.allEvents,
+				rangeFit: "pad", // "exact", etc
+			},
+			spikes: true,
+		});
+
+		/**
+		 * Dynamic selectable unit Y axis
+		 * VA units used can be changed by the User
+		 */
+		const selectedUnit = toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits, 'Select VA Units');
+
+		const y3 = getAxis(
+			Object.assign({
+				type: 'y',
+				title: `VA - ${selectedUnit.name}`,
+				domain: domainLayout[1],
+				rightSide: 'y2',
+				spikes: true,
+			}, getAxisTypeForRange(selectedUnit.range))
+		);
+
+		/**
+		 * Base options for Layout
+		 * as the base options for getLayout are the same
+		 * for R & L hold these and customise for each side
+		 */
+		this.baseLayoutOptions = {
+			legend: {
+				yanchor: 'bottom',
+				y: domainLayout[1][1], // position relative to subplots
+			},
+			xaxis: x1,
+			yaxes: [ y1, y2, y3, y4 ],
+			subplot: domainLayout.length, // num of sub-plots
+			rangeSlider: true,
+			dateRangeButtons: true,
+			hovermode: toolBar.hoverMode
+		};
+	}
+};
+
+export const splitRL_MedicalRetina_selectableVA = { ...splitCore, ...build};
