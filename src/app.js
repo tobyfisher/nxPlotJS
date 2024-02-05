@@ -1,8 +1,6 @@
 import * as debug from "debug";
 import * as layouts from "plotLayouts/layouts";
 
-debug.log(`nxPlot is available - Plot.ly v${Plotly.version}`);
-
 /**
  * nxPlotJS - Facade pattern
  * A wrapper around plotly.js to correctly, and consistently, display all plot.ly charts in OE.
@@ -13,6 +11,8 @@ debug.log(`nxPlot is available - Plot.ly v${Plotly.version}`);
  *
  * Note: if User changes the theme generate a broadcast Event to let nxPlot know about it
  */
+
+debug.log(`nxPlot is available - Plot.ly v${Plotly.version}`);
 
 const allowedTemplates = new Set([
 	"barChart",
@@ -44,7 +44,7 @@ const nxPlot = ( requestedPlotLayout, divID = false ) => {
 		debug.log(`Building: ${ requestedPlotLayout}`);
 
 		/**
-		 * If users changes the theme
+		 * User changes the theme
 		 * re-build to re-draw plot with correct colours
 		 */
 		document.addEventListener('oeThemeChange', () => {

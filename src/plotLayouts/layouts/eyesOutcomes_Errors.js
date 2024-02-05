@@ -7,8 +7,6 @@ import { errorY } from "./parts/errorY";
 import { yTrace } from "./parts/yTrace";
 import { dataLine } from "./parts/lines";
 
-const eyesOutcomes_Errors = Object.create(core);
-
 /**
  * Build data traces
  * @param eye {Object} data
@@ -35,78 +33,81 @@ const buildDataTraces = function ( eye, colorSeries, titleEye ){
 	return [ VA, CRT ];
 }
 
-eyesOutcomes_Errors.buildData = function ( plotData ){
+const build = {
 
-	// store layout data for rebuilding on theme change
-	if( !this.stored.has("plot" ) ){
-		this.stored.set("plot", plotData);
-	}
+	buildData( plotData ){
 
-	let data = [];
-
-	let eyeTraces = new Map([
-		[ 'R', 'rightEye' ],
-		[ 'L', 'leftEye' ],
-		[ 'BEO', 'BEO' ],
-	]);
-
-	eyeTraces.forEach(( eyeData, eye ) => {
-
-		if ( plotData.hasOwnProperty(eyeData) ){
-
-			const traces = buildDataTraces(
-				plotData[eyeData],
-				colors.getColorSeries(`${eyeData}Series`),
-				`(${eye})`
-			);
-
-			data = data.concat(traces)
+		// store layout data for rebuilding on theme change
+		if( !this.stored.has("plot" ) ){
+			this.stored.set("plot", plotData);
 		}
-	});
 
-	this.data = data;
+		let data = [];
+
+		let eyeTraces = new Map([
+			[ 'R', 'rightEye' ],
+			[ 'L', 'leftEye' ],
+			[ 'BEO', 'BEO' ],
+		]);
+
+		eyeTraces.forEach(( eyeData, eye ) => {
+
+			if ( plotData.hasOwnProperty(eyeData) ){
+
+				const traces = buildDataTraces(
+					plotData[eyeData],
+					colors.getColorSeries(`${eyeData}Series`),
+					`(${eye})`
+				);
+
+				data = data.concat(traces)
+			}
+		});
+
+		this.data = data;
+	},
+
+	buildLayout( layoutData ){
+
+		// store layout data for rebuilding on theme change
+		if( !this.stored.has("layout" ) ){
+			this.stored.set("layout", layoutData);
+		}
+
+		const x1 = getAxis({
+			type: 'x',
+			numTicks: 10,
+			spikes: true,
+			noMirrorLines: true,
+		});
+
+		// CRT
+		const y1 = getAxis({
+			type: 'y',
+			title: layoutData.yaxis.y1.title,
+			range: layoutData.yaxis.y1.range, // hard coded range
+			spikes: true,
+		});
+
+		// VA (logMar or whatever is passed in)
+		const y2 = getAxis({
+			type: 'y',
+			title: layoutData.yaxis.y2.title,
+			range: layoutData.yaxis.y2.range, // hard coded range
+			rightSide: 'y1',
+			spikes: true,
+		});
+
+		/**
+		 * Layout
+		 */
+		this.layout = getLayout({
+			legend: true,
+			xaxis: x1,
+			yaxes: [ y1, y2 ],
+			rangeSlider: true,
+		});
+	}
 }
 
-eyesOutcomes_Errors.buildLayout = function ( layoutData ){
-
-	// store layout data for rebuilding on theme change
-	if( !this.stored.has("layout" ) ){
-		this.stored.set("layout", layoutData);
-	}
-
-	const x1 = getAxis({
-		type: 'x',
-		numTicks: 10,
-		spikes: true,
-		noMirrorLines: true,
-	});
-
-	// CRT
-	const y1 = getAxis({
-		type: 'y',
-		title: layoutData.yaxis.y1.title,
-		range: layoutData.yaxis.y1.range, // hard coded range
-		spikes: true,
-	});
-
-	// VA (logMar or whatever is passed in)
-	const y2 = getAxis({
-		type: 'y',
-		title: layoutData.yaxis.y2.title,
-		range: layoutData.yaxis.y2.range, // hard coded range
-		rightSide: 'y1',
-		spikes: true,
-	});
-
-	/**
-	 * Layout
-	 */
-	this.layout = getLayout({
-		legend: true,
-		xaxis: x1,
-		yaxes: [ y1, y2 ],
-		rangeSlider: true,
-	});
-};
-
-export { eyesOutcomes_Errors }
+export const eyesOutcomes_Errors = { ...core, ...build};

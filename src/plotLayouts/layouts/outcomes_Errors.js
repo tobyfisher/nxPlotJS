@@ -4,8 +4,6 @@ import { core } from "../core";
 import { errorY } from "./parts/errorY";
 import { yTrace } from "./parts/yTrace";
 
-const outcomes_Errors = Object.create(core);
-
 /**
  * Build data trace format for Glaucoma outcomes
  * @param oe {Object} data
@@ -28,51 +26,54 @@ const buildDataTraces = ( plot ) => {
 	return [ VA, IOP ];
 }
 
-outcomes_Errors.buildData = function ( plotData ){
-	/**
-	 * Data
-	 * Simple traces, trace colour controlled by the Layout
-	 */
-	this.data = buildDataTraces(plotData);
+const build = {
+
+	buildData( plotData ){
+		/**
+		 * Data
+		 * Simple traces, trace colour controlled by the Layout
+		 */
+		this.data = buildDataTraces(plotData);
+	},
+
+	buildLayout( layoutData ){
+		// store layout data for rebuilding on theme change
+		if( !this.stored.has("layout" ) ){
+			this.stored.set("layout", layoutData);
+		}
+
+		const x1 = getAxis({
+			type: 'x',
+			title: layoutData.xaxis.title,
+			numTicks: 20,
+			range: layoutData.xaxis.range,
+		});
+
+		const y1 = getAxis({
+			type: 'y',
+			title: layoutData.yaxis.y1.title,
+			range: layoutData.yaxis.y1.range,
+			numTicks: 20,
+		});
+
+		const y2 = getAxis({
+			type: 'y',
+			title: layoutData.yaxis.y2.title,
+			rightSide: 'y1',
+			numTicks: 20,
+		});
+
+		/**
+		 * Layout
+		 */
+		this.layout = getLayout({
+			colors: 'varied',
+			legend: true,
+			xaxis: x1,
+			yaxes: [ y1, y2 ],
+			rangeSlider: true,
+		});
+	}
 }
 
-outcomes_Errors.buildLayout = function ( layoutData ){
-	// store layout data for rebuilding on theme change
-	if( !this.stored.has("layout" ) ){
-		this.stored.set("layout", layoutData);
-	}
-
-	const x1 = getAxis({
-		type: 'x',
-		title: layoutData.xaxis.title,
-		numTicks: 20,
-		range: layoutData.xaxis.range,
-	});
-
-	const y1 = getAxis({
-		type: 'y',
-		title: layoutData.yaxis.y1.title,
-		range: layoutData.yaxis.y1.range,
-		numTicks: 20,
-	});
-
-	const y2 = getAxis({
-		type: 'y',
-		title: layoutData.yaxis.y2.title,
-		rightSide: 'y1',
-		numTicks: 20,
-	});
-
-	/**
-	 * Layout
-	 */
-	this.layout = getLayout({
-		colors: 'varied',
-		legend: true,
-		xaxis: x1,
-		yaxes: [ y1, y2 ],
-		rangeSlider: true,
-	});
-};
-
-export { outcomes_Errors }
+export const outcomes_Errors = { ...core, ...build};

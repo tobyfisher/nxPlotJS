@@ -9,13 +9,6 @@ import { core } from "../core";
 import { dataLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 
-const eyesOutcomes_offScale_selectableVA = Object.create(core);
-
-eyesOutcomes_offScale_selectableVA.setup = function (){
-	toolBar.linkToPlot(this);
-	toolBar.allowUserToChangeHoverMode();
-}
-
 const selectableVA = ( unitsForVA, color, titleSuffix ) => {
 
 	/**
@@ -62,111 +55,121 @@ const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 	return [ offScale, CRT, VA ];
 }
 
-eyesOutcomes_offScale_selectableVA.buildLayout = function ( layoutData ){
-	// store layout data for rebuilding on theme change
-	if ( !this.stored.has("layout") ){
-		this.stored.set("layout", layoutData);
-	}
-	/**
-	 * Axes
-	 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
-	 * e.g. sub-plotting within plot.ly - Navigator is outside this
-	 * 0.06 gap between sub-plots:
-	 */
-	const domainLayout = [
-		[ 0, 0.15 ], // Off-scale: CF, HM, PL, NPL
-		[ 0.2, 1 ],
-	];
+const build = {
 
-	/**
-	 * Axes for layout
-	 */
-	const x1 = getAxis({
-		type: 'x',
-		numTicks: 10,
-		useDates: true,
-		spikes: true,
-		noMirrorLines: true,
-	});
+	setup(){
+		toolBar.linkToPlot(this);
+		toolBar.allowUserToChangeHoverMode();
+	},
 
-	// Off-scale
-	const y1 = getAxis({
-		type: 'y',
-		domain: domainLayout[0],
-		useCategories: {
-			showAll: true,
-			categoryarray: [ "NPL", "PL", "HM", "CF" ]
-		},
-		spikes: true,
-	});
+	buildLayout( layoutData ){
+		// store layout data for rebuilding on theme change
+		if ( !this.stored.has("layout") ){
+			this.stored.set("layout", layoutData);
+		}
+		/**
+		 * Axes
+		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
+		 * e.g. sub-plotting within plot.ly - Navigator is outside this
+		 * 0.06 gap between sub-plots:
+		 */
+		const domainLayout = [
+			[ 0, 0.15 ], // Off-scale: CF, HM, PL, NPL
+			[ 0.2, 1 ],
+		];
 
-	// CRT
-	const y2 = getAxis({
-		type: 'y',
-		domain: domainLayout[1],
-		title: layoutData.yaxis.y2.title,
-		range: layoutData.yaxis.y2.range,
-		spikes: true,
-	});
-
-	/**
-	 * Dynamic selectable unit Y axis
-	 * VA units used can be changed by the User
-	 */
-	const selectedUnit = toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits, 'Select VA Units');
-	const y3 = getAxis(
-		Object.assign({
-			type: 'y',
-			title: `VA - ${selectedUnit.name}`,
-			domain: domainLayout[1],
-			rightSide: 'y2',
+		/**
+		 * Axes for layout
+		 */
+		const x1 = getAxis({
+			type: 'x',
+			numTicks: 10,
+			useDates: true,
 			spikes: true,
-		}, getAxisTypeForRange(selectedUnit.range))
-	)
+			noMirrorLines: true,
+		});
 
-	/**
-	 * Layout
-	 */
-	this.layout = getLayout({
-		legend: true,
-		xaxis: x1,
-		yaxes: [ y1, y2, y3 ],
-		rangeSlider: true,
-		hovermode: toolBar.hoverMode
-	});
+		// Off-scale
+		const y1 = getAxis({
+			type: 'y',
+			domain: domainLayout[0],
+			useCategories: {
+				showAll: true,
+				categoryarray: [ "NPL", "PL", "HM", "CF" ]
+			},
+			spikes: true,
+		});
+
+		// CRT
+		const y2 = getAxis({
+			type: 'y',
+			domain: domainLayout[1],
+			title: layoutData.yaxis.y2.title,
+			range: layoutData.yaxis.y2.range,
+			spikes: true,
+		});
+
+		/**
+		 * Dynamic selectable unit Y axis
+		 * VA units used can be changed by the User
+		 */
+		const selectedUnit = toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits, 'Select VA Units');
+		const y3 = getAxis(
+			Object.assign({
+				type: 'y',
+				title: `VA - ${selectedUnit.name}`,
+				domain: domainLayout[1],
+				rightSide: 'y2',
+				spikes: true,
+			}, getAxisTypeForRange(selectedUnit.range))
+		)
+
+		/**
+		 * Layout
+		 */
+		this.layout = getLayout({
+			legend: true,
+			xaxis: x1,
+			yaxes: [ y1, y2, y3 ],
+			rangeSlider: true,
+			hovermode: toolBar.hoverMode
+		});
+	},
+
+	buildData( plotData ){
+		// store layout data for rebuilding on theme change
+		if ( !this.stored.has("plot") ){
+			this.stored.set("plot", plotData);
+		}
+
+		/**
+		 * Data - single plot so combine all the traces
+		 */
+		let data = [];
+
+		let eyeTraces = new Map([
+			[ 'R', 'rightEye' ],
+			[ 'L', 'leftEye' ],
+			[ 'BEO', 'BEO' ],
+		]);
+
+		eyeTraces.forEach(( eyeData, eye ) => {
+			if ( plotData.hasOwnProperty(eyeData) ){
+
+				const traces = buildDataTraces(
+					plotData[eyeData],
+					colors.getColorSeries(`${eyeData}Series`),
+					`(${eye})`
+				);
+
+				data = data.concat(traces)
+			}
+		});
+
+		this.data = data;
+	}
+
 }
 
-eyesOutcomes_offScale_selectableVA.buildData = function ( plotData ){
-	// store layout data for rebuilding on theme change
-	if ( !this.stored.has("plot") ){
-		this.stored.set("plot", plotData);
-	}
 
-	/**
-	 * Data - single plot so combine all the traces
-	 */
-	let data = [];
-
-	let eyeTraces = new Map([
-		[ 'R', 'rightEye' ],
-		[ 'L', 'leftEye' ],
-		[ 'BEO', 'BEO' ],
-	]);
-
-	eyeTraces.forEach(( eyeData, eye ) => {
-		if ( plotData.hasOwnProperty(eyeData) ){
-
-			const traces = buildDataTraces(
-				plotData[eyeData],
-				colors.getColorSeries(`${eyeData}Series`),
-				`(${eye})`
-			);
-
-			data = data.concat(traces)
-		}
-	});
-
-	this.data = data;
-};
-
-export { eyesOutcomes_offScale_selectableVA }
+export const eyesOutcomes_offScale_selectableVA = { ...core, ...build};

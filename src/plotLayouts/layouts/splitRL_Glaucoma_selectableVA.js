@@ -2,7 +2,7 @@ import * as debug from "../../debug";
 import * as helpers from "../../helpers";
 import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
-import { splitPlots } from "../splitPlots";
+import { splitCore } from "../splitCore";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { dashedLine } from "./parts/lines";
 import { eventStyle } from "./parts/eventStyle";
@@ -17,7 +17,7 @@ import { yTrace } from "./parts/yTrace";
  * |- VFI | VA
  * |- [Navigator]
  */
-const splitRL_Glaucoma_selectableVA = Object.create(splitPlots);
+const splitRL_Glaucoma_selectableVA = Object.create(splitCore);
 /**
  * Options could be exposed in API, currently it's all preset
  * @param options

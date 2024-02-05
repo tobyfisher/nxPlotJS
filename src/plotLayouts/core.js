@@ -14,27 +14,28 @@ export const core = {
 	},
 	stored: new Map(),
 
-	setup(){
-		// optional setup, if required add to specific template
+	/**
+	 * API
+	 */
+	buildData(){
+		// Each layout must overwrite this build
+		// (except SplitPlots see splitPlots.js)
+	},
+	buildLayout(){
+		// Each layout must overwrite this build
 	},
 
-	setPlotlyDiv( divID ){
-		if( divID === false){
-			debug.log(`assuming split view DOM`);
-			return false;
-		} else {
-			this.div = document.getElementById(divID);
+	addVerticalLines( array, plotHeight ){
+		this.lines.v.verticals = array;
+		this.lines.v.h = plotHeight;
+	},
 
-			if ( this.div === null ){
-				debug.error(`div is null: ${divID}`);
-			}
-		}
+	addHorizontalLines( horizontals ){
+		this.lines.horizontals = horizontals;
 	},
 
 	plotlyReact(){
-
-		this.drawLines( this.layout );
-
+		this.drawLines();
 		/**
 		 * Standard initiate Plot.ly
 		 * Use "react" for new plot or re-building a plot
@@ -45,34 +46,43 @@ export const core = {
 			this.layout,
 			{ displayModeBar: false, responsive: true }
 		);
-
 	},
 
 	/**
 	 * Draw any vertical or horizontal line markers
 	 */
-	drawLines( plotLayout ){
+	drawLines(){
 		if ( this.lines.v.verticals.length ){
 			addLayoutVerticals(
-				plotLayout,
+				this.layout,
 				this.lines.v.verticals,
 				this.lines.v.h);
 		}
-		if( this.lines.horizontals.length ){
+		if ( this.lines.horizontals.length ){
 			addLayoutHorizontals(
-				plotLayout,
+				this.layout,
 				this.lines.horizontals
 			)
 		}
 	},
 
-	addVerticalLines( array, plotHeight ){
-		this.lines.v.verticals = array;
-		this.lines.v.h = plotHeight;
+	/**
+	 * Called by app.js
+	 */
+	setup(){
+		// optional setup, always called, override if needed
 	},
 
-	addHorizontalLines( horizontals ){
-		this.lines.horizontals = horizontals;
+	setPlotlyDiv( divID ){
+		if ( divID === false ){
+			debug.log(`assuming split view DOM`);
+			return false;
+		} else {
+			this.div = document.getElementById(divID);
+			if ( this.div === null ){
+				debug.error(`div is null: ${divID}`);
+			}
+		}
 	},
 
 	/**

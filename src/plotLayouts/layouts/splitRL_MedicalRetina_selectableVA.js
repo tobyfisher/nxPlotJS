@@ -2,7 +2,7 @@ import * as helpers from "../../helpers";
 import { getAxis } from "../../getAxis";
 import { getLayout } from "../../getLayout";
 import { toolBar } from "../../toolBar";
-import { splitPlots } from "../splitPlots";
+import { splitCore } from "../splitCore";
 import * as debug from "../../debug";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { dashedLine } from "./parts/lines";
@@ -17,7 +17,7 @@ import { yTrace } from "./parts/yTrace";
  * |- CRT | VA
  * |- [Navigator]
  */
-const splitRL_MedicalRetina_selectableVA = Object.create( splitPlots );
+const splitRL_MedicalRetina_selectableVA = Object.create( splitCore );
 /**
  * Options could be exposed in API, currently it's all preset
  * @param options

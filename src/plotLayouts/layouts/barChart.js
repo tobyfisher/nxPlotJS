@@ -2,9 +2,9 @@ import { getAxis } from "../../getAxis";
 import { getLayout } from "../../getLayout";
 import { core } from "../core";
 
-const plotBarChart = {
+const build = {
 
-	buildData(plotData ){
+	buildData( plotData ){
 		/**
 		 * Data - for Plotly
 		 * Simple traces, trace colour controlled by the Layout
@@ -49,4 +49,4 @@ const plotBarChart = {
 	}
 }
 
-export const barChart = { ...core, ...plotBarChart};
+export const barChart = { ...core, ...build};
