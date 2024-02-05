@@ -1,5 +1,5 @@
 import * as debug from "debug";
-import * as layouts from "layouts";
+import * as layouts from "plotLayouts/layouts";
 
 debug.log(`nxPlot is available - Plot.ly v${Plotly.version}`);
 

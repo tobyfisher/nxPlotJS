@@ -1,13 +1,15 @@
-import * as colors from "../colors";
-import * as helpers from "../helpers";
-import * as debug from "../debug";
-import { getAxis } from "../getAxis";
-import { getAxisTypeForRange } from "../getAxisTypeForRange";
-import { getLayout } from "../getLayout";
-import { toolBar } from "../toolBar";
-import { corePlot } from "./corePlot";
+import * as colors from "../../colors";
+import * as helpers from "../../helpers";
+import * as debug from "../../debug";
+import { getAxis } from "../../getAxis";
+import { getAxisTypeForRange } from "../../getAxisTypeForRange";
+import { getLayout } from "../../getLayout";
+import { toolBar } from "../../toolBar";
+import { core } from "../core";
+import { dataLine } from "./parts/lines";
+import { yTrace } from "./parts/yTrace";
 
-const eyesOutcomes_offScale_selectableVA = Object.create(corePlot);
+const eyesOutcomes_offScale_selectableVA = Object.create(core);
 
 eyesOutcomes_offScale_selectableVA.setup = function (){
 	toolBar.linkToPlot(this);
@@ -28,46 +30,27 @@ const selectableVA = ( unitsForVA, color, titleSuffix ) => {
 	}
 
 	return {
-		yaxis: 'y3',
-		x: selectedVA.x,
-		y: selectedVA.y,
-		name: `${selectedVA.name} ${titleSuffix}`,
-		hovertemplate: selectedVA.name + ': %{y}<br>%{x}',
-		type: 'scatter',
+		...yTrace('y3', selectedVA, `${selectedVA.name} ${titleSuffix}`),
 		mode: 'lines+markers',
-		line: helpers.dataLine({
-			color
-		}),
+		hovertemplate: selectedVA.name + ': %{y}<br>%{x}',
+		line: dataLine(color),
 	};
 }
 
 const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 
 	const offScale = {
-		yaxis: 'y1', // y1 = y = default
-		x: eye.VA.offScale.x,
-		y: eye.VA.offScale.y,
-		name: `${eye.VA.offScale.name} ${titleSuffix}`,
-		hovertemplate: '%{y}<br>%{x}',
-		type: 'scatter',
+		...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name} ${titleSuffix}`),
 		mode: 'lines+markers',
-		line: helpers.dataLine({
-			color: colorSeries[0]
-		}),
+		hovertemplate: '%{y}<br>%{x}',
+		line: dataLine(colorSeries[0])
 	};
 
 	const CRT = {
-		yaxis: 'y2',
-		x: eye.CRT.x,
-		y: eye.CRT.y,
-		name: `${eye.CRT.name} ${titleSuffix}`,
-		hovertemplate: 'CRT: %{y}<br>%{x}',
-		type: 'scatter',
+		...yTrace('y2', eye.CRT, `${eye.CRT.name} ${titleSuffix}`),
 		mode: 'lines+markers',
-		line: helpers.dataLine({
-			color: colorSeries[1],
-			dashed: true,
-		}),
+		hovertemplate: 'CRT: %{y}<br>%{x}',
+		line: dataLine(colorSeries[1], true),
 	};
 
 	const VA = selectableVA(

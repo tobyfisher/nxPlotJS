@@ -1,10 +1,13 @@
-import * as colors from "../colors";
-import * as helpers from "../helpers";
-import { getAxis } from "../getAxis";
-import { getLayout } from "../getLayout";
-import { corePlot } from "./corePlot";
+import * as colors from "../../colors";
+import * as helpers from "../../helpers";
+import { getAxis } from "../../getAxis";
+import { getLayout } from "../../getLayout";
+import { core } from "../core";
+import { errorY } from "./parts/errorY";
+import { yTrace } from "./parts/yTrace";
+import { dataLine } from "./parts/lines";
 
-const eyesOutcome_Errors = Object.create(corePlot);
+const eyesOutcomes_Errors = Object.create(core);
 
 /**
  * Build data traces
@@ -15,47 +18,24 @@ const eyesOutcome_Errors = Object.create(corePlot);
  */
 const buildDataTraces = function ( eye, colorSeries, titleEye ){
 	const CRT = {
-		yaxis: 'y1', // y1 = y = default
-		x: eye.CRT.x,
-		y: eye.CRT.y,
-		name: `CRT ${titleEye}`,
+		...yTrace('y1', eye.CRT, `CRT ${titleEye}`),
 		hovertemplate: 'Mean ± SD<br>CRT: %{y}<br>(N: %{x})',
-		type: 'scatter',
-		line: helpers.dataLine({
-			color: colorSeries[1],
-			dashed: true,
-		}),
-		error_y: {
-			type: 'data',
-			array: eye.CRT.error_y,
-			visible: true,
-			thickness: 0.5,
-		}
+		line: dataLine(colorSeries[1], true),
+		error_y: errorY( eye.CRT )
 	};
 
 	const VA = {
-		yaxis: 'y2',
-		x: eye.VA.x,
-		y: eye.VA.y,
-		name: `VA ${titleEye}`,
-		hovertemplate: 'Mean ± SD<br>VA: %{y}<br>(N: %{x})',
-		type: 'scatter',
+		...yTrace('y2', eye.VA, `VA ${titleEye}`),
 		mode: 'lines+markers',
-		line: helpers.dataLine({
-			color: colorSeries[0]
-		}),
-		error_y: {
-			type: 'data',
-			array: eye.VA.error_y,
-			visible: true,
-			thickness: 0.5,
-		}
+		hovertemplate: 'Mean ± SD<br>VA: %{y}<br>(N: %{x})',
+		line: dataLine(colorSeries[0]),
+		error_y: errorY( eye.VA )
 	};
 
 	return [ VA, CRT ];
 }
 
-eyesOutcome_Errors.buildData = function ( plotData ){
+eyesOutcomes_Errors.buildData = function ( plotData ){
 
 	// store layout data for rebuilding on theme change
 	if( !this.stored.has("plot" ) ){
@@ -87,7 +67,7 @@ eyesOutcome_Errors.buildData = function ( plotData ){
 	this.data = data;
 }
 
-eyesOutcome_Errors.buildLayout = function ( layoutData ){
+eyesOutcomes_Errors.buildLayout = function ( layoutData ){
 
 	// store layout data for rebuilding on theme change
 	if( !this.stored.has("layout" ) ){
@@ -129,4 +109,4 @@ eyesOutcome_Errors.buildLayout = function ( layoutData ){
 	});
 };
 
-export { eyesOutcome_Errors }
+export { eyesOutcomes_Errors }

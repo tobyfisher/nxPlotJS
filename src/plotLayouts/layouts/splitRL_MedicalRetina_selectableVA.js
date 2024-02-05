@@ -1,10 +1,13 @@
-import * as helpers from "../helpers";
-import { getAxis } from "../getAxis";
-import { getLayout } from "../getLayout";
-import { toolBar } from "../toolBar";
-import { splitPlots } from "./splitPlots";
-import * as debug from "../debug";
-import { getAxisTypeForRange } from "../getAxisTypeForRange";
+import * as helpers from "../../helpers";
+import { getAxis } from "../../getAxis";
+import { getLayout } from "../../getLayout";
+import { toolBar } from "../../toolBar";
+import { splitPlots } from "../splitPlots";
+import * as debug from "../../debug";
+import { getAxisTypeForRange } from "../../getAxisTypeForRange";
+import { dashedLine } from "./parts/lines";
+import { eventStyle } from "./parts/eventStyle";
+import { yTrace } from "./parts/yTrace";
 
 /**
  * OES(Summary) Med Retina
@@ -40,37 +43,25 @@ const selectableVA = ( unitsForVA ) => {
 	}
 
 	return {
-		yaxis: 'y3',
-		x: selectedVA.x,
-		y: selectedVA.y,
-		name: `${selectedVA.name}`,
-		hovertemplate: selectedVA.name + ': %{y}<br>%{x}',
-		type: 'scatter',
-		mode: 'lines+markers'
+		...yTrace('y3', selectedVA, `${selectedVA.name}`),
+		mode: 'lines+markers',
+		hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
 	};
 }
 
 splitRL_MedicalRetina_selectableVA.buildDataTraces = function( eye ){
 
 	const offScale = {
-		yaxis: 'y1', // y1 = y = default
-		x: eye.VA.offScale.x,
-		y: eye.VA.offScale.y,
-		name: `${eye.VA.offScale.name}`,
-		hovertemplate: '%{y}<br>%{x}',
-		type: 'scatter',
-		mode: 'lines+markers'
+		...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name}`),
+		mode: 'lines+markers',
+		hovertemplate: '%{y}<br>%{x}'
 	};
 
 	const CRT = {
-		yaxis: 'y2',
-		x: eye.CRT.x,
-		y: eye.CRT.y,
-		name: `${eye.CRT.name}`,
-		hovertemplate: 'CRT: %{y}<br>%{x}',
-		type: 'scatter',
+		...yTrace( 'y2', eye.CRT, `${eye.CRT.name}`),
 		mode: 'lines+markers',
-		line: helpers.dashedLine()
+		hovertemplate: 'CRT: %{y}<br>%{x}',
+		line: dashedLine()
 	};
 
 	const VA = selectableVA(eye.VA.units);
@@ -86,17 +77,13 @@ splitRL_MedicalRetina_selectableVA.buildDataTraces = function( eye ){
 	Object.values(eye.events).forEach(( event ) => {
 		dataForSide.push(
 			Object.assign({
-				yaxis: 'y4',
 				oeEventType: event.event, // store event type
-				x: event.x,
-				y: event.y,
+				...yTrace('y4', event, event.name),
 				customdata: event.customdata,
-				name: event.name,
 				hovertemplate: event.customdata ?
 					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-				type: 'scatter',
 				showlegend: false,
-			}, helpers.eventStyle(event.event))
+			}, eventStyle(event.event))
 		);
 	});
 

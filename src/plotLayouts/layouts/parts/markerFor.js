@@ -5,29 +5,29 @@ import * as debug from "debug";
  * @returns {Object}
  */
 export const markerFor = ( type ) => {
-	const marker = {};
+	let symbol, size;
 
 	switch ( type ){
 		case 'management':
-			marker.symbol = "square";
-			marker.size = 9;
+			symbol = "square";
+			size = 9;
 			break;
 		case 'image':
-			marker.symbol = "triangle-down";
-			marker.size = 11;
+			symbol = "triangle-down";
+			size = 11;
 			break;
 		case 'drug':
-			marker.symbol = "diamond";
-			marker.size = 9;
+			symbol = "diamond";
+			size = 9;
 			break;
 		case 'injection':
-			marker.symbol = "star-diamond";
-			marker.size = 10;
+			symbol = "star-diamond";
+			size = 10;
 			break;
 		default :
 			debug.error('markerFor', `Unknown marker type: ${ type }`);
 
 	}
 
-	return marker;
+	return { symbol, size };
 };

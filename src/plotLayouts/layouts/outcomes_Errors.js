@@ -1,8 +1,10 @@
-import { getAxis } from "../getAxis";
-import { getLayout } from "../getLayout";
-import { corePlot } from "./corePlot";
+import { getAxis } from "../../getAxis";
+import { getLayout } from "../../getLayout";
+import { core } from "../core";
+import { errorY } from "./parts/errorY";
+import { yTrace } from "./parts/yTrace";
 
-const outcomes_Errors = Object.create(corePlot);
+const outcomes_Errors = Object.create(core);
 
 /**
  * Build data trace format for Glaucoma outcomes
@@ -12,33 +14,15 @@ const outcomes_Errors = Object.create(corePlot);
 const buildDataTraces = ( plot ) => {
 
 	const VA = {
-		yaxis: 'y1', // y1 = y = default
-		x: plot.VA.x,
-		y: plot.VA.y,
-		name: 'VA',
+		...yTrace('y1', plot.VA, 'VA'),
 		hovertemplate: 'Mean ± SD<br>VA: %{y}<br>(N: %{x})',
-		type: 'scatter',
-		error_y: {
-			type: 'data',
-			array: plot.VA.error_y,
-			visible: true,
-			thickness: 0.5,
-		}
+		error_y: errorY( plot.VA )
 	};
 
 	const IOP = {
-		yaxis: 'y2',
-		x: plot.IOP.x,
-		y: plot.IOP.y,
-		name: 'IOP',
+		...yTrace('y2', plot.IOP, 'IOP'),
 		hovertemplate: 'Mean ± SD<br>IOP: %{y}<br>(N: %{x})',
-		type: 'scatter',
-		error_y: {
-			type: 'data',
-			array: plot.IOP.error_y,
-			visible: true,
-			thickness: 0.5,
-		}
+		error_y: errorY( plot.IOP )
 	};
 
 	return [ VA, IOP ];

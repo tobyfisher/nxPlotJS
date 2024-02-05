@@ -1,3 +1,5 @@
+import { markerFor } from "./plotLayouts/layouts/parts/markerFor";
+
 (function( oePlot ) {
 	
 	'use strict';
@@ -69,7 +71,7 @@
 			markerColors[ indexPoint ] = oePlot.getColor( 'highlight', oePlot.isDarkTheme() );
 			
 			// get marker style for event type 
-			let markerObj = oePlot.markerFor( traceData.oeEventType ); // added on creation of trace
+			let markerObj = markerFor( traceData.oeEventType ); // added on creation of trace
 			// add colors
 			markerObj.color = markerColors;
 			

@@ -1,7 +1,7 @@
 import { markerFor} from "./markerFor";
 
 /**
- * Consistent buttons styling
+ * Consistent styling
  * @param {String} type - 'image', 'drug', 'injection'
  * @param {String | Boolean} color - if data is styling itself
  * @returns {Object}

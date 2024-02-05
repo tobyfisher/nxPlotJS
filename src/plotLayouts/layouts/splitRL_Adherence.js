@@ -1,7 +1,9 @@
-import * as helpers from "../helpers";
-import { getAxis } from "../getAxis";
-import { toolBar } from "../toolBar";
-import { splitPlots } from "./splitPlots";
+import * as helpers from "../../helpers";
+import { getAxis } from "../../getAxis";
+import { toolBar } from "../../toolBar";
+import { splitPlots } from "../splitPlots";
+import { yTrace } from "./parts/yTrace";
+import { eventStyle } from "./parts/eventStyle";
 
 /**
  * OES(Summary) Adherence template
@@ -27,19 +29,15 @@ splitRL_Adherence.setup = function ( options ){
 /**
  * Build data traces
  */
-splitRL_Adherence.buildDataTraces = function( eye ){
+splitRL_Adherence.buildDataTraces = function ( eye ){
 	/**.
 	 * Daily adherence will have the same Drug name as
 	 * the Events, make sure they have unique Map Keys!
 	 */
 	const daily = {
-		x: eye.daily.x,
-		y: eye.daily.y,
-		name: eye.daily.name,
-		yaxis: 'y',	//  default is "y", not "y1"!!
-		hovertemplate: `${eye.daily.name}: %{y}:00<extra></extra>`,
-		type: 'scatter',
+		...yTrace('y', eye.daily, eye.daily.name),
 		mode: 'markers',
+		hovertemplate: `${eye.daily.name}: %{y}:00<extra></extra>`,
 	};
 
 	const dataForSide = [ daily ]
@@ -53,16 +51,12 @@ splitRL_Adherence.buildDataTraces = function( eye ){
 		dataForSide.push(
 			Object.assign({
 					oeEventType: event.event, // store event type
-					x: event.x,
-					y: event.y,
+					...yTrace('y2', event, event.name),
 					customdata: event.customdata,
-					name: event.name,
-					yaxis: 'y2',
 					hovertemplate: event.customdata ?
 						'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-					type: 'scatter',
 					showlegend: false,
-				}, helpers.eventStyle(event.event)
+				}, eventStyle(event.event)
 			)
 		);
 	});

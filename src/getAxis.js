@@ -94,7 +94,7 @@ export const getAxis = function ( options ){
 		axis.range = options.range;
 	}
 
-	// set range type... other wise Plotly will figure it out
+	// set range type... otherwise Plotly will figure it out
 	if ( options.axisType ){
 		axis.type = options.axisType;
 	}

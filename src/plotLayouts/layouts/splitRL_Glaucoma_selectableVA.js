@@ -1,9 +1,12 @@
-import * as debug from "../debug";
-import * as helpers from "../helpers";
-import { getAxis } from "../getAxis";
-import { toolBar } from "../toolBar";
-import { splitPlots } from "./splitPlots";
-import { getAxisTypeForRange } from "../getAxisTypeForRange";
+import * as debug from "../../debug";
+import * as helpers from "../../helpers";
+import { getAxis } from "../../getAxis";
+import { toolBar } from "../../toolBar";
+import { splitPlots } from "../splitPlots";
+import { getAxisTypeForRange } from "../../getAxisTypeForRange";
+import { dashedLine } from "./parts/lines";
+import { eventStyle } from "./parts/eventStyle";
+import { yTrace } from "./parts/yTrace";
 
 /**
  * OES(Summary) Glaucoma
@@ -40,47 +43,31 @@ const selectableVA = ( unitsForVA ) => {
 	}
 
 	return {
-		yaxis: 'y3',
-		x: selectedVA.x,
-		y: selectedVA.y,
-		name: `${selectedVA.name}`,
-		hovertemplate: selectedVA.name + ': %{y}<br>%{x}',
-		type: 'scatter',
-		mode: 'lines+markers'
+		...yTrace('y3', selectedVA, `${selectedVA.name}`),
+		mode: 'lines+markers',
+		hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
 	};
 }
 
 splitRL_Glaucoma_selectableVA.buildDataTraces = function( eye ){
 
 	const offScale = {
-		yaxis: 'y1', // y1 = y = default
-		x: eye.VA.offScale.x,
-		y: eye.VA.offScale.y,
-		name: `${eye.VA.offScale.name}`,
-		hovertemplate: '%{y}<br>%{x}',
-		type: 'scatter',
-		mode: 'lines+markers'
+		...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name}`),
+		mode: 'lines+markers',
+		hovertemplate: '%{y}<br>%{x}'
 	};
 
 	const VFI = {
-		yaxis: 'y2',
-		x: eye.VFI.x,
-		y: eye.VFI.y,
-		name: eye.VFI.name,
-		hovertemplate: '%{y}<br>%{x}<extra></extra>',
-		type: 'scatter',
+		...yTrace('y2', eye.VFI, eye.VFI.name),
 		mode: 'lines+markers',
-		line: helpers.dashedLine(),
+		hovertemplate: '%{y}<br>%{x}<extra></extra>',
+		line: dashedLine(),
 	};
 
 	const IOP = {
-		yaxis: 'y4',
-		x: eye.IOP.x,
-		y: eye.IOP.y,
-		name: eye.IOP.name,
-		hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
-		type: 'scatter',
+		...yTrace('y4', eye.IOP, eye.IOP.name),
 		mode: 'lines+markers',
+		hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
 	};
 
 	const VA = selectableVA(eye.VA.units);
@@ -96,17 +83,13 @@ splitRL_Glaucoma_selectableVA.buildDataTraces = function( eye ){
 	Object.values(eye.events).forEach(( event ) => {
 		dataForSide.push(
 			Object.assign({
-				yaxis: 'y5',
 				oeEventType: event.event, // store event type
-				x: event.x,
-				y: event.y,
+				...yTrace('y5', event, event.name),
 				customdata: event.customdata,
-				name: event.name,
 				hovertemplate: event.customdata ?
 					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-				type: 'scatter',
 				showlegend: false,
-			}, helpers.eventStyle(event.event))
+			}, eventStyle(event.event))
 		);
 	});
 

@@ -1,8 +1,8 @@
-import { corePlot } from "./corePlot";
+import { core } from "./core";
 import { getLayout } from "../getLayout";
 import { addLayoutVerticals } from "../layoutAnnotations";
 
-const splitPlots = Object.create(corePlot);
+const splitPlots = Object.create(core);
 
 splitPlots.plots = new Map();
 

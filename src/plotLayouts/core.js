@@ -1,7 +1,7 @@
 import * as debug from "../debug";
 import { addLayoutHorizontals, addLayoutVerticals } from "../layoutAnnotations";
 
-export const corePlot = {
+export const core = {
 	div: null,
 	data: [],
 	layout: {},
@@ -15,20 +15,19 @@ export const corePlot = {
 	stored: new Map(),
 
 	setup(){
-		// if setup is required it will be set in the template
+		// optional setup, if required add to specific template
 	},
 
 	setPlotlyDiv( divID ){
 		if( divID === false){
 			debug.log(`assuming split view DOM`);
-			return;
-		}
-
-		const div = document.getElementById(divID);
-		if ( div === null ){
-			debug.error(`div is null: ${divID}`);
+			return false;
 		} else {
-			this.div = div;
+			this.div = document.getElementById(divID);
+
+			if ( this.div === null ){
+				debug.error(`div is null: ${divID}`);
+			}
 		}
 	},
 
@@ -38,7 +37,7 @@ export const corePlot = {
 
 		/**
 		 * Standard initiate Plot.ly
-		 * Use "react" for new (or re-build)
+		 * Use "react" for new plot or re-building a plot
 		 */
 		Plotly.react(
 			this.div,
