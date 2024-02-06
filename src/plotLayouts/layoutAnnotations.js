@@ -1,14 +1,24 @@
 import { getBlue } from "../colors";
 
-const annotateBase = ( text ) => ({
+/**
+ * build layout
+ */
+const buildLayoutShapesAnnotations = ( layout, arr, buildLine, buildAnnotate ) => {
+	layout.shapes = layout.shapes.concat(arr.map(buildLine));
+	layout.annotations = layout.annotations.concat(arr.map(buildAnnotate));
+}
+
+/**
+ * base for annotations
+ */
+const annotateBase = {
 	showarrow: false,
-	text,
 	align: "left",
 	font: {
 		color: getBlue()
 	},
 	borderpad: 2,
-});
+};
 
 /**
  * Add vertical annotations to plotly
@@ -17,9 +27,7 @@ const annotateBase = ( text ) => ({
  * @param {Number} height - the height of the line (0 to 1)
  */
 const addLayoutVerticals = ( layout, verticals, height ) => {
-	/**
-	 * Map verticals against the templates:
-	 */
+
 	const line = ( { x } ) => ({
 		type: 'line',
 		layer: 'above', // or "below"
@@ -35,19 +43,16 @@ const addLayoutVerticals = ( layout, verticals, height ) => {
 	});
 
 	const annotate = ( { name, x } ) => ({
-		...annotateBase( name ),
+		...annotateBase,
+		text: name,
 		textangle: 90,
 		x,
-		xshift: 8, // shift over so label isnt' on line?
+		xshift: 8, //  shift over so label isn't too close to the axis
 		yref: "paper", // this means y is ratio of area (paper)
 		y: height
 	});
 
-	/**
-	 * build layout arrays
-	 */
-	layout.shapes = layout.shapes.concat(verticals.map(line));
-	layout.annotations = layout.annotations.concat(verticals.map(annotate));
+	buildLayoutShapesAnnotations(layout, verticals, line, annotate);
 };
 
 /**
@@ -57,9 +62,7 @@ const addLayoutVerticals = ( layout, verticals, height ) => {
  * @param {String} yaxis - e.g. 'y3'
  */
 const addLayoutHorizontals = ( layout, horizontals ) => {
-	/**
-	 * Map horizontals against the templates:
-	 */
+
 	const line = ( { y, yaxis } ) => ({
 		type: 'line',
 		layer: 'below', // or "below"
@@ -77,7 +80,8 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 	});
 
 	const annotate = ( { name, y, yaxis } ) => ({
-		...annotateBase( name ),
+		...annotateBase,
+		text: name,
 		xref: "paper",
 		x: 0,
 		yshift: 8, // shift over so label isn't too close to the axis
@@ -85,11 +89,7 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 		y: y
 	});
 
-	/**
-	 * build layout arrays
-	 */
-	layout.shapes = layout.shapes.concat(horizontals.map(line));
-	layout.annotations = layout.annotations.concat(horizontals.map(annotate));
+	buildLayoutShapesAnnotations(layout, horizontals, line, annotate);
 };
 
 export { addLayoutVerticals, addLayoutHorizontals }
