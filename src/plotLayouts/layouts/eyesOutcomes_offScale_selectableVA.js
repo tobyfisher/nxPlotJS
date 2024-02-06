@@ -9,26 +9,6 @@ import { core } from "../core";
 import { dataLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 
-const selectableVA = ( unitsForVA, color, titleSuffix ) => {
-
-	/**
-	 * VA trace depends on the User selected unit in the Toolbar
-	 * units in VA must match the selectableKey set in the layout
-	 */
-	const selectedVA = unitsForVA[toolBar.selectableKey];
-
-	if ( selectedVA === undefined ){
-		debug.error(`unable to find trace date for '${toolBar.selectableKey}'`);
-		return false;
-	}
-
-	return {
-		...yTrace('y3', selectedVA, `${selectedVA.name} ${titleSuffix}`),
-		mode: 'lines+markers',
-		hovertemplate: selectedVA.name + ': %{y}<br>%{x}',
-		line: dataLine(color),
-	};
-}
 
 const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 
@@ -46,11 +26,14 @@ const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 		line: dataLine(colorSeries[1], true),
 	};
 
-	const VA = selectableVA(
-		eye.VA.units,
-		colorSeries[2],
-		titleSuffix
-	);
+
+	const selectedVA = eye.VA.units[ toolbar.getSelectedUnit() ];
+	const VA = {
+		...yTrace('y3', selectedVA, `${selectedVA.name} ${titleSuffix}`),
+		mode: 'lines+markers',
+		hovertemplate: selectedVA.name + ': %{y}<br>%{x}',
+		line: dataLine(colorSeries[2]),
+	};
 
 	return [ offScale, CRT, VA ];
 }
@@ -64,6 +47,7 @@ const build = {
 
 	buildLayout( layoutData ){
 		this.storeLayoutDataForThemeRebuild( layoutData );
+		toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits);
 
 		/**
 		 * Axes
@@ -111,7 +95,6 @@ const build = {
 		 * Dynamic selectable unit Y axis
 		 * VA units used can be changed by the User
 		 */
-		const selectedUnit = toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits, 'Select VA Units');
 		const y3 = getAxis(
 			Object.assign({
 				type: 'y',

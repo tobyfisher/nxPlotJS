@@ -21,39 +21,6 @@ const build = {
 		this.listenForViewLayoutChange();
 	},
 
-	buildDataTraces( eye ){
-		/**.
-		 * Daily adherence will have the same Drug name as
-		 * the Events, make sure they have unique Map Keys!
-		 */
-		const daily = {
-			...yTrace('y', eye.daily, eye.daily.name),
-			mode: 'markers',
-			hovertemplate: `${eye.daily.name}: %{y}:00<extra></extra>`,
-		};
-
-		const dataForSide = [ daily ]
-
-		/**
-		 * Event data are all individual traces
-		 * note: ALL the Y values are the SAME, to look like a horizontal bar
-		 * extra data for the popup can be passed in with customdata
-		 */
-		Object.values(eye.events).forEach(( event ) => {
-			dataForSide.push({
-				oeEventType: event.event, // store event type
-				...yTrace('y2', event, event.name),
-				customdata: event.customdata,
-				hovertemplate: event.customdata ?
-					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-				showlegend: false,
-				...eventStyle(event.event)
-			});
-		});
-
-		return dataForSide
-	},
-
 	buildLayout( layoutData ){
 		/**
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -110,6 +77,39 @@ const build = {
 			dateRangeButtons: true,
 			hovermode: toolBar.hoverMode
 		});
+	},
+
+	buildDataTraces( eye ){
+		/**.
+		 * Daily adherence will have the same Drug name as
+		 * the Events, make sure they have unique Map Keys!
+		 */
+		const daily = {
+			...yTrace('y', eye.daily, eye.daily.name),
+			mode: 'markers',
+			hovertemplate: `${eye.daily.name}: %{y}:00<extra></extra>`,
+		};
+
+		const dataForSide = [ daily ]
+
+		/**
+		 * Event data are all individual traces
+		 * note: ALL the Y values are the SAME, to look like a horizontal bar
+		 * extra data for the popup can be passed in with customdata
+		 */
+		Object.values(eye.events).forEach(( event ) => {
+			dataForSide.push({
+				oeEventType: event.event, // store event type
+				...yTrace('y2', event, event.name),
+				...eventStyle(event.event),
+				customdata: event.customdata,
+				hovertemplate: event.customdata ?
+					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
+				showlegend: false
+			});
+		});
+
+		return dataForSide
 	}
 }
 

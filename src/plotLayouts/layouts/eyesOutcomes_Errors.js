@@ -35,35 +35,6 @@ const buildDataTraces = function ( eye, colorSeries, titleEye ){
 
 const build = {
 
-	buildData( plotData ){
-		this.storePlotDataForThemeRebuild( plotData );
-
-		let data = [];
-
-		let eyeTraces = new Map([
-			[ 'R', 'rightEye' ],
-			[ 'L', 'leftEye' ],
-			[ 'BEO', 'BEO' ],
-		]);
-
-		eyeTraces.forEach(( eyeData, eye ) => {
-
-			if ( plotData.hasOwnProperty(eyeData) ){
-
-				const traces = buildDataTraces(
-					plotData[eyeData],
-					colors.getColorSeries(`${eyeData}Series`),
-					`(${eye})`
-				);
-
-				data = data.concat(traces)
-			}
-		});
-
-		/** plotly data **/
-		this.data = data;
-	},
-
 	buildLayout( layoutData ){
 		this.storeLayoutDataForThemeRebuild( layoutData );
 
@@ -98,6 +69,35 @@ const build = {
 			yaxes: [ y1, y2 ],
 			rangeSlider: true,
 		});
+	},
+
+	buildData( plotData ){
+		this.storePlotDataForThemeRebuild( plotData );
+
+		let data = [];
+
+		let eyeTraces = new Map([
+			[ 'R', 'rightEye' ],
+			[ 'L', 'leftEye' ],
+			[ 'BEO', 'BEO' ],
+		]);
+
+		eyeTraces.forEach(( eyeData, eye ) => {
+
+			if ( plotData.hasOwnProperty(eyeData) ){
+
+				const traces = buildDataTraces(
+					plotData[eyeData],
+					colors.getColorSeries(`${eyeData}Series`),
+					`(${eye})`
+				);
+
+				data = data.concat(traces)
+			}
+		});
+
+		/** plotly data **/
+		this.data = data;
 	}
 }
 

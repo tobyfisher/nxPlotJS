@@ -9,8 +9,10 @@ import * as debug from "debug";
 export const toolBar = {
 	plot: null,
 	hoverMode: 'closest', // but shown as 'Single'
-	selectableUnits: new Map(),
-	selectableKey: false,
+	selectable: {
+		units: new Map(),
+		key: false
+	},
 
 	/**
 	 * Setup - hard link with the current layout object
@@ -20,7 +22,6 @@ export const toolBar = {
 		// hard link to plot facade to be able to call the rebuild on changes
 		this.plot = plot;
 		this.toolBarDiv = utils.buildDiv('oeplot-toolbar');
-		this.demoTabularDataBtn();
 		this.appendToolbarDiv();
 
 		/**
@@ -40,21 +41,12 @@ export const toolBar = {
 
 	appendToolbarDiv(){
 		const wrapper = document.querySelector('.oeplot');
-		if( wrapper === null ){
+		if ( wrapper === null ){
 			debug.error(`toolBar requires a div.oeplot`);
 			return;
 		}
 		wrapper.classList.add('with-toolbar');
 		wrapper.append(this.toolBarDiv);
-	},
-
-	demoTabularDataBtn(){
-		// add tabular button to the toolbar
-		const tabularBtn = utils.buildElem('button', false, "View as tabular data");
-		tabularBtn.onclick = function (){
-			alert("Show a tabular version of all the plot data in an overlay popup (no iDG demo of this as yet)");
-		}
-		this.toolBarDiv.append(tabularBtn);
 	},
 
 	/**
@@ -74,46 +66,39 @@ export const toolBar = {
 	 * @param selectableUnits {Object}
 	 * @param label {String}
 	 */
-	allowUserToSelectUnits: function ( selectableUnits, label ){
+	allowUserToSelectUnits: function ( selectableUnits ){
+		if ( this.selectable.key !== false ) return; // only need to set this up
+		this.selectable.units = selectableUnits;
+		this.selectable.key = Object.keys(selectableUnits).at(0); // set it to the first key in the list
 
-		if( this.selectableKey === false ){
-			// only need to set this up once
-			const options = [];
-			for ( const [ key, value ] of Object.entries(selectableUnits) ){
-				// build UI select options
-				options.push([ value.name, key ]);
-				// store options in Map
-				this.selectableUnits.set( key, value );
-				// key must be identical to the 'key' in the data traces
-				this.selectableKey = this.selectableKey || key;
-			}
-			this.buildDropDown("selectableUnits", label, options);
-		}
+		const selectOptions = Object.entries(selectableUnits).map(
+			( [ key, value ] ) => ({ value: key, text: value.name })
+		);
 
-		return this.getSelectedUnit();
+		this.buildDropDown("selectableUnits", 'Select VA Units', selectOptions);
 	},
 
 	getSelectedUnit(){
-		return this.selectableUnits.get( this.selectableKey );
+		return this.selectable.key;
 	},
 
-	buildDropDown( name, label, options ){
+	buildDropDown( selectName, labelText, selectOptions ){
 		// build dropdown
 		const div = utils.buildDiv('plot-tool');
-		const $label = utils.buildElem('label', false, `${label}`);
-		const $select = utils.buildElem('select');
-		$select.name = name;
+		const label = utils.buildElem('label', false, labelText);
+		const select = utils.buildElem('select');
 
-		for( const opt of options ){
+		select.name = selectName;
+
+		for ( const opt of selectOptions ){
 			const newOpt = document.createElement("option");
-			newOpt.value = opt[1];
-			newOpt.text = opt[0];
-			$select.add( newOpt );
+			newOpt.value = opt.value;
+			newOpt.text = opt.text;
+			select.add(newOpt);
 		}
 
-		div.append( $label, $select );
-
-		// add to the toolbar
+		// update DOM
+		div.append(label, select);
 		this.toolBarDiv.prepend(div);
 	}
 };

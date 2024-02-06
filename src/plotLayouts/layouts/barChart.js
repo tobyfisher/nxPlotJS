@@ -4,25 +4,6 @@ import { core } from "../core";
 
 const build = {
 
-	buildData( plotData ){
-		/**
-		 * Data - for Plotly
-		 * Simple traces, trace colours controlled by the Layout
-		 */
-		const trace = {
-			y: plotData.y,
-			name: plotData.name,
-			type: 'bar'
-		};
-
-		// these are optional settings
-		if ( plotData.hasOwnProperty('x') ) trace.x = plotData.x;
-		if ( plotData.hasOwnProperty('hovertemplate') ) trace.hovertemplate = plotData.hovertemplate;
-
-		/** plotly data **/
-		this.data =  [ trace ];
-	},
-
 	buildLayout( layoutData ){
 		this.storeLayoutDataForThemeRebuild( layoutData );
 
@@ -45,6 +26,25 @@ const build = {
 			yaxes: [ y1 ],
 			barmode: "stack"
 		});
+	},
+
+	buildData( plotData ){
+		/**
+		 * Data - for Plotly
+		 * Simple traces, trace colours controlled by the Layout
+		 */
+		const trace = {
+			y: plotData.y,
+			name: plotData.name,
+			type: 'bar'
+		};
+
+		// these are optional settings
+		if ( plotData.hasOwnProperty('x') ) trace.x = plotData.x;
+		if ( plotData.hasOwnProperty('hovertemplate') ) trace.hovertemplate = plotData.hovertemplate;
+
+		/** plotly data **/
+		this.data =  [ trace ];
 	}
 }
 

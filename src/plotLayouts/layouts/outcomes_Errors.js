@@ -28,11 +28,6 @@ const buildDataTraces = ( plot ) => {
 
 const build = {
 
-	buildData( plotData ){
-		/** plotly data **/
-		this.data = buildDataTraces(plotData);
-	},
-
 	buildLayout( layoutData ){
 		this.storeLayoutDataForThemeRebuild( layoutData );
 
@@ -65,6 +60,11 @@ const build = {
 			yaxes: [ y1, y2 ],
 			rangeSlider: true,
 		});
+	},
+
+	buildData( plotData ){
+		/** plotly data **/
+		this.data = buildDataTraces(plotData);
 	}
 }
 

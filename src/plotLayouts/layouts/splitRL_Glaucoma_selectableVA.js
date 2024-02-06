@@ -47,51 +47,6 @@ const build = {
 		this.procedureVericalHeight = 0.77 // DomainLayout[1][1]
 	},
 
-	buildDataTraces( eye ){
-
-		const offScale = {
-			...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name}`),
-			mode: 'lines+markers',
-			hovertemplate: '%{y}<br>%{x}'
-		};
-
-		const VFI = {
-			...yTrace('y2', eye.VFI, eye.VFI.name),
-			mode: 'lines+markers',
-			hovertemplate: '%{y}<br>%{x}<extra></extra>',
-			line: dashedLine(),
-		};
-
-		const IOP = {
-			...yTrace('y4', eye.IOP, eye.IOP.name),
-			mode: 'lines+markers',
-			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
-		};
-
-		const VA = selectableVA(eye.VA.units);
-
-		const dataForSide = [ offScale, VFI, IOP, VA ];
-
-		/**
-		 * Events
-		 * Event data are all individual traces
-		 * all the Y values are are the SAME, so that are shown on a line
-		 * extra data for the popup can be passed in with customdata
-		 */
-		Object.values(eye.events).forEach(( event ) => {
-			dataForSide.push({
-				oeEventType: event.event, // store event type
-				...yTrace('y5', event, event.name),
-				customdata: event.customdata,
-				hovertemplate: event.customdata ?
-					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-				showlegend: false,
-				...eventStyle(event.event)
-			});
-		});
-
-		return dataForSide;
-	},
 	buildLayout( layoutData ){
 		/**
 		 * Axes
@@ -190,6 +145,52 @@ const build = {
 			dateRangeButtons: true,
 			hovermode: toolBar.hoverMode
 		});
+	},
+
+	buildDataTraces( eye ){
+
+		const offScale = {
+			...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name}`),
+			mode: 'lines+markers',
+			hovertemplate: '%{y}<br>%{x}'
+		};
+
+		const VFI = {
+			...yTrace('y2', eye.VFI, eye.VFI.name),
+			mode: 'lines+markers',
+			hovertemplate: '%{y}<br>%{x}<extra></extra>',
+			line: dashedLine(),
+		};
+
+		const IOP = {
+			...yTrace('y4', eye.IOP, eye.IOP.name),
+			mode: 'lines+markers',
+			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
+		};
+
+		const VA = selectableVA(eye.VA.units);
+
+		const dataForSide = [ offScale, VFI, IOP, VA ];
+
+		/**
+		 * Events
+		 * Event data are all individual traces
+		 * all the Y values are are the SAME, so that are shown on a line
+		 * extra data for the popup can be passed in with customdata
+		 */
+		Object.values(eye.events).forEach(( event ) => {
+			dataForSide.push({
+				oeEventType: event.event, // store event type
+				...yTrace('y5', event, event.name),
+				...eventStyle(event.event),
+				customdata: event.customdata,
+				hovertemplate: event.customdata ?
+					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
+				showlegend: false
+			});
+		});
+
+		return dataForSide;
 	}
 }
 
