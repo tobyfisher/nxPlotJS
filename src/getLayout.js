@@ -66,7 +66,7 @@ export const getLayout = function ( options ){
 	/*
 	Customise hovermode
 	*/
-	if( options.hovermode ){
+	if( options.hasOwnProperty('hovermode')  ){
 		layout.hovermode =  options.hovermode
 	} else {
 		layout.hovermode = 'closest'; // "x" | "y" | "closest" | false | "x unified" | "y unified"
@@ -75,7 +75,7 @@ export const getLayout = function ( options ){
 	/*
 	Colour theme
 	*/
-	if ( options.colors ){
+	if ( options.hasOwnProperty('colors') ){
 		layout.colorway = colors.getColorSeries(options.colors, dark);
 	} else {
 		layout.colorway = colors.getColorSeries("default", dark);
@@ -84,7 +84,7 @@ export const getLayout = function ( options ){
 	/*
 	Plot title
 	*/
-	if ( options.plotTitle ){
+	if ( options.hasOwnProperty('plotTitle') ){
 		layout.title = {
 			text: options.plotTitle,
 			xref: 'paper', //  "container" | "paper" (as in, align too)
@@ -107,7 +107,7 @@ export const getLayout = function ( options ){
 	/*
 	Plot legend
 	*/
-	if ( options.legend ){
+	if ( options.hasOwnProperty('legend') ){
 
 		layout.showlegend = true; // default is true.
 		// basic set up for legend
@@ -140,7 +140,7 @@ export const getLayout = function ( options ){
 	Subplots (n charts on a single plot)
 	Assumes always vertically stacked
 	*/
-	if ( options.subplot ){
+	if ( options.hasOwnProperty('subplot') ){
 		layout.grid = {
 			rows: options.subplot,
 			columns: 1,
@@ -151,7 +151,7 @@ export const getLayout = function ( options ){
 	/*
 	X & Y Axes
 	*/
-	if ( options.xaxis ){
+	if ( options.hasOwnProperty('xaxis') ){
 		layout.xaxis = options.xaxis; // only 1 axis per layout
 
 		if ( layout.xaxis.title ){
@@ -159,7 +159,7 @@ export const getLayout = function ( options ){
 		}
 	}
 
-	if ( options.yaxes ){
+	if ( options.hasOwnProperty('yaxes') ){
 		options.yaxes.forEach(( y, index ) => {
 			if ( index ){
 				layout['yaxis' + (index + 1)] = y;
@@ -180,7 +180,7 @@ export const getLayout = function ( options ){
 	/*
 	Add range slider to xaxis
 	*/
-	if ( options.rangeSlider ){
+	if ( options.hasOwnProperty('rangeSlider') ){
 
 		const rangeslider = {
 			thickness: 0.08
@@ -209,7 +209,7 @@ export const getLayout = function ( options ){
 		layout.margin.b = 15;
 	}
 
-	if ( options.dateRangeButtons ){
+	if ( options.hasOwnProperty('dateRangeButtons') ){
 		layout.xaxis.rangeselector = Object.assign({
 			x: 1,
 			xanchor: 'right',
@@ -232,7 +232,7 @@ export const getLayout = function ( options ){
 		}, buttonStyling(dark));
 	}
 
-	if( options.barmode ){
+	if( options.hasOwnProperty('barmode') ){
 		layout.barmode = options.barmode;
 	}
 

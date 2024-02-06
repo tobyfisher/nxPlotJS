@@ -56,7 +56,9 @@ export const core = {
 
 	/**
 	 * Draw any vertical or horizontal line markers
-	 * @param layout - note: this could be coming from 'splitCore.js'!
+	 * @param layout
+	 * note: layout could be coming from 'splitCore.js'!
+	 * i.e. a "R" and "L" layout object
 	 */
 	drawLines( layout ){
 		if ( this.lines.v.verticals.length ){
@@ -94,6 +96,7 @@ export const core = {
 
 	/**
 	 * when theme change happens need to reuse original layout data
+	 * splitCore does this a bit differently
 	 */
 	storeLayoutDataForThemeRebuild( layoutData ){
 		if( !this.stored.has(this.storeKeys.layout ) ){

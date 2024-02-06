@@ -45,17 +45,17 @@ export const getAxis = function ( options ){
 	const isY = options.type === 'y';
 
 	// balance axis lines on other side of plot area
-	if ( options.noMirrorLines ){
+	if ( options.hasOwnProperty('noMirrorLines')){
 		axis.mirror = false;
 	}
 
 	// subplot?
-	if ( options.domain && isY ){
+	if ( options.hasOwnProperty('domain') && isY ){
 		axis.domain = options.domain;
 	}
 
 	// add titles to Axes?
-	if ( options.title ){
+	if ( options.hasOwnProperty('title') ){
 		axis.title = {
 			text: options.title,
 			standoff: isY ? 10 : 20, // px offset
@@ -66,7 +66,7 @@ export const getAxis = function ( options ){
 	}
 
 	// mirror Y axis (left one has priority)
-	if ( options.rightSide && isY ){
+	if ( options.hasOwnProperty('rightSide') && isY ){
 		axis.overlaying = options.rightSide; // set to y1, y2, etc
 		axis.side = 'right';
 		axis.showgrid = false;
@@ -75,32 +75,32 @@ export const getAxis = function ( options ){
 	}
 
 	// set nticks
-	if ( options.maxAxisTicks ){
+	if ( options.hasOwnProperty('maxAxisTicks') ){
 		axis.nticks = options.maxAxisTicks;
 	}
 
 	// use Dates? - OE data formatting
-	if ( options.useDates ){
+	if ( options.hasOwnProperty('useDates') ){
 		axis.tickformat = "%b %Y"; // d Mth Y
 	}
 
 	// turn off zoom?
-	if ( options.fixRange ){
+	if ( options.hasOwnProperty('fixRange') ){
 		axis.fixedrange = true;
 	}
 
 	// manually set axes data range
-	if ( options.range ){
+	if ( options.hasOwnProperty('range') ){
 		axis.range = options.range;
 	}
 
 	// set range type... otherwise Plotly will figure it out
-	if ( options.axisType ){
+	if ( options.hasOwnProperty('axisType') ){
 		axis.type = options.axisType;
 	}
 
 	// categories (assuming this will only be used for yAxis)
-	if ( options.useCategories ){
+	if ( options.hasOwnProperty('useCategories') ){
 		let arr = options.useCategories.categoryarray;
 
 		axis.type = "category";
@@ -128,7 +128,7 @@ export const getAxis = function ( options ){
 	}
 
 	// spikes
-	if ( options.spikes ){
+	if ( options.hasOwnProperty('spikes') ){
 		const dark = colors.isDarkTheme()
 		axis.showspikes = true;
 		axis.spikecolor = dark ? '#0ff' : '#00f';

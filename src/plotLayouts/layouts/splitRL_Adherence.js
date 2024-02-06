@@ -55,8 +55,6 @@ const build = {
 	},
 
 	buildLayout( layoutData ){
-		this.storeLayoutDataForThemeRebuild(layoutData);
-
 		/**
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
 		 * e.g. sub-plotting within plot.ly - Navigator is outside this

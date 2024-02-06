@@ -93,9 +93,6 @@ const build = {
 		return dataForSide;
 	},
 	buildLayout( layoutData ){
-		// Store for theme change, data and layout both need rebuilding
-		this.stored.set('layout', layoutData);
-
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)

@@ -32,10 +32,11 @@ const splitPlots = {
 	 */
 	buildSplitData( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
-		const plot = new Map();
-		plot.set('storedPlotData', plotData); // Store for theme change, data and layout both need rebuilding
-		plot.set('div', document.querySelector(`.oes-${side}-side`));
-		plot.set('data', this.buildDataTraces(plotData));
+
+		const splitPlot = new Map();
+		splitPlot.set('storedPlotData', plotData); // Store for theme change, data and layout both need rebuilding
+		splitPlot.set('div', document.querySelector(`.oes-${side}-side`));
+		splitPlot.set('data', this.buildDataTraces(plotData));
 
 		/** plotly layout **/
 		const sideSpecificLayout = getLayout({
@@ -45,13 +46,18 @@ const splitPlots = {
 		});
 
 		// any procedures?
-		if ( plotData.procedures ){
-			addLayoutVerticals(sideSpecificLayout, Object.values(plotData.procedures), this.procedureVericalHeight);
+		if ( plotData.hasOwnProperty('procedures')){
+			addLayoutVerticals(
+				sideSpecificLayout,
+				Object.values(plotData.procedures),
+				this.procedureVericalHeight
+			);
 		}
 
-		plot.set('layout', sideSpecificLayout);
+		splitPlot.set('layout', sideSpecificLayout);
 
-		this.plots.set(`${eye}`, plot);
+		/** set side specific plot */
+		this.plots.set(`${eye}`, splitPlot);
 	},
 
 	setBaseLayoutForPlots( baseLayout ){
