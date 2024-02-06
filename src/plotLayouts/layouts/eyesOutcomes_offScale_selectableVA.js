@@ -63,10 +63,8 @@ const build = {
 	},
 
 	buildLayout( layoutData ){
-		// store layout data for rebuilding on theme change
-		if ( !this.stored.has("layout") ){
-			this.stored.set("layout", layoutData);
-		}
+		this.storeLayoutDataForThemeRebuild( layoutData );
+
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -124,9 +122,7 @@ const build = {
 			}, getAxisTypeForRange(selectedUnit.range))
 		)
 
-		/**
-		 * Layout
-		 */
+		/** plotly layout **/
 		this.layout = getLayout({
 			legend: true,
 			xaxis: x1,
@@ -137,11 +133,7 @@ const build = {
 	},
 
 	buildData( plotData ){
-		// store layout data for rebuilding on theme change
-		if ( !this.stored.has("plot") ){
-			this.stored.set("plot", plotData);
-		}
-
+		this.storePlotDataForThemeRebuild( plotData );
 		/**
 		 * Data - single plot so combine all the traces
 		 */
@@ -166,6 +158,7 @@ const build = {
 			}
 		});
 
+		/** plotly data **/
 		this.data = data;
 	}
 

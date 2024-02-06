@@ -19,14 +19,12 @@ const build = {
 		if ( plotData.hasOwnProperty('x') ) trace.x = plotData.x;
 		if ( plotData.hasOwnProperty('hovertemplate') ) trace.hovertemplate = plotData.hovertemplate;
 
+		/** plotly data **/
 		this.data =  [ trace ];
 	},
 
 	buildLayout( layoutData ){
-		// store layout data for rebuilding on theme change
-		if( !this.stored.has("layout" ) ){
-			this.stored.set("layout", layoutData);
-		}
+		this.storeLayoutDataForThemeRebuild( layoutData );
 
 		const x1 = getAxis({
 			type: 'x',
@@ -40,6 +38,7 @@ const build = {
 			title: layoutData.yaxis.y1.title
 		});
 
+		/** plotly layout **/
 		this.layout = getLayout({
 			plotTitle: layoutData.plotHeader,
 			xaxis: x1,

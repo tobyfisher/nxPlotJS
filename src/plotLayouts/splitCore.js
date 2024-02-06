@@ -8,10 +8,14 @@ import { addLayoutVerticals } from "./layoutAnnotations";
 const splitPlots = {
 	plots: new Map(),
 
+	buildData(){
+		debug.error('Use buildRightData() and/or buildLeftData()')
+	},
+
 	/**
 	 * API
-	 * Rather than use buildPlot (below) directly use these methods
-	 * as the API in DOM, it's clearer which data is being provided
+	 * Rather than use buildPlot directly use these methods
+	 * for the API as it's clearer which data is being provided
 	 */
 	buildRightData( plotData ){
 		this.buildPlot('R', plotData);
@@ -37,6 +41,10 @@ const splitPlots = {
 				plotTitle: `${eye + side.substring(1)} eye`,
 			}, this.baseLayoutOptions)
 		));
+
+		
+
+
 
 		// Procedures
 		if ( plotData.procedures ){

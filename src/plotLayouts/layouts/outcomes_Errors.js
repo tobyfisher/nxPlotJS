@@ -29,18 +29,12 @@ const buildDataTraces = ( plot ) => {
 const build = {
 
 	buildData( plotData ){
-		/**
-		 * Data
-		 * Simple traces, trace colour controlled by the Layout
-		 */
+		/** plotly data **/
 		this.data = buildDataTraces(plotData);
 	},
 
 	buildLayout( layoutData ){
-		// store layout data for rebuilding on theme change
-		if( !this.stored.has("layout" ) ){
-			this.stored.set("layout", layoutData);
-		}
+		this.storeLayoutDataForThemeRebuild( layoutData );
 
 		const x1 = getAxis({
 			type: 'x',
@@ -63,9 +57,7 @@ const build = {
 			numTicks: 20,
 		});
 
-		/**
-		 * Layout
-		 */
+		/** plotly layout **/
 		this.layout = getLayout({
 			colors: 'varied',
 			legend: true,

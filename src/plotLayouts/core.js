@@ -12,6 +12,10 @@ export const core = {
 		},
 		horizontals: [],
 	},
+	storeKeys: {
+		layout: 'layout',
+		plot: 'plot'
+	},
 	stored: new Map(),
 
 	/**
@@ -37,6 +41,7 @@ export const core = {
 	},
 
 	plotlyReact(){
+		console.log( this );
 		this.drawLines(this.layout);
 		/**
 		 * Standard initiate Plot.ly
@@ -55,6 +60,9 @@ export const core = {
 	 * @param layout - note: this could be coming from 'splitCore.js'!
 	 */
 	drawLines( layout ){
+
+		console.log( this.layout);
+
 		if ( this.lines.v.verticals.length ){
 			addLayoutVerticals(
 				layout,
@@ -89,16 +97,31 @@ export const core = {
 	},
 
 	/**
+	 * when theme change happens need to reuse original layout data
+	 */
+	storeLayoutDataForThemeRebuild( layoutData ){
+		if( !this.stored.has(this.storeKeys.layout ) ){
+			this.stored.set(this.storeKeys.layout, layoutData);
+		}
+	},
+
+	storePlotDataForThemeRebuild( plotData ){
+		if( !this.stored.has(this.storeKeys.plot ) ){
+			this.stored.set(this.storeKeys.plot, plotData);
+		}
+	},
+
+	/**
 	 * Build or re-build plotly (if there is a theme change)
 	 * A complete rebuild is easier (more reliable) than trying to
 	 * individually go through all the API and change specific colours
 	 */
 	plotlyThemeChange(){
-		if ( this.stored.has("plot") ){
-			this.buildData(this.stored.get("plot"));
+		if ( this.stored.has(this.storeKeys.plot) ){
+			this.buildData(this.stored.get(this.storeKeys.plot));
 		}
-		if ( this.stored.has("layout") ){
-			this.buildLayout(this.stored.get("layout"));
+		if ( this.stored.has(this.storeKeys.layout) ){
+			this.buildLayout(this.stored.get(this.storeKeys.layout));
 		}
 
 		this.plotlyReact();

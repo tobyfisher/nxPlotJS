@@ -55,7 +55,7 @@ const build = {
 		};
 
 		const CRT = {
-			...yTrace( 'y2', eye.CRT, `${eye.CRT.name}`),
+			...yTrace('y2', eye.CRT, `${eye.CRT.name}`),
 			mode: 'lines+markers',
 			hovertemplate: 'CRT: %{y}<br>%{x}',
 			line: dashedLine()
@@ -72,16 +72,15 @@ const build = {
 		 * extra data for the popup can be passed in with customdata
 		 */
 		Object.values(eye.events).forEach(( event ) => {
-			dataForSide.push(
-				Object.assign({
-					oeEventType: event.event, // store event type
-					...yTrace('y4', event, event.name),
-					customdata: event.customdata,
-					hovertemplate: event.customdata ?
-						'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-					showlegend: false,
-				}, eventStyle(event.event))
-			);
+			dataForSide.push({
+				oeEventType: event.event, // store event type
+				...yTrace('y4', event, event.name),
+				customdata: event.customdata,
+				hovertemplate: event.customdata ?
+					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
+				showlegend: false,
+				...eventStyle(event.event)
+			});
 		});
 
 		return dataForSide;
@@ -117,7 +116,7 @@ const build = {
 			type: 'y',
 			domain: domainLayout[2],
 			useCategories: {
-				categoryarray:  [ "NPL", "PL", "HM", "CF" ],
+				categoryarray: [ "NPL", "PL", "HM", "CF" ],
 				rangeFit: "padTop", // "exact", etc
 			},
 			spikes: true,
@@ -179,4 +178,4 @@ const build = {
 	}
 };
 
-export const splitRL_MedicalRetina_selectableVA = { ...splitCore, ...build};
+export const splitRL_MedicalRetina_selectableVA = { ...splitCore, ...build };

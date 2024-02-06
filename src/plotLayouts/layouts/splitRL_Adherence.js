@@ -17,9 +17,9 @@ const build = {
 	setup( options ){
 		toolBar.linkToPlot(this);
 		toolBar.allowUserToChangeHoverMode();
-
 		this.listenForViewLayoutChange();
 	},
+
 	buildDataTraces( eye ){
 		/**.
 		 * Daily adherence will have the same Drug name as
@@ -39,25 +39,22 @@ const build = {
 		 * extra data for the popup can be passed in with customdata
 		 */
 		Object.values(eye.events).forEach(( event ) => {
-			dataForSide.push(
-				Object.assign({
-						oeEventType: event.event, // store event type
-						...yTrace('y2', event, event.name),
-						customdata: event.customdata,
-						hovertemplate: event.customdata ?
-							'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-						showlegend: false,
-					}, eventStyle(event.event)
-				)
-			);
+			dataForSide.push({
+				oeEventType: event.event, // store event type
+				...yTrace('y2', event, event.name),
+				customdata: event.customdata,
+				hovertemplate: event.customdata ?
+					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
+				showlegend: false,
+				...eventStyle(event.event)
+			});
 		});
 
 		return dataForSide
 	},
 
 	buildLayout( layoutData ){
-		// Store for theme change, data and layout both need rebuilding
-		this.stored.set('layout', layoutData);
+		this.storeLayoutDataForThemeRebuild(layoutData);
 
 		/**
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -117,4 +114,4 @@ const build = {
 	}
 }
 
-export const splitRL_Adherence = { ...splitCore, ...build};
+export const splitRL_Adherence = { ...splitCore, ...build };

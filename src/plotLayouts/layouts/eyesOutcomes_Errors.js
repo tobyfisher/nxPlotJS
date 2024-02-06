@@ -36,11 +36,7 @@ const buildDataTraces = function ( eye, colorSeries, titleEye ){
 const build = {
 
 	buildData( plotData ){
-
-		// store layout data for rebuilding on theme change
-		if( !this.stored.has("plot" ) ){
-			this.stored.set("plot", plotData);
-		}
+		this.storePlotDataForThemeRebuild( plotData );
 
 		let data = [];
 
@@ -64,15 +60,12 @@ const build = {
 			}
 		});
 
+		/** plotly data **/
 		this.data = data;
 	},
 
 	buildLayout( layoutData ){
-
-		// store layout data for rebuilding on theme change
-		if( !this.stored.has("layout" ) ){
-			this.stored.set("layout", layoutData);
-		}
+		this.storeLayoutDataForThemeRebuild( layoutData );
 
 		const x1 = getAxis({
 			type: 'x',
@@ -98,9 +91,7 @@ const build = {
 			spikes: true,
 		});
 
-		/**
-		 * Layout
-		 */
+		/** plotly layout **/
 		this.layout = getLayout({
 			legend: true,
 			xaxis: x1,

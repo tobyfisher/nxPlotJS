@@ -1,4 +1,5 @@
 import { markerFor} from "./markerFor";
+import * as debug from "../../../debug";
 
 /**
  * Consistent styling
@@ -23,6 +24,7 @@ export const eventStyle = ( type, color = false ) => {
 				width: 3,
 			};
 			break;
+		default: debug.error(`eventStyle - unknown type: ${type}`);
 	}
 
 	// add color, but preserve other properties

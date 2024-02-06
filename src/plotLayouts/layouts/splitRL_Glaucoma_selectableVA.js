@@ -37,8 +37,8 @@ const selectableVA = ( unitsForVA ) => {
 	};
 }
 
-
 const build = {
+
 	setup( options ){
 		toolBar.linkToPlot(this);
 		toolBar.allowUserToChangeHoverMode();
@@ -46,6 +46,7 @@ const build = {
 		this.listenForViewLayoutChange();
 		this.procedureVericalHeight = 0.77 // DomainLayout[1][1]
 	},
+
 	buildDataTraces( eye ){
 
 		const offScale = {
@@ -78,16 +79,15 @@ const build = {
 		 * extra data for the popup can be passed in with customdata
 		 */
 		Object.values(eye.events).forEach(( event ) => {
-			dataForSide.push(
-				Object.assign({
-					oeEventType: event.event, // store event type
-					...yTrace('y5', event, event.name),
-					customdata: event.customdata,
-					hovertemplate: event.customdata ?
-						'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-					showlegend: false,
-				}, eventStyle(event.event))
-			);
+			dataForSide.push({
+				oeEventType: event.event, // store event type
+				...yTrace('y5', event, event.name),
+				customdata: event.customdata,
+				hovertemplate: event.customdata ?
+					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
+				showlegend: false,
+				...eventStyle(event.event)
+			});
 		});
 
 		return dataForSide;
@@ -196,4 +196,4 @@ const build = {
 	}
 }
 
-export const splitRL_Glaucoma_selectableVA = { ...splitCore, ...build};
+export const splitRL_Glaucoma_selectableVA = { ...splitCore, ...build };
