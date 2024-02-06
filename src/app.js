@@ -35,12 +35,8 @@ const nxPlot = ( requestedPlotLayout, divID = false ) => {
 		const nxLayout = plotTemplates.get(requestedPlotLayout);
 		nxLayout.setPlotlyDiv(divID);
 
-		/**
-		 * Some plotTemplates require setting up, this could
-		 * be exposed as an API with options but for now
-		 * handle internally
-		 */
-		nxLayout.setup();
+		/** provide a prebuild hook, currently only used by splitPlots */
+		nxLayout.prebuild();
 		debug.log(`Building: ${ requestedPlotLayout}`);
 
 		/**

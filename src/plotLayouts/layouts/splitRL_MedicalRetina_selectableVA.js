@@ -38,7 +38,7 @@ const selectableVA = ( unitsForVA ) => {
 }
 
 const build = {
-	setup( options ){
+	prebuild(){
 		toolBar.linkToPlot(this);
 		toolBar.allowUserToChangeHoverMode();
 
@@ -163,7 +163,7 @@ const build = {
 		 * as the base options for getLayout are the same
 		 * for R & L hold these and customise for each side
 		 */
-		this.baseLayoutOptions = {
+		this.setBaseLayoutForPlots({
 			legend: {
 				yanchor: 'bottom',
 				y: domainLayout[1][1], // position relative to subplots
@@ -174,7 +174,7 @@ const build = {
 			rangeSlider: true,
 			dateRangeButtons: true,
 			hovermode: toolBar.hoverMode
-		};
+		});
 	}
 };
 

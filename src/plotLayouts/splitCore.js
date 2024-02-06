@@ -7,6 +7,7 @@ import { addLayoutVerticals } from "./layoutAnnotations";
  */
 const splitPlots = {
 	plots: new Map(),
+	baseLayout: null,
 
 	buildData(){
 		debug.error('Use buildRightData() and/or buildLeftData()')
@@ -14,44 +15,47 @@ const splitPlots = {
 
 	/**
 	 * API
-	 * Rather than use buildPlot directly use these methods
+	 * Rather than use buildSplitData directly use these methods
 	 * for the API as it's clearer which data is being provided
 	 */
 	buildRightData( plotData ){
-		this.buildPlot('R', plotData);
+		this.buildSplitData('R', plotData);
 	},
 
 	buildLeftData( plotData ){
-		this.buildPlot('L', plotData);
+		this.buildSplitData('L', plotData);
 	},
 
 	/**
 	 * @param eye - side
 	 * @param plotData
 	 */
-	buildPlot( eye, plotData ){
+	buildSplitData( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
 		const plot = new Map();
 		plot.set('storedPlotData', plotData); // Store for theme change, data and layout both need rebuilding
 		plot.set('div', document.querySelector(`.oes-${side}-side`));
 		plot.set('data', this.buildDataTraces(plotData));
-		plot.set('layout', getLayout(
-			Object.assign({
-				colors: `${side}EyeSeries`,
-				plotTitle: `${eye + side.substring(1)} eye`,
-			}, this.baseLayoutOptions)
-		));
 
-		
+		/** plotly layout **/
+		const sideSpecificLayout = getLayout({
+			colors: `${side}EyeSeries`,
+			plotTitle: `${eye + side.substring(1)} eye`,
+			...this.baseLayout
+		});
 
-
-
-		// Procedures
+		// any procedures?
 		if ( plotData.procedures ){
-			addLayoutVerticals(plot.get('layout'), Object.values(plotData.procedures), this.procedureVericalHeight);
+			addLayoutVerticals(sideSpecificLayout, Object.values(plotData.procedures), this.procedureVericalHeight);
 		}
 
+		plot.set('layout', sideSpecificLayout);
+
 		this.plots.set(`${eye}`, plot);
+	},
+
+	setBaseLayoutForPlots( baseLayout ){
+		this.baseLayout = baseLayout;
 	},
 
 	/**
@@ -82,7 +86,7 @@ const splitPlots = {
 		[ 'R', 'L' ].forEach(eye => {
 			if ( this.plots.has(eye) ){
 				const side = this.plots.get(eye);
-				this.buildPlot(eye, side.get('storedPlotData'));
+				this.buildSplitData(eye, side.get('storedPlotData'));
 			}
 		});
 

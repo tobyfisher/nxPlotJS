@@ -57,7 +57,7 @@ const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 
 const build = {
 
-	setup(){
+	prebuild(){
 		toolBar.linkToPlot(this);
 		toolBar.allowUserToChangeHoverMode();
 	},

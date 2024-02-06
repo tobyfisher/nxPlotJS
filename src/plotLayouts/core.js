@@ -41,7 +41,6 @@ export const core = {
 	},
 
 	plotlyReact(){
-		console.log( this );
 		this.drawLines(this.layout);
 		/**
 		 * Standard initiate Plot.ly
@@ -60,9 +59,6 @@ export const core = {
 	 * @param layout - note: this could be coming from 'splitCore.js'!
 	 */
 	drawLines( layout ){
-
-		console.log( this.layout);
-
 		if ( this.lines.v.verticals.length ){
 			addLayoutVerticals(
 				layout,
@@ -80,8 +76,8 @@ export const core = {
 	/**
 	 * Called by app.js
 	 */
-	setup(){
-		// optional setup, always called, override if needed
+	prebuild(){
+		// optional pre-build setup hook
 	},
 
 	setPlotlyDiv( divID ){
