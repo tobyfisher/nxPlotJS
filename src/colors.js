@@ -1,5 +1,5 @@
 /**
- * plot color styles based on theme mode
+ * plot color styles based on UI theme mode
  * @returns {Boolean}
  */
 const isDarkTheme = () => document.documentElement.classList.contains("theme-dark");
@@ -9,28 +9,28 @@ const isDarkTheme = () => document.documentElement.classList.contains("theme-dar
  */
 const colours = {
 	dark: {
-		blue:'#63d7d6',
-		highlight:'#fff',
+		blue: '#63d7d6',
+		highlight: '#fff',
 		green: '#65d235',
 		red: '#ea2b34',
-		greenSeries: ['#65d235', '#A5D712','#02B546'],
-		redSeries: ['#ea2b34','#F64A2D','#C92845'],
-		yellowSeries: ['#FAD94B','#E8B131','#F1F555'], // BEO (Both Eyes Open)
-		standard: ['#1451b3', '#175ece', '#1a69e5'],
-		varied:  ['#0a83ea', '#18949f', '#781cea','#3f0aea'],
-		dual: ['#1472DE','#2E4259'],
+		greenSeries: [ '#65d235', '#A5D712', '#02B546' ],
+		redSeries: [ '#ea2b34', '#F64A2D', '#C92845' ],
+		yellowSeries: [ '#FAD94B', '#E8B131', '#F1F555' ], // BEO (Both Eyes Open)
+		standard: [ '#1451b3', '#175ece', '#1a69e5' ],
+		varied: [ '#0a83ea', '#18949f', '#781cea', '#3f0aea' ],
+		dual: [ '#1472DE', '#2E4259' ],
 	},
 	light: {
 		blue: '#00f',
-		highlight:'#000',
+		highlight: '#000',
 		green: '#418c20',
 		red: '#da3e43',
-		greenSeries: ['#418c20','#598617','#139149'],
-		redSeries: ['#da3e43', '#E64C02', '#E64562'],
-		yellowSeries: ['#FCCE14','#E69812','#FCBB21'], // BEO
-		standard: ['hsl(217,20%,65%)', 'hsl(217,28%,62%)', 'hsl(217,20%,59%)'],
-		varied: ['#0a2aea', '#ea0a8e', '#00b827','#890aea'],
-		dual: ['#2126C2','#8FAEC2'],
+		greenSeries: [ '#418c20', '#598617', '#139149' ],
+		redSeries: [ '#da3e43', '#E64C02', '#E64562' ],
+		yellowSeries: [ '#FCCE14', '#E69812', '#FCBB21' ], // BEO
+		standard: [ 'hsl(217,20%,65%)', 'hsl(217,28%,62%)', 'hsl(217,20%,59%)' ],
+		varied: [ '#0a2aea', '#ea0a8e', '#00b827', '#890aea' ],
+		dual: [ '#2126C2', '#8FAEC2' ],
 	}
 };
 
@@ -47,34 +47,22 @@ const getBlue = () => isDarkTheme() ? colours.dark.blue : colours.light.blue;
  * @returns {Array} of colour series
  */
 const getColorSeries = ( colorName ) => {
-	const isDark = isDarkTheme();
-
-	let colorWay = null;
-	const dark = colours.dark;
-	const light = colours.light;
-
-	switch( colorName ){
+	const theme = isDarkTheme() ? 'dark' : 'light';
+	switch ( colorName ){
 		case "varied":
-			colorWay = isDark ? dark.varied : light.varied;
-			break;
+			return colours[theme].varied;
 		case "posNeg":
-			colorWay = isDark ? dark.dual : light.dual;   // assumes Positive trace is first!
-			break;
+			return colours[theme].dual;
 		case "rightEyeSeries":
-			colorWay = isDark ? dark.greenSeries : light.greenSeries;
-			break;
+			return colours[theme].greenSeries;
 		case "leftEyeSeries":
-			colorWay = isDark ? dark.redSeries : light.redSeries;
-			break;
+			return colours[theme].redSeries;
 		case "BEOSeries":
-			colorWay = isDark ? dark.yellowSeries : light.yellowSeries;
-			break;
+			return colours[theme].yellowSeries;
 
 		default:
-			colorWay = isDark ? dark.standard : light.standard;
+			return colours[theme].standard;
 	}
-
-	return colorWay;
 };
 
 /**
@@ -85,14 +73,17 @@ const getColorSeries = ( colorName ) => {
  * @returns {String} colour for request element (or "pink" if fails)
  */
 const getColor = ( colour ) => {
-	const isDark = isDarkTheme();
-	switch( colour ){
-		case 'highlight': return isDark ? colours.dark.highlight : colours.light.highlight;
-		case 'rightEye': return isDark ? colours.dark.green : colours.light.green;
-		case 'leftEye': return isDark ? colours.dark.red : colours.light.red;
-		//case 'error_y': return isDark ? '#5b6c77' : '#7da7cb';
+	const theme = isDarkTheme() ? 'dark' : 'light';
+	switch ( colour ){
+		case 'highlight':
+			return colours[theme].highlight;
+		case 'rightEye':
+			return colours[theme].green;
+		case 'leftEye':
+			return colours[theme].red;
 
-		default: return 'pink'; // no match, flag failure to match as pink!
+		default:
+			return 'pink'; // no match, flag failure to match as pink!
 	}
 };
 

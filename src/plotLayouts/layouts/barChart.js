@@ -7,7 +7,7 @@ const build = {
 	buildData( plotData ){
 		/**
 		 * Data - for Plotly
-		 * Simple traces, trace colour controlled by the Layout
+		 * Simple traces, trace colours controlled by the Layout
 		 */
 		const trace = {
 			y: plotData.y,
