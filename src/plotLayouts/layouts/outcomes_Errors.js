@@ -4,27 +4,11 @@ import { core } from "../core";
 import { errorY } from "./parts/errorY";
 import { yTrace } from "./parts/yTrace";
 
-/**
- * Build data trace format for Glaucoma outcomes
- * @param oe {Object} data
- * @returns {Array} for Plot.ly data
- */
-const buildDataTraces = ( plot ) => {
-
-	const VA = {
-		...yTrace('y1', plot.VA, 'VA'),
-		hovertemplate: 'Mean ± SD<br>VA: %{y}<br>(N: %{x})',
-		error_y: errorY( plot.VA )
-	};
-
-	const IOP = {
-		...yTrace('y2', plot.IOP, 'IOP'),
-		hovertemplate: 'Mean ± SD<br>IOP: %{y}<br>(N: %{x})',
-		error_y: errorY( plot.IOP )
-	};
-
-	return [ VA, IOP ];
-}
+const trace = ( plot, y, name ) => ({
+	...yTrace(y, plot, name),
+	hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
+	error_y: errorY( plot )
+});
 
 const build = {
 
@@ -64,7 +48,10 @@ const build = {
 
 	buildData( plotData ){
 		/** plotly data **/
-		this.data = buildDataTraces(plotData);
+		this.data = [
+			trace( plotData.VA, 'y1', 'VA'),
+			trace( plotData.IOP, 'y2', 'IOP')
+		];
 	}
 }
 

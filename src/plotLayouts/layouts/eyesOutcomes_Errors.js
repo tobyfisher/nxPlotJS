@@ -74,6 +74,13 @@ const build = {
 	buildData( plotData ){
 		this.storePlotDataForThemeRebuild( plotData );
 
+		/**
+		 * Data traces for Eyes!
+		 * can handle 'R', 'L' and 'BEO' - all optional
+		 * need to check if the data is provided...
+ 		 */
+
+
 		let data = [];
 
 		let eyeTraces = new Map([

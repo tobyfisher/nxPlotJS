@@ -21,6 +21,10 @@ export const core = {
 	/**
 	 * API
 	 */
+	setSelectableUnits(){
+		debug.error('needs overwriting in specific layout');
+	},
+
 	buildData(){
 		// Each layout must overwrite this build
 		// (except SplitPlots see splitPlots.js)

@@ -14,6 +14,10 @@ const splitPlots = {
 		debug.error('Use buildRightData() and/or buildLeftData()')
 	},
 
+	buildDataTraces(){
+		debug.error('Override in specific layout')
+	},
+
 	/**
 	 * API
 	 * Rather than use buildSplitData directly use these methods
