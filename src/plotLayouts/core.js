@@ -110,12 +110,7 @@ export const core = {
 		}
 	},
 
-	/**
-	 * Build or re-build plotly (if there is a theme change)
-	 * A complete rebuild is easier (more reliable) than trying to
-	 * individually go through all the API and change specific colours
-	 */
-	plotlyThemeChange(){
+	rebuild(){
 		if ( this.stored.has(this.storeKeys.plot) ){
 			this.buildData(this.stored.get(this.storeKeys.plot));
 		}
@@ -124,5 +119,14 @@ export const core = {
 		}
 
 		this.plotlyReact();
+	},
+
+	/**
+	 * Build or re-build plotly (if there is a theme change)
+	 * A complete rebuild is easier (more reliable) than trying to
+	 * individually go through all the API and change specific colours
+	 */
+	plotlyThemeChange(){
+		this.rebuild();
 	}
 }

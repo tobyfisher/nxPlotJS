@@ -30,32 +30,25 @@ for( const template of allowedTemplates){
 }
 
 const nxPlot = ( requestedPlotLayout, divID = false ) => {
+	let nxLayout = false;
 
 	try {
-		const nxLayout = plotTemplates.get(requestedPlotLayout);
-		nxLayout.setPlotlyDiv(divID);
-
-		/** provide a prebuild hook, currently only used by splitPlots */
-		nxLayout.prebuild();
+		nxLayout = plotTemplates.get(requestedPlotLayout);
 		debug.log(`Building: ${ requestedPlotLayout}`);
-
-		/**
-		 * User changes the theme
-		 * re-build to re-draw plot with correct colours
-		 */
-		document.addEventListener('oeThemeChange', () => {
-			nxLayout.plotlyThemeChange();
-		});
-
-		return nxLayout;
-
 	} catch ({ name }){
-		console.error( name );
 		console.error(`Requested plot template: "${requestedPlotLayout}" is invalid. 
 		Valid plotTemplates are:\n${Array.from(plotTemplates.keys()).join("\n")}` );
-
-		return false;
+		return nxLayout;
 	}
+
+	nxLayout.setPlotlyDiv(divID); // Plotly requires a div
+	nxLayout.prebuild(); // prebuild hook (optional)
+
+	document.addEventListener('oeThemeChange', () => {
+		nxLayout.plotlyThemeChange();
+	});
+
+	return nxLayout;
 }
 
 /**

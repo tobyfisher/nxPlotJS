@@ -16,8 +16,8 @@ import { eventStyle } from "./parts/eventStyle";
 const build = {
 
 	prebuild( ){
-		toolBar.linkToPlot(this);
-		toolBar.allowUserToChangeHoverMode();
+		this.toolBar = toolBar.linkToLayout(this);
+		this.toolBar.allowUserToChangeHoverMode();
 		this.listenForViewLayoutChange();
 	},
 
@@ -75,7 +75,7 @@ const build = {
 			subplot: domainLayout.length, // num of sub-plots
 			rangeSlider: true,
 			dateRangeButtons: true,
-			hovermode: toolBar.hoverMode
+			hovermode: this.toolBar.getHoverMode()
 		});
 	},
 

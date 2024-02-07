@@ -8,6 +8,7 @@ import { addLayoutVerticals } from "./layoutAnnotations";
 const splitPlots = {
 	plots: new Map(),
 	baseLayout: null,
+	toolBar: null,
 
 	buildData(){
 		debug.error('Use buildRightData() and/or buildLeftData()')
@@ -85,7 +86,7 @@ const splitPlots = {
 		});
 	},
 
-	plotlyThemeChange(){
+	rebuild(){
 		// as layout options are used by both sides
 		this.buildLayout(this.stored.get('layout'));
 
@@ -97,6 +98,10 @@ const splitPlots = {
 		});
 
 		this.plotlyReact();
+	},
+
+	plotlyThemeChange(){
+		this.rebuild();
 	},
 
 	/**

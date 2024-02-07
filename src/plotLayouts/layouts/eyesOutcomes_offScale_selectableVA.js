@@ -10,7 +10,7 @@ import { dataLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 
 
-const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
+const buildDataTraces = ( eye, colorSeries, titleSuffix, vaUnit ) => {
 
 	const offScale = {
 		...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name} ${titleSuffix}`),
@@ -26,8 +26,7 @@ const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 		line: dataLine(colorSeries[1], true),
 	};
 
-
-	const selectedVA = eye.VA.units[ toolbar.getSelectedUnit() ];
+	const selectedVA = eye.VA.units[ vaUnit ];
 	const VA = {
 		...yTrace('y3', selectedVA, `${selectedVA.name} ${titleSuffix}`),
 		mode: 'lines+markers',
@@ -39,16 +38,17 @@ const buildDataTraces = ( eye, colorSeries, titleSuffix ) => {
 }
 
 const build = {
-
 	prebuild(){
-		toolBar.linkToPlot(this);
-		toolBar.allowUserToChangeHoverMode();
+		this.toolBar = toolBar.linkToLayout(this);
+		this.toolBar.allowUserToChangeHoverMode();
+	},
+
+	setSelectableUnits( selectableUnits ){
+		this.toolBar.allowUserToSelectUnits(selectableUnits);
 	},
 
 	buildLayout( layoutData ){
 		this.storeLayoutDataForThemeRebuild( layoutData );
-		toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits);
-
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -95,14 +95,15 @@ const build = {
 		 * Dynamic selectable unit Y axis
 		 * VA units used can be changed by the User
 		 */
+		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
 		const y3 = getAxis(
 			Object.assign({
 				type: 'y',
-				title: `VA - ${selectedUnit.name}`,
+				title: `VA - ${unitName}`,
 				domain: domainLayout[1],
 				rightSide: 'y2',
 				spikes: true,
-			}, getAxisTypeForRange(selectedUnit.range))
+			}, getAxisTypeForRange(unitRange))
 		)
 
 		/** plotly layout **/
@@ -111,7 +112,7 @@ const build = {
 			xaxis: x1,
 			yaxes: [ y1, y2, y3 ],
 			rangeSlider: true,
-			hovermode: toolBar.hoverMode
+			hovermode: this.toolBar.getHoverMode()
 		});
 	},
 
@@ -134,7 +135,8 @@ const build = {
 				const traces = buildDataTraces(
 					plotData[eyeData],
 					colors.getColorSeries(`${eyeData}Series`),
-					`(${eye})`
+					`(${eye})`,
+					this.toolBar.getSelectedUnit()
 				);
 
 				data = data.concat(traces)

@@ -18,38 +18,20 @@ import { yTrace } from "./parts/yTrace";
  * |- [Navigator]
  */
 
-const selectableVA = ( unitsForVA ) => {
-	/**
-	 * VA trace depends on the User selected unit in the Toolbar
-	 * units in VA must match the selectableKey set in the layout
-	 */
-	const selectedVA = unitsForVA[toolBar.selectableKey];
-
-	if ( selectedVA === undefined ){
-		debug.error(`unable to find trace date for '${toolBar.selectableKey}'`);
-		return false;
-	}
-
-	return {
-		...yTrace('y3', selectedVA, `${selectedVA.name}`),
-		mode: 'lines+markers',
-		hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
-	};
-}
-
 const build = {
 	prebuild(){
-		toolBar.linkToPlot(this);
-		toolBar.allowUserToChangeHoverMode();
+		this.toolBar = toolBar.linkToLayout(this);
+		this.toolBar.allowUserToChangeHoverMode();
 
 		this.listenForViewLayoutChange();
 		this.procedureVericalHeight = 0.64 // DomainLayout[1][1]
 	},
 
-	buildLayout( layoutData ){
-		// Store for theme change, data and layout both need rebuilding
-		this.stored.set('layout', layoutData);
+	setSelectableUnits( selectableUnits ){
+		this.toolBar.allowUserToSelectUnits(selectableUnits);
+	},
 
+	buildLayout( layoutData ){
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -106,16 +88,15 @@ const build = {
 		 * Dynamic selectable unit Y axis
 		 * VA units used can be changed by the User
 		 */
-		const selectedUnit = toolBar.allowUserToSelectUnits(layoutData.yaxis.selectableUnits, 'Select VA Units');
-
+		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
 		const y3 = getAxis(
 			Object.assign({
 				type: 'y',
-				title: `VA - ${selectedUnit.name}`,
+				title: `VA - ${unitName}`,
 				domain: domainLayout[1],
 				rightSide: 'y2',
 				spikes: true,
-			}, getAxisTypeForRange(selectedUnit.range))
+			}, getAxisTypeForRange(unitRange))
 		);
 
 		/**
@@ -133,7 +114,7 @@ const build = {
 			subplot: domainLayout.length, // num of sub-plots
 			rangeSlider: true,
 			dateRangeButtons: true,
-			hovermode: toolBar.hoverMode
+			hovermode: this.toolBar.getHoverMode()
 		});
 	},
 
@@ -152,7 +133,12 @@ const build = {
 			line: dashedLine()
 		};
 
-		const VA = selectableVA(eye.VA.units);
+		const selectedVA = eye.VA.units[ this.toolBar.getSelectedUnit() ];
+		const VA = {
+			...yTrace('y3', selectedVA, `${selectedVA.name}`),
+			mode: 'lines+markers',
+			hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
+		}
 
 		const dataForSide = [ offScale, CRT, VA ];
 
