@@ -25,9 +25,9 @@ export default {
 	input: 'src/app.js', // required
 	plugins: [ includePaths(includePathOptions) ],
 	output: [ {
-		file: '/Users/toby/Sites/work/oe/idg/src/build/assets/js/idg-dev/nxPlot.min.js',
+		file: './dist/nxPlot.min.js',
 		format: 'iife',
-		// plugins: [ terser() ],
+		plugins: [ terser() ],
 		banner: `/*! ${build} */`
 	} ],
 };
