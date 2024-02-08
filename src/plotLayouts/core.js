@@ -102,7 +102,7 @@ export const core = {
 	 * when theme change happens need to reuse original layout data
 	 * splitCore does this a bit differently
 	 */
-	storeLayoutDataForThemeRebuild( layoutData ){
+	storeLayoutDataForRebuild( layoutData ){
 		if( !this.stored.has(this.storeKeys.layout ) ){
 			this.stored.set(this.storeKeys.layout, layoutData);
 		}

@@ -22,6 +22,7 @@ const build = {
 	},
 
 	buildLayout( layoutData ){
+		this.storeLayoutDataForRebuild( layoutData );
 		/**
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
 		 * e.g. sub-plotting within plot.ly - Navigator is outside this
@@ -31,14 +32,6 @@ const build = {
 			[ 0.7, 1 ], // Events - y2
 			[ 0, 0.64 ]	// 24hrs - y1 (y)
 		];
-
-		const x1 = getAxis({
-			type: 'x',
-			numTicks: 10,
-			useDates: true,
-			spikes: true,
-			noMirrorLines: true,
-		});
 
 		// Daily adherence
 		const y1 = getAxis({
@@ -61,55 +54,33 @@ const build = {
 		});
 
 		/**
-		 * Base options for Layout
-		 * as the base options for getLayout are the same
-		 * for R & L hold these and customise for each side
+		 * specific options for base layout
 		 */
 		this.setBaseLayoutForPlots({
-			legend: {
-				yanchor: 'bottom',
-				y: domainLayout[1][1], // position relative to subplots
-			},
-			xaxis: x1,
+			legend: { y: domainLayout[1][1] }, // position relative to subplots
 			yaxes: [ y1, y2 ],
 			subplot: domainLayout.length, // num of sub-plots
-			rangeSlider: true,
-			dateRangeButtons: true,
 			hovermode: this.toolBar.getHoverMode()
 		});
 	},
 
+	/**
+	 * see: splitCore.js
+	 * Data traces need to be built slightly differently
+	 * for each eye side plot
+	 * @param eye - plot data
+	 */
 	buildDataTraces( eye ){
 		/**.
-		 * Daily adherence will have the same Drug name as
-		 * the Events, make sure they have unique Map Keys!
+		 * Daily adherence will have the same Drug name as Events
 		 */
-		const daily = {
+		const dailyAdherence = {
 			...yTrace('y', eye.daily, eye.daily.name),
 			mode: 'markers',
 			hovertemplate: `${eye.daily.name}: %{y}:00<extra></extra>`,
 		};
 
-		const dataForSide = [ daily ]
-
-		/**
-		 * Event data are all individual traces
-		 * note: ALL the Y values are the SAME, to look like a horizontal bar
-		 * extra data for the popup can be passed in with customdata
-		 */
-		Object.values(eye.events).forEach(( event ) => {
-			dataForSide.push({
-				oeEventType: event.event, // store event type
-				...yTrace('y2', event, event.name),
-				...eventStyle(event.event),
-				customdata: event.customdata,
-				hovertemplate: event.customdata ?
-					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-				showlegend: false
-			});
-		});
-
-		return dataForSide
+		return [ dailyAdherence, ...this.buildEvents( eye.events, 'y2')]
 	}
 }
 

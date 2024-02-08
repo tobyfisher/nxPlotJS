@@ -1,27 +1,33 @@
 import { core } from "./core";
 import { getLayout } from "../getLayout";
 import { addLayoutVerticals } from "./layoutAnnotations";
+import * as debug from "../debug";
+import { getAxis } from "../getAxis";
+import { yTrace } from "./layouts/parts/yTrace";
+import { eventStyle } from "./layouts/parts/eventStyle";
 
 /**
  * Manage R / L plots shown side by side
  */
 const splitPlots = {
 	plots: new Map(),
-	baseLayout: null,
 	toolBar: null,
+	baseLayout: null,
 
 	buildData(){
-		debug.error('Use buildRightData() and/or buildLeftData()')
+		debug.error('SplitPlots use buildRightData() and/or buildLeftData() instead')
 	},
 
 	buildDataTraces(){
-		debug.error('Override in specific layout')
+		debug.error('Override in specific split layout!');
+		return {};
 	},
 
 	/**
 	 * API
 	 * Rather than use buildSplitData directly use these methods
 	 * for the API as it's clearer which data is being provided
+	 * @param plotData - JSON from DOM
 	 */
 	buildRightData( plotData ){
 		this.buildSplitData('R', plotData);
@@ -31,17 +37,17 @@ const splitPlots = {
 		this.buildSplitData('L', plotData);
 	},
 
-	/**
-	 * @param eye - side
-	 * @param plotData
-	 */
 	buildSplitData( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
+		const div = document.querySelector(`.oes-${side}-side`);
+		if ( div === null ){
+			debug.error(`Requires fixed DOM structure, can not find: div.'.oes-${side}-side'`);
+		}
 
-		const splitPlot = new Map();
-		splitPlot.set('storedPlotData', plotData); // Store for theme change, data and layout both need rebuilding
-		splitPlot.set('div', document.querySelector(`.oes-${side}-side`));
-		splitPlot.set('data', this.buildDataTraces(plotData));
+		const eyePlot = new Map();
+		eyePlot.set('storedPlotData', plotData); // for rebuilding
+		eyePlot.set('div', div);
+		eyePlot.set('data', this.buildDataTraces(plotData)); // note: see specific split plot layout
 
 		/** plotly layout **/
 		const sideSpecificLayout = getLayout({
@@ -51,7 +57,7 @@ const splitPlots = {
 		});
 
 		// any procedures?
-		if ( plotData.hasOwnProperty('procedures')){
+		if ( plotData.hasOwnProperty('procedures') ){
 			addLayoutVerticals(
 				sideSpecificLayout,
 				Object.values(plotData.procedures),
@@ -59,15 +65,58 @@ const splitPlots = {
 			);
 		}
 
-		splitPlot.set('layout', sideSpecificLayout);
+		eyePlot.set('layout', sideSpecificLayout);
 
 		/** set side specific plot */
-		this.plots.set(`${eye}`, splitPlot);
+		this.plots.set(`${eye}`, eyePlot);
 	},
 
-	setBaseLayoutForPlots( baseLayout ){
-		this.baseLayout = baseLayout;
+	/**
+	 * Each specific split layout will set this up
+	 * the layout is used for both split plots
+	 */
+	setBaseLayoutForPlots( layoutSpecific ){
+		// timeline
+		const x1 = getAxis({
+			type: 'x',
+			numTicks: 10,
+			useDates: true,
+			spikes: true,
+			noMirrorLines: true,
+		});
+
+		const base = {
+			legend: { yanchor: 'bottom' },
+			xaxis: x1,
+			rangeSlider: true,
+			dateRangeButtons: true,
+		};
+
+		this.baseLayout = { ...base, ...layoutSpecific };
 	},
+
+	/**
+	 * Events subplot
+	 * @returns {Array}
+	 */
+	buildEvents( events, y ){
+		/**
+		 * Event data are all individual traces
+		 * ALL the Y values are the SAME, to look like a horizontal bar
+		 * extra data for the popup can be passed in with customdata
+		 */
+		return Object.values( events ).map(( event ) => ({
+			oeEventType: event.event, // store event type
+			...yTrace(y, event, event.name),
+			...eventStyle(event.event),
+			customdata: event.customdata,
+			hovertemplate: event.customdata ?
+				'%{y}<br>%{customdata}<br>%{x}<extra></extra>' :
+				'%{y}<br>%{x}<extra></extra>',
+			showlegend: false
+		}));
+	},
+
 
 	/**
 	 * Overwrite core methods to
@@ -124,7 +173,6 @@ const splitPlots = {
 			});
 		});
 	}
-
 }
 
 export const splitCore = { ...core, ...splitPlots };

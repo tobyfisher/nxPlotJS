@@ -32,6 +32,7 @@ const build = {
 	},
 
 	buildLayout( layoutData ){
+		this.storeLayoutDataForRebuild(layoutData);
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -43,15 +44,6 @@ const build = {
 			[ 0.15, 0.64 ],	// CRT | VA		y2 | y3
 			[ 0, 0.15 ],	// Offscale		y1 (y)
 		];
-
-		// timeline
-		const x1 = getAxis({
-			type: 'x',
-			numTicks: 10,
-			useDates: true,
-			spikes: true,
-			noMirrorLines: true,
-		});
 
 		// Off-scale
 		const y1 = getAxis({
@@ -100,24 +92,22 @@ const build = {
 		);
 
 		/**
-		 * Base options for Layout
-		 * as the base options for getLayout are the same
-		 * for R & L hold these and customise for each side
+		 * specific options for base layout
 		 */
 		this.setBaseLayoutForPlots({
-			legend: {
-				yanchor: 'bottom',
-				y: domainLayout[1][1], // position relative to subplots
-			},
-			xaxis: x1,
+			legend: { y: domainLayout[1][1] }, // position relative to subplots
 			yaxes: [ y1, y2, y3, y4 ],
 			subplot: domainLayout.length, // num of sub-plots
-			rangeSlider: true,
-			dateRangeButtons: true,
 			hovermode: this.toolBar.getHoverMode()
 		});
 	},
 
+	/**
+	 * see: splitCore.js
+	 * Data traces need to be built slightly differently
+	 * for each eye side plot
+	 * @param eye - plot data
+	 */
 	buildDataTraces( eye ){
 
 		const offScale = {
@@ -133,34 +123,14 @@ const build = {
 			line: dashedLine()
 		};
 
-		const selectedVA = eye.VA.units[ this.toolBar.getSelectedUnit() ];
+		const selectedVA = eye.VA.units[this.toolBar.getSelectedUnit()];
 		const VA = {
 			...yTrace('y3', selectedVA, `${selectedVA.name}`),
 			mode: 'lines+markers',
 			hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
 		}
 
-		const dataForSide = [ offScale, CRT, VA ];
-
-		Object.values(eye.events).forEach(( event ) => {
-			/**
-			 * Events
-			 * Event data are all individual traces
-			 * all the Y values are the SAME to be shown on a line
-			 * extra data for the popup can be passed in with customdata
-			 */
-			dataForSide.push({
-				oeEventType: event.event, // store event type
-				...yTrace('y4', event, event.name),
-				...eventStyle(event.event),
-				customdata: event.customdata,
-				hovertemplate: event.customdata ?
-					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-				showlegend: false
-			});
-		});
-
-		return dataForSide;
+		return [ offScale, CRT, VA, ...this.buildEvents(eye.events, 'y4') ]
 	}
 };
 

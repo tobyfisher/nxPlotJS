@@ -25,7 +25,7 @@ const build = {
 	},
 
 	buildLayout( layoutData ){
-		this.storeLayoutDataForThemeRebuild( layoutData );
+		this.storeLayoutDataForRebuild( layoutData );
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)

@@ -16,7 +16,7 @@ const trace = ( plot, y, name, eye, lineColor ) => ({
 const build = {
 
 	buildLayout( layoutData ){
-		this.storeLayoutDataForThemeRebuild(layoutData);
+		this.storeLayoutDataForRebuild(layoutData);
 
 		const x1 = getAxis({
 			type: 'x',

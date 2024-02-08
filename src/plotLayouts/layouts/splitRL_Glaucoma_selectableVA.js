@@ -32,6 +32,7 @@ const build = {
 	},
 
 	buildLayout( layoutData ){
+		this.storeLayoutDataForRebuild( layoutData );
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -44,15 +45,6 @@ const build = {
 			[ 0.1, 0.42 ],	// VFI | VA		y2 | y3
 			[ 0, 0.1 ],		// Offscale		y1 (y)
 		];
-
-		// timeline
-		const x1 = getAxis({
-			type: 'x',
-			numTicks: 10,
-			useDates: true,
-			spikes: true,
-			noMirrorLines: true,
-		});
 
 		// Off-scale
 		const y1 = getAxis({
@@ -112,24 +104,22 @@ const build = {
 		);
 
 		/**
-		 * Base options for Layout
-		 * as the base options for getLayout are the same
-		 * for R & L hold these and customise for each side
+		 * specific options for base layout
 		 */
 		this.setBaseLayoutForPlots({
-			legend: {
-				yanchor: 'bottom',
-				y: domainLayout[1][1], // position relative to subplots
-			},
-			xaxis: x1,
+			legend: { y: domainLayout[1][1] }, // position relative to subplots
 			yaxes: [ y1, y2, y3, y4, y5 ],
 			subplot: domainLayout.length, // num of sub-plots
-			rangeSlider: true,
-			dateRangeButtons: true,
 			hovermode: this.toolBar.getHoverMode()
 		});
 	},
 
+	/**
+	 * see: splitCore.js
+	 * Data traces need to be built slightly differently
+	 * for each eye side plot
+	 * @param eye - plot data
+	 */
 	buildDataTraces( eye ){
 
 		const offScale = {
@@ -151,7 +141,6 @@ const build = {
 			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
 		};
 
-
 		const selectedVA = eye.VA.units[ this.toolBar.getSelectedUnit() ];
 		const VA = {
 			...yTrace('y3', selectedVA, `${selectedVA.name}`),
@@ -159,28 +148,7 @@ const build = {
 			hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
 		}
 
-
-		const dataForSide = [ offScale, VFI, IOP, VA ];
-
-		/**
-		 * Events
-		 * Event data are all individual traces
-		 * all the Y values are are the SAME, so that are shown on a line
-		 * extra data for the popup can be passed in with customdata
-		 */
-		Object.values(eye.events).forEach(( event ) => {
-			dataForSide.push({
-				oeEventType: event.event, // store event type
-				...yTrace('y5', event, event.name),
-				...eventStyle(event.event),
-				customdata: event.customdata,
-				hovertemplate: event.customdata ?
-					'%{y}<br>%{customdata}<br>%{x}<extra></extra>' : '%{y}<br>%{x}<extra></extra>',
-				showlegend: false
-			});
-		});
-
-		return dataForSide;
+		return [ offScale, VFI, IOP, VA, ...this.buildEvents( eye.events, 'y5') ]
 	}
 }
 
