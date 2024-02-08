@@ -1,5 +1,4 @@
 import * as colors from "../../colors";
-import * as helpers from "../../helpers";
 import { getAxis } from "../../getAxis";
 import { getLayout } from "../../getLayout";
 import { core } from "../core";
@@ -7,36 +6,17 @@ import { errorY } from "./parts/errorY";
 import { yTrace } from "./parts/yTrace";
 import { dataLine } from "./parts/lines";
 
-/**
- * Build data traces
- * @param eye {Object} data
- * @param colorSeries {Array}
- * @param titleEye {String}
- * @returns {Array} for Plot.ly data
- */
-const buildDataTraces = function ( eye, colorSeries, titleEye ){
-	const CRT = {
-		...yTrace('y1', eye.CRT, `CRT ${titleEye}`),
-		hovertemplate: 'Mean ± SD<br>CRT: %{y}<br>(N: %{x})',
-		line: dataLine(colorSeries[1], true),
-		error_y: errorY( eye.CRT )
-	};
-
-	const VA = {
-		...yTrace('y2', eye.VA, `VA ${titleEye}`),
-		mode: 'lines+markers',
-		hovertemplate: 'Mean ± SD<br>VA: %{y}<br>(N: %{x})',
-		line: dataLine(colorSeries[0]),
-		error_y: errorY( eye.VA )
-	};
-
-	return [ VA, CRT ];
-}
+const trace = ( plot, y, name, eye, lineColor ) => ({
+	...yTrace(y, plot, `${name} ${eye}`),
+	hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
+	line: dataLine(lineColor, true),
+	error_y: errorY(plot)
+});
 
 const build = {
 
 	buildLayout( layoutData ){
-		this.storeLayoutDataForThemeRebuild( layoutData );
+		this.storeLayoutDataForThemeRebuild(layoutData);
 
 		const x1 = getAxis({
 			type: 'x',
@@ -72,40 +52,35 @@ const build = {
 	},
 
 	buildData( plotData ){
-		this.storePlotDataForThemeRebuild( plotData );
-
-		/**
-		 * Data traces for Eyes!
-		 * can handle 'R', 'L' and 'BEO' - all optional
-		 * need to check if the data is provided...
- 		 */
-
-
+		this.storePlotDataForThemeRebuild(plotData);
 		let data = [];
 
-		let eyeTraces = new Map([
-			[ 'R', 'rightEye' ],
-			[ 'L', 'leftEye' ],
-			[ 'BEO', 'BEO' ],
-		]);
+		/**
+		 * Data traces for Eyes
+		 * it can handle 'R', 'L' and 'BEO' - all optional
+		 * so, need to check what data is provided...
+		 */
+		const eyeDataTypes = {
+			rightEye: 'R',
+			leftEye: 'L',
+			BEO: 'BEO'
+		}
 
-		eyeTraces.forEach(( eyeData, eye ) => {
+		for ( const eyeType of Object.keys(eyeDataTypes) ){
+			if ( plotData.hasOwnProperty(eyeType) ){
+				const colorSeries = colors.getColorSeries(`${eyeType}Series`);
+				const shortName = eyeDataTypes[eyeType];
 
-			if ( plotData.hasOwnProperty(eyeData) ){
-
-				const traces = buildDataTraces(
-					plotData[eyeData],
-					colors.getColorSeries(`${eyeData}Series`),
-					`(${eye})`
-				);
-
-				data = data.concat(traces)
+				data = data.concat([
+					trace(plotData[eyeType].CRT, 'y1', 'CRT', shortName, colorSeries[1]),
+					trace(plotData[eyeType].VA, 'y2', 'VA', shortName, colorSeries[0]),
+				]);
 			}
-		});
+		}
 
 		/** plotly data **/
 		this.data = data;
 	}
 }
 
-export const eyesOutcomes_Errors = { ...core, ...build};
+export const eyesOutcomes_Errors = { ...core, ...build };

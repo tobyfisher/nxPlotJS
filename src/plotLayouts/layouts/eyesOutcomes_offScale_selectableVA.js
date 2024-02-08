@@ -1,6 +1,4 @@
 import * as colors from "../../colors";
-import * as helpers from "../../helpers";
-import * as debug from "../../debug";
 import { getAxis } from "../../getAxis";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { getLayout } from "../../getLayout";
@@ -9,33 +7,12 @@ import { core } from "../core";
 import { dataLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 
-
-const buildDataTraces = ( eye, colorSeries, titleSuffix, vaUnit ) => {
-
-	const offScale = {
-		...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name} ${titleSuffix}`),
-		mode: 'lines+markers',
-		hovertemplate: '%{y}<br>%{x}',
-		line: dataLine(colorSeries[0])
-	};
-
-	const CRT = {
-		...yTrace('y2', eye.CRT, `${eye.CRT.name} ${titleSuffix}`),
-		mode: 'lines+markers',
-		hovertemplate: 'CRT: %{y}<br>%{x}',
-		line: dataLine(colorSeries[1], true),
-	};
-
-	const selectedVA = eye.VA.units[ vaUnit ];
-	const VA = {
-		...yTrace('y3', selectedVA, `${selectedVA.name} ${titleSuffix}`),
-		mode: 'lines+markers',
-		hovertemplate: selectedVA.name + ': %{y}<br>%{x}',
-		line: dataLine(colorSeries[2]),
-	};
-
-	return [ offScale, CRT, VA ];
-}
+const trace = ( plot, y, name, eye, lineColor, isDashed = false ) => ({
+	...yTrace(y, plot, `${name} ${eye}`),
+	mode: 'lines+markers',
+	hovertemplate: `${name}: %{y}<br>%{x}`,
+	line: dataLine(lineColor, isDashed)
+});
 
 const build = {
 	prebuild(){
@@ -118,30 +95,31 @@ const build = {
 
 	buildData( plotData ){
 		this.storePlotDataForThemeRebuild( plotData );
-		/**
-		 * Data - single plot so combine all the traces
-		 */
 		let data = [];
+		/**
+		 * Data traces for Eyes
+		 * it can handle 'R', 'L' and 'BEO' - all optional
+		 * so, need to check what data is provided...
+		 */
+		const eyeDataTypes = {
+			rightEye: 'R',
+			leftEye: 'L',
+			BEO: 'BEO'
+		}
 
-		let eyeTraces = new Map([
-			[ 'R', 'rightEye' ],
-			[ 'L', 'leftEye' ],
-			[ 'BEO', 'BEO' ],
-		]);
+		for ( const eyeType of Object.keys(eyeDataTypes) ){
+			if ( plotData.hasOwnProperty(eyeType) ){
+				const colorSeries = colors.getColorSeries(`${eyeType}Series`);
+				const shortName = eyeDataTypes[eyeType];
+				const selectedVA = plotData[eyeType].VA.units[ this.toolBar.getSelectedUnit() ]; ;
 
-		eyeTraces.forEach(( eyeData, eye ) => {
-			if ( plotData.hasOwnProperty(eyeData) ){
-
-				const traces = buildDataTraces(
-					plotData[eyeData],
-					colors.getColorSeries(`${eyeData}Series`),
-					`(${eye})`,
-					this.toolBar.getSelectedUnit()
-				);
-
-				data = data.concat(traces)
+				data = data.concat([
+					trace(plotData[eyeType].VA.offScale, 'y1', 'VA', shortName, colorSeries[0]),
+					trace(plotData[eyeType].CRT, 'y2', 'CRT', shortName, colorSeries[1], true),
+					trace(selectedVA, 'y3', 'VA', shortName, colorSeries[2])
+				]);
 			}
-		});
+		}
 
 		/** plotly data **/
 		this.data = data;
