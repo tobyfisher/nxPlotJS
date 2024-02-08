@@ -31,10 +31,12 @@ const splitPlots = {
 	 */
 	buildRightData( plotData ){
 		this.buildSplitData('R', plotData);
+		return this
 	},
 
 	buildLeftData( plotData ){
 		this.buildSplitData('L', plotData);
+		return this
 	},
 
 	buildSplitData( eye, plotData ){

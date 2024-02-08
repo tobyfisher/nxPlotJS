@@ -8,7 +8,7 @@ import { dataLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 
 const trace = ( plot, y, name, eye, lineColor, isDashed = false ) => ({
-	...yTrace(y, plot, `${name} ${eye}`),
+	...yTrace(y, plot, `${eye}: ${name} `),
 	mode: 'lines+markers',
 	hovertemplate: `${name}: %{y}<br>%{x}`,
 	line: dataLine(lineColor, isDashed)
@@ -22,10 +22,11 @@ const build = {
 
 	setSelectableUnits( selectableUnits ){
 		this.toolBar.allowUserToSelectUnits(selectableUnits);
+		return this
 	},
 
 	buildLayout( layoutData ){
-		this.storeLayoutDataForRebuild( layoutData );
+		this.storeLayoutDataForRebuild(layoutData);
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -91,10 +92,12 @@ const build = {
 			rangeSlider: true,
 			hovermode: this.toolBar.getHoverMode()
 		});
+
+		return this
 	},
 
 	buildData( plotData ){
-		this.storePlotDataForThemeRebuild( plotData );
+		this.storePlotDataForThemeRebuild(plotData);
 		let data = [];
 		/**
 		 * Data traces for Eyes
@@ -111,7 +114,7 @@ const build = {
 			if ( plotData.hasOwnProperty(eyeType) ){
 				const colorSeries = colors.getColorSeries(`${eyeType}Series`);
 				const shortName = eyeDataTypes[eyeType];
-				const selectedVA = plotData[eyeType].VA.units[ this.toolBar.getSelectedUnit() ]; ;
+				const selectedVA = plotData[eyeType].VA.units[this.toolBar.getSelectedUnit()];
 
 				data = data.concat([
 					trace(plotData[eyeType].VA.offScale, 'y1', 'VA', shortName, colorSeries[0]),
@@ -123,9 +126,10 @@ const build = {
 
 		/** plotly data **/
 		this.data = data;
+
+		return this
 	}
 
 }
 
-
-export const eyesOutcomes_offScale_selectableVA = { ...core, ...build};
+export const eyesOutcomes_offScale_selectableVA = { ...core, ...build };

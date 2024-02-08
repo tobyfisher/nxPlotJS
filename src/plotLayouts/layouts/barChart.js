@@ -5,7 +5,7 @@ import { core } from "../core";
 const build = {
 
 	buildLayout( layoutData ){
-		this.storeLayoutDataForRebuild( layoutData );
+		this.storeLayoutDataForRebuild(layoutData);
 
 		const x1 = getAxis({
 			type: 'x',
@@ -26,6 +26,8 @@ const build = {
 			yaxes: [ y1 ],
 			barmode: "stack"
 		});
+
+		return this
 	},
 
 	buildData( plotData ){
@@ -44,8 +46,10 @@ const build = {
 		if ( plotData.hasOwnProperty('hovertemplate') ) trace.hovertemplate = plotData.hovertemplate;
 
 		/** plotly data **/
-		this.data =  [ trace ];
+		this.data = [ trace ];
+
+		return this
 	}
 }
 
-export const barChart = { ...core, ...build};
+export const barChart = { ...core, ...build };

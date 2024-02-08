@@ -7,13 +7,13 @@ import { yTrace } from "./parts/yTrace";
 const trace = ( plot, y, name ) => ({
 	...yTrace(y, plot, name),
 	hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
-	error_y: errorY( plot )
+	error_y: errorY(plot)
 });
 
 const build = {
 
 	buildLayout( layoutData ){
-		this.storeLayoutDataForRebuild( layoutData );
+		this.storeLayoutDataForRebuild(layoutData);
 
 		const x1 = getAxis({
 			type: 'x',
@@ -44,15 +44,19 @@ const build = {
 			yaxes: [ y1, y2 ],
 			rangeSlider: true,
 		});
+
+		return this
 	},
 
 	buildData( plotData ){
 		/** plotly data **/
 		this.data = [
-			trace( plotData.VA, 'y1', 'VA'),
-			trace( plotData.IOP, 'y2', 'IOP')
+			trace(plotData.VA, 'y1', 'VA'),
+			trace(plotData.IOP, 'y2', 'IOP')
 		];
+
+		return this
 	}
 }
 
-export const outcomes_Errors = { ...core, ...build};
+export const outcomes_Errors = { ...core, ...build };

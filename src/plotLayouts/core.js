@@ -34,14 +34,16 @@ export const core = {
 	},
 
 	addVerticalLines( array, plotHeight ){
-		if ( !Array.isArray( array) ) debug.error('core', 'addVerticalLines requires an Array');
+		if ( !Array.isArray(array) ) debug.error('core', 'addVerticalLines requires an Array');
 		this.lines.v.verticals = array;
 		this.lines.v.h = plotHeight;
+		return this
 	},
 
 	addHorizontalLines( array ){
-		if ( !Array.isArray( array) ) debug.error('core', 'addHorizontalLines requires an Array');
+		if ( !Array.isArray(array) ) debug.error('core', 'addHorizontalLines requires an Array');
 		this.lines.horizontals = array;
+		return this
 	},
 
 	plotlyReact(){
@@ -103,13 +105,13 @@ export const core = {
 	 * splitCore does this a bit differently
 	 */
 	storeLayoutDataForRebuild( layoutData ){
-		if( !this.stored.has(this.storeKeys.layout ) ){
+		if ( !this.stored.has(this.storeKeys.layout) ){
 			this.stored.set(this.storeKeys.layout, layoutData);
 		}
 	},
 
 	storePlotDataForThemeRebuild( plotData ){
-		if( !this.stored.has(this.storeKeys.plot ) ){
+		if ( !this.stored.has(this.storeKeys.plot) ){
 			this.stored.set(this.storeKeys.plot, plotData);
 		}
 	},

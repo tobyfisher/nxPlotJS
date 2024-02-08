@@ -7,7 +7,7 @@ import { yTrace } from "./parts/yTrace";
 import { dataLine } from "./parts/lines";
 
 const trace = ( plot, y, name, eye, lineColor ) => ({
-	...yTrace(y, plot, `${name} ${eye}`),
+	...yTrace(y, plot, `${eye}: ${name} `),
 	hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
 	line: dataLine(lineColor, true),
 	error_y: errorY(plot)
@@ -49,6 +49,8 @@ const build = {
 			yaxes: [ y1, y2 ],
 			rangeSlider: true,
 		});
+
+		return this
 	},
 
 	buildData( plotData ){
@@ -80,6 +82,8 @@ const build = {
 
 		/** plotly data **/
 		this.data = data;
+
+		return this
 	}
 }
 

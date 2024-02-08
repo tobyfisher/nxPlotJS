@@ -62,6 +62,8 @@ const build = {
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
+
+		return this
 	},
 
 	/**
