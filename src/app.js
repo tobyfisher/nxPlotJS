@@ -12,7 +12,13 @@ import * as layouts from "plotLayouts/layouts";
  * Note: if User changes the theme generate a broadcast Event to let nxPlot know about it
  */
 
-debug.log(`nxPlot is available - Plot.ly v${Plotly.version}`);
+if( window.hasOwnProperty('Plotly') ){
+	debug.log(`nxPlot is available, using Plot.ly v${Plotly.version}`);
+} else {
+	debug.error('Plot.ly JS is required');
+}
+
+
 
 const allowedTemplates = new Set([
 	"barChart",

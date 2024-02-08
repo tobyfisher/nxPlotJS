@@ -1,7 +1,8 @@
-# nxPlotJS
+# nxPlot JS
 
-A wrapper for Ploy.ly JS to maintain a consistent display for all charts in OE. **nxPlotJS** manages all aspects of Plot.ly's API apart from the raw data for the plot and some aspects of the layouts. The benefits:
+A wrapper for Ploy.ly JS to maintain a consistent display for all chart plots in OE. **nxPlotJS** manages all aspects of Plot.ly's API apart from the raw data for the plot and some aspects of the layouts. The benefits are:
 
+* Consistent Plot display
 * Plots are theme coloured (and react to theme changes)
 * Summary plots provide a toolbar to change Plot.ly's hovermode
 * Summary plots VA Units can be changed without reloading
@@ -9,35 +10,42 @@ A wrapper for Ploy.ly JS to maintain a consistent display for all charts in OE. 
 
 ## Usage
 
-Add **nxPlotJS**
+Load **nxPlot**, _note: requires Plot.ly JS to work_
 ```html
-<script defer="" src="**/nxPlot.min.js"></script>
+<script defer src="**/plotly-2.27.0.min.js"></script>
+<script defer src="**/nxPlot.min.js"></script>
 ```
+This provides global access to `nxPlot`
 
-### Single plot
+### Single plot example
 
-A **single plot** will require a `<div>` to load into (which will probably need some CSS classes to handle it's layout on the page)
+A **single plot** requires a `<div>` to hook into, something like this:
 ```html
 <div id="js-plot-outcomes" class="oeplot-full has-title"></div>
 ```
-
-Then pass in the required data for the Plot (this varies slightly depending on the template, but the approach is basically the same):
+After DOMContentLoaded, request a layout template, provide the `div` hook id, pass in layout and data for plotting, then initiate Plot.ly, e.g.
 ```html
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
-		const outcomes_Errors = nxPlot('outcomes_Errors', "js-plot-outcomes"); // request template and provide div id
-		outcomes_Errors.buildLayout(
-			// provide layout object 
-		);
-		outcomes_Errors.buildData(
-			// provide Data for plot object
-		);
-		outcomes_Errors.plotlyReact(); // init Plot.ly
-	}, { once: true });
+    document.addEventListener('DOMContentLoaded', () => {
+        nxPlot('outcomes_Errors', "js-plot-outcomes")
+        .setSelectableUnits() // [optional]
+        .buildLayout() // provide layout object 
+        .buildData() // provide data for plotting
+        .addHorizontalLines() // [optional]
+        .addVerticalLines() // [optional]
+        .plotlyReact(); // init Plot.ly
+}, { once: true });
 </script>
 ```
 
-> [Demo on iDG: Glaucoma Outcomes](https://idg.knowego.com/edge/analytics/glaucoma-outcomes/)
+#### iDG single plot layouts examples:
+> [iDG: Bar Chart](https://idg.knowego.com/edge/analytics/search-results-barchart/)
+
+> [iDG: Bar Chart (with vertical)](https://idg.knowego.com/edge/analytics/treatment-targets/)
+
+> [iDG: Eyes Outcomes with Errors](https://idg.knowego.com/edge/analytics/mr-outcomes/)
+ 
+> [iDG: Outcomes with Errors](https://idg.knowego.com/edge/analytics/glaucoma-outcomes/)
 
 ---
 
