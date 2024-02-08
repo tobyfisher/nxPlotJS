@@ -73,8 +73,8 @@ The correct DOM structure for Summary must be available:
         .buildLayout() // provide layout object
         .buildRightData()// provide data for Right Eye
         .buildLeftData() // provide data for Left Eye
-		.addHorizontalLines() // [optional]
-		.addVerticalLines() // [optional]
+        .addHorizontalLines() // [optional]
+        .addVerticalLines() // [optional]
         .plotlyReact();
     }, { once: true });
 </script>
