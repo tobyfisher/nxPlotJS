@@ -1,6 +1,6 @@
 # nxPlot JS
 
-A wrapper for Ploy.ly JS to maintain a consistent display for all chart plots in OE. **nxPlotJS** manages all aspects of Plot.ly's API seperate from the raw data for plotting and some aspects of the layouts. The benefits are:
+A wrapper for Ploy.ly JS to maintain a consistent display for all chart plots in OE. **nxPlot JS** manages all aspects of Plot.ly's API separated from the raw data for plotting of the charts and some aspects of the layouts. The benefits are:
 
 * Consistent Plot display
 * Plots are theme coloured (and react to theme changes)
@@ -62,18 +62,19 @@ The correct DOM structure for Summary must be available:
     <div class="oes-left-side"><!-- nxPlotJS hook --></div>
 </div>
 ```
-### Split plot example (with selectable VA units)
+### Split plot example
 
 ```html
 <script>
     document.addEventListener('DOMContentLoaded', () => { 
         // 'false' for div ID as expected DOM should be present
         nxPlot('splitRL_Glaucoma_selectableVA', false)
-        .setSelectableUnits() // selectable VA units
+        .setSelectableUnits() // if there are selectable VA units
         .buildLayout() // provide layout object
         .buildRightData()// provide data for Right Eye
         .buildLeftData() // provide data for Left Eye
-        .addHorizontalLines(); // horizontal lines apply to both layouts
+		.addHorizontalLines() // [optional]
+		.addVerticalLines() // [optional]
         .plotlyReact();
     }, { once: true });
 </script>
@@ -88,7 +89,9 @@ The correct DOM structure for Summary must be available:
 
 ### Adding Horizontal &amp; Vertical plot lines
 
-The above example shows how horizontal lines can be added to a plot, in the case of SplitRL plots only horizontals make sense for both plots, the procedures (vertical line markers) are recorded in the separate right/left data.
+Horizontal & verical lines can be added to a plot, but in the case of SplitPlots only horizontals can be used, use 'procedures' for vertical line markers in the separate right/left data.
+
+#### Examples; both except an Array
 
 ```js
 .addHorizontalLines([ { 'name': 'Target IOP', 'y': 15, 'yaxis': 'y4' } ]);
