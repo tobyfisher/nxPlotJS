@@ -98,6 +98,20 @@ Horizontal & verical lines can be added to a plot, but in the case of SplitPlots
 .addVerticalLines([ { name: 'Over 14 days', x: 14 } ], 1);
 ```
 
+## Custom Events
+
+When the User changes theme broadcast the following custom event:
+`oeThemeChange` e.g. as on iDG:
+
+```js
+// nxPlotJS is listening for this
+const event = new CustomEvent("oeThemeChange", { detail: theme });
+setTimeout(() => {
+	// give the browser time to re-adjust and render CSS changes
+	document.dispatchEvent(event);
+}, 50);
+```
+
 
 
 
