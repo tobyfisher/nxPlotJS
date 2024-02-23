@@ -1,3 +1,4 @@
+export * from './layouts/customData';
 export * from './layouts/barChart';
 export * from './layouts/eyesOutcomes_Errors';
 export * from './layouts/eyesOutcomes_offScale_selectableVA';

@@ -1,5 +1,6 @@
 import * as debug from "debug";
 import * as layouts from "plotLayouts/layouts";
+import { getBlue, getColor, getColorSeries } from "./colors";
 
 /**
  * nxPlotJS - Facade pattern
@@ -18,9 +19,8 @@ if( window.hasOwnProperty('Plotly') ){
 	debug.error('Plot.ly JS is required');
 }
 
-
-
 const allowedTemplates = new Set([
+	"customData",
 	"barChart",
 	"eyesOutcomes_Errors",
 	"eyesOutcomes_offScale_selectableVA",
@@ -64,3 +64,14 @@ Object.defineProperty(window, 'nxPlot', {
 	value: nxPlot,
 	writable: false
 });
+
+// provide access to nxPlot colors, e.g. highlight blue
+// this allows custom traces to used, see Visual Fields demo
+Object.defineProperty( window, 'nxPlotColor', {
+	value: {
+		getBlue: getBlue,
+		getColor: getColor,
+		getColorSeries: getColorSeries
+	},
+	writable: false
+})
