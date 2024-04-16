@@ -90,11 +90,11 @@ The correct DOM structure for Summary must be available:
 
 Horizontal & verical lines can be added to a plot, but in the case of SplitPlots only horizontals can be used, use 'procedures' for vertical line markers in the separate right/left data.
 
-#### Examples; both except an Array
+#### Examples; both expect an Array
 
 ```js
-.addHorizontalLines([ { 'name': 'Target IOP', 'y': 15, 'yaxis': 'y4' } ]);
-.addVerticalLines([ { name: 'Over 14 days', x: 14 } ], 1);
+.addHorizontalLines([ { 'name': 'Target IOP', 'y': 15, 'yaxis': 'y4' } ])
+.addVerticalLines([ { name: 'Over 14 days', x: 14 } ], 1)
 ```
 
 ### Layout only (custom Traces)
