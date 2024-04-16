@@ -1,12 +1,11 @@
 # nxPlot JS
 
-A wrapper for Ploy.ly JS to maintain a consistent display for all chart plots in OE. **nxPlot JS** manages all aspects of Plot.ly's API separated from the raw data for plotting of the charts and some aspects of the layouts. The benefits are:
+A wrapper for Ploy.ly JS to maintain a consistent UI for all chart plots shown in OE. **nxPlot JS** manages most aspects of Plot.ly's API separated from the raw data for plotting of the charts and some aspects of the layouts. The benefits are:
 
-* Consistent Plot display
-* Plots are theme coloured (and react to theme changes)
-* Summary plots provide a toolbar to change Plot.ly's hovermode
-* Summary plots VA Units can be changed without reloading
-* Summary plots allow marker hovermode to be changed (via toolbar)
+* Consistent Plot UIX
+* Plots are theme coloured (reacting to theme changes)
+* Summary plots provide a toolbar to change Plot.ly's 'hovermode'
+* Summary plots VA Units can be changed without reloading the data
 
 ## Usage
 
@@ -98,10 +97,27 @@ Horizontal & verical lines can be added to a plot, but in the case of SplitPlots
 .addVerticalLines([ { name: 'Over 14 days', x: 14 } ], 1);
 ```
 
-## Custom Events
+### Layout only (custom Traces)
+
+If custom traces are required you can use the layout and pass in your own trace array (as per plot.ly API), e.g.
+
+```js
+/** nxPlot */
+nxPlot('customData', graph.id)
+  .buildLayout({ 
+      xaxis: { title: 'Age (Yrs)' },
+      yaxis: { y1: { title: 'Mean Deviation (dB)' } }
+  })
+  .buildData( customTracesArray )
+  .plotlyReact();
+```
+> [iDG: customData example](https://idg.knowego.com/edge/analytics/glaucoma-visual-field-progression/)
+
+
+## Theme change
 
 When the User changes theme broadcast the following custom event:
-`oeThemeChange` e.g. as on iDG:
+`oeThemeChange` e.g. as per iDG:
 
 ```js
 // nxPlotJS is listening for this
