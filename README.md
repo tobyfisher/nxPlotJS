@@ -99,7 +99,7 @@ Horizontal & verical lines can be added to a plot, but in the case of SplitPlots
 
 ### Layout only (custom Traces)
 
-If custom traces are required you can use the layout and pass in your own trace array (as per plot.ly API), e.g.
+If custom traces are required you can use the layout and pass in your own trace array (as per plot.ly API), for example:
 
 ```js
 /** nxPlot */
