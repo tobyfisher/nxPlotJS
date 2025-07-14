@@ -169,7 +169,6 @@ const splitPlots = {
 		[ 'R', 'L' ].forEach(eye => {
 			if ( this.plots.has(eye) ){
 				const side = this.plots.get(eye);
-				console.log("hey");
 				Plotly.relayout(
 					side.get('div'),
 					side.get('layout')

@@ -47,7 +47,7 @@ export const changeSplitLayout = {
 		this.layoutOpts.classList.add('hidden');
 		this.layoutBtn.classList.remove('active');
 	},
-	
+
 	buildLayoutOpts( div ){
 		const layoutOpts = utils.buildDiv('layout-options');
 		const optionBtns = [ '1-0', '2-1', '1-1', '1-2', '0-1' ].map(icon => {
