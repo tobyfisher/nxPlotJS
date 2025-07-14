@@ -4,12 +4,6 @@ import { core } from "../core";
 import { errorY } from "./parts/errorY";
 import { yTrace } from "./parts/yTrace";
 
-const trace = ( plot, y, name ) => ({
-	...yTrace(y, plot, name),
-	hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
-	error_y: errorY(plot)
-});
-
 const build = {
 
 	buildLayout( layoutData ){
@@ -49,6 +43,13 @@ const build = {
 	},
 
 	buildData( plotData ){
+
+		const trace = ( plot, y, name ) => ({
+			...yTrace(y, plot, name),
+			hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
+			error_y: errorY(plot)
+		});
+
 		/** plotly data **/
 		this.data = [
 			trace(plotData.VA, 'y1', 'VA'),

@@ -7,13 +7,6 @@ import { core } from "../core";
 import { dataLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 
-const trace = ( plot, y, name, eye, lineColor, isDashed = false ) => ({
-	...yTrace(y, plot, `${eye}: ${name} `),
-	mode: 'lines+markers',
-	hovertemplate: `${name}: %{y}<br>%{x}`,
-	line: dataLine(lineColor, isDashed)
-});
-
 const build = {
 	prebuild(){
 		this.toolBar = toolBar.linkToLayout(this);
@@ -109,6 +102,13 @@ const build = {
 			leftEye: 'L',
 			BEO: 'BEO'
 		}
+
+		const trace = ( plot, y, name, eye, lineColor, isDashed = false ) => ({
+			...yTrace(y, plot, `${eye}: ${name} `),
+			mode: 'lines+markers',
+			hovertemplate: `${name}: %{y}<br>%{x}`,
+			line: dataLine(lineColor, isDashed)
+		});
 
 		for ( const eyeType of Object.keys(eyeDataTypes) ){
 			if ( plotData.hasOwnProperty(eyeType) ){

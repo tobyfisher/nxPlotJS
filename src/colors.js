@@ -13,6 +13,7 @@ const colours = {
 		highlight: '#fff',
 		green: '#65d235',
 		red: '#ea2b34',
+		yellow: '#E8B131',
 		greenSeries: [ '#65d235', '#A5D712', '#02B546' ],
 		redSeries: [ '#ea2b34', '#F64A2D', '#C92845' ],
 		yellowSeries: [ '#FAD94B', '#E8B131', '#F1F555' ], // BEO (Both Eyes Open)
@@ -25,6 +26,7 @@ const colours = {
 		highlight: '#000',
 		green: '#418c20',
 		red: '#da3e43',
+		yellow: '#E69812',
 		greenSeries: [ '#418c20', '#598617', '#139149' ],
 		redSeries: [ '#da3e43', '#E64C02', '#E64562' ],
 		yellowSeries: [ '#FCCE14', '#E69812', '#FCBB21' ], // BEO
@@ -81,6 +83,8 @@ const getColor = ( colour ) => {
 			return colours[theme].green;
 		case 'leftEye':
 			return colours[theme].red;
+		case 'BEO':
+			return colours[theme].yellow;
 
 		default:
 			return 'pink'; // no match, flag failure to match as pink!

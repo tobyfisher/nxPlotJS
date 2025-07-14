@@ -6,13 +6,6 @@ import { errorY } from "./parts/errorY";
 import { yTrace } from "./parts/yTrace";
 import { dataLine } from "./parts/lines";
 
-const trace = ( plot, y, name, eye, lineColor ) => ({
-	...yTrace(y, plot, `${eye}: ${name} `),
-	hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
-	line: dataLine(lineColor, true),
-	error_y: errorY(plot)
-});
-
 const build = {
 
 	buildLayout( layoutData ){
@@ -67,6 +60,13 @@ const build = {
 			leftEye: 'L',
 			BEO: 'BEO'
 		}
+
+		const trace = ( plot, y, name, eye, lineColor ) => ({
+			...yTrace(y, plot, `${eye}: ${name} `),
+			hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
+			line: dataLine(lineColor, true),
+			error_y: errorY(plot)
+		});
 
 		for ( const eyeType of Object.keys(eyeDataTypes) ){
 			if ( plotData.hasOwnProperty(eyeType) ){

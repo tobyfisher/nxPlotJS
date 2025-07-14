@@ -27,7 +27,8 @@ const allowedTemplates = new Set([
 	"outcomes_Errors",
 	"splitRL_Adherence",
 	"splitRL_Glaucoma_selectableVA",
-	"splitRL_MedicalRetina_selectableVA"
+	"splitRL_MedicalRetina_selectableVA",
+	"splitRL_Strabismus"
 ]);
 
 const plotTemplates = new Map();
