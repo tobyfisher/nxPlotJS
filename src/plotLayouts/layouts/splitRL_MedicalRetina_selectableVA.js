@@ -22,8 +22,6 @@ const build = {
 	prebuild(){
 		this.toolBar = toolBar.linkToLayout(this);
 		this.toolBar.allowUserToChangeHoverMode();
-
-		this.listenForViewLayoutChange();
 		this.procedureVericalHeight = 0.64 // DomainLayout[1][1]
 	},
 

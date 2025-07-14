@@ -5,6 +5,8 @@ import * as debug from "../debug";
 import { getAxis } from "../getAxis";
 import { yTrace } from "./layouts/parts/yTrace";
 import { eventStyle } from "./layouts/parts/eventStyle";
+import { toolBar } from "../toolBar";
+import { changeSplitLayout } from "../changeSplitLayout";
 
 /**
  * Manage R / L plots shown side by side
@@ -44,6 +46,9 @@ const splitPlots = {
 		const div = document.querySelector(`.oes-${side}-side`);
 		if ( div === null ){
 			debug.error(`Requires fixed DOM structure, can not find: div.'.oes-${side}-side'`);
+		} else {
+			// setup header to allow User to change split layout balance
+			changeSplitLayout.init( this );
 		}
 
 		const eyePlot = new Map();
@@ -159,20 +164,17 @@ const splitPlots = {
 		this.rebuild();
 	},
 
-	/**
-	 * If User adjust the layout options for a split view plot
-	 */
-	listenForViewLayoutChange(){
-		document.addEventListener('oesLayoutChange', () => {
-			[ 'R', 'L' ].forEach(eye => {
-				if ( this.plots.has(eye) ){
-					const side = this.plots.get(eye);
-					Plotly.relayout(
-						side.get('div'),
-						side.get('layout')
-					);
-				}
-			});
+	// User changes split layout balance
+	relayoutPlots(){
+		[ 'R', 'L' ].forEach(eye => {
+			if ( this.plots.has(eye) ){
+				const side = this.plots.get(eye);
+				console.log("hey");
+				Plotly.relayout(
+					side.get('div'),
+					side.get('layout')
+				);
+			}
 		});
 	}
 }

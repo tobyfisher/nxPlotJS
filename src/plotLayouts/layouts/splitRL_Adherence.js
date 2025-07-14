@@ -18,7 +18,6 @@ const build = {
 	prebuild( ){
 		this.toolBar = toolBar.linkToLayout(this);
 		this.toolBar.allowUserToChangeHoverMode();
-		this.listenForViewLayoutChange();
 	},
 
 	buildLayout( layoutData ){
