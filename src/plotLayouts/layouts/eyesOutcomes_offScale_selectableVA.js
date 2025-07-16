@@ -103,7 +103,7 @@ const build = {
 			BEO: 'BEO'
 		}
 
-		const trace = ( plot, y, name, eye, lineColor, isDashed = false ) => ({
+		const customTrace = ( plot, y, name, eye, lineColor, isDashed = false ) => ({
 			...yTrace(y, plot, `${eye}: ${name} `),
 			mode: 'lines+markers',
 			hovertemplate: `${name}: %{y}<br>%{x}`,
@@ -117,9 +117,9 @@ const build = {
 				const selectedVA = plotData[eyeType].VA.units[this.toolBar.getSelectedUnit()];
 
 				data = data.concat([
-					trace(plotData[eyeType].VA.offScale, 'y1', 'VA', shortName, colorSeries[0]),
-					trace(plotData[eyeType].CRT, 'y2', 'CRT', shortName, colorSeries[1], true),
-					trace(selectedVA, 'y3', 'VA', shortName, colorSeries[2])
+					customTrace(plotData[eyeType].VA.offScale, 'y1', 'VA', shortName, colorSeries[0]),
+					customTrace(plotData[eyeType].CRT, 'y2', 'CRT', shortName, colorSeries[1], true),
+					customTrace(selectedVA, 'y3', 'VA', shortName, colorSeries[2])
 				]);
 			}
 		}

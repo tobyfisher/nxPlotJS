@@ -61,7 +61,7 @@ const build = {
 			BEO: 'BEO'
 		}
 
-		const trace = ( plot, y, name, eye, lineColor ) => ({
+		const customTrace = ( plot, y, name, eye, lineColor ) => ({
 			...yTrace(y, plot, `${eye}: ${name} `),
 			hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
 			line: dataLine(lineColor, true),
@@ -74,8 +74,8 @@ const build = {
 				const shortName = eyeDataTypes[eyeType];
 
 				data = data.concat([
-					trace(plotData[eyeType].CRT, 'y1', 'CRT', shortName, colorSeries[1]),
-					trace(plotData[eyeType].VA, 'y2', 'VA', shortName, colorSeries[0]),
+					customTrace(plotData[eyeType].CRT, 'y1', 'CRT', shortName, colorSeries[1]),
+					customTrace(plotData[eyeType].VA, 'y2', 'VA', shortName, colorSeries[0]),
 				]);
 			}
 		}

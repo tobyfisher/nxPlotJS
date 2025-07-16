@@ -25,12 +25,14 @@ export const core = {
 		debug.error('needs overwriting in specific layout');
 	},
 
-	buildData(){
-		// Each layout must overwrite this build
-		// (except SplitPlots see splitPlots.js)
-	},
+	// Layouts overwrite these builds
 	buildLayout(){
-		// Each layout must overwrite this build
+		debug.error('define in specific layout');
+	},
+
+	// handle differently in splitPlots.js because there are 2 plots
+	buildData(){
+		debug.error('define in specific layout');
 	},
 
 	addVerticalLines( array, plotHeight ){

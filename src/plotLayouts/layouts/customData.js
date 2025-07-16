@@ -30,11 +30,13 @@ const build = {
 		return this
 	},
 
+	/**
+	 * Custom data allows traces to setup externally
+	 * only the standardise layout for nxPlot is used
+	 */
 	buildData( dataTrace ){
-
 		/** plotly data **/
 		this.data = dataTrace;
-
 		return this
 	}
 }

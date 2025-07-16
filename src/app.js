@@ -49,8 +49,11 @@ const nxPlot = ( requestedPlotLayout, divID = false ) => {
 	}
 
 	nxLayout.setPlotlyDiv(divID); // Plotly requires a div
-	nxLayout.prebuild(); // prebuild hook (optional)
+	nxLayout.prebuild(); // prebuild hook (optional), see in layouts for how this is used
 
+	/**
+	 * nxPlotJS will react to OE theme change
+	 */
 	document.addEventListener('oeThemeChange', () => {
 		nxLayout.plotlyThemeChange();
 	});

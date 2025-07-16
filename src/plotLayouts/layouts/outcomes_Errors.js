@@ -44,7 +44,7 @@ const build = {
 
 	buildData( plotData ){
 
-		const trace = ( plot, y, name ) => ({
+		const customTrace = ( plot, y, name ) => ({
 			...yTrace(y, plot, name),
 			hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
 			error_y: errorY(plot)
@@ -52,8 +52,8 @@ const build = {
 
 		/** plotly data **/
 		this.data = [
-			trace(plotData.VA, 'y1', 'VA'),
-			trace(plotData.IOP, 'y2', 'IOP')
+			customTrace(plotData.VA, 'y1', 'VA'),
+			customTrace(plotData.IOP, 'y2', 'IOP')
 		];
 
 		return this

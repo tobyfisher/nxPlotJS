@@ -103,7 +103,7 @@ const build = {
 		);
 
 		/**
-		 * specific options for base layout
+		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForPlots({
 			legend: { y: domainLayout[1][1] }, // position relative to subplots

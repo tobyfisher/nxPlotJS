@@ -17,7 +17,7 @@ const splitPlots = {
 	baseLayout: null,
 
 	buildData(){
-		debug.error('SplitPlots use buildRightData() and/or buildLeftData() instead')
+		debug.error('Split plots use buildRightData() and/or buildLeftData() instead')
 	},
 
 	buildDataTraces(){
@@ -41,6 +41,9 @@ const splitPlots = {
 		return this
 	},
 
+	/**
+	 * API uses the above methods to access this
+	 */
 	buildSplitData( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
 		const div = document.querySelector(`.oes-${side}-side`);
@@ -124,10 +127,8 @@ const splitPlots = {
 		}));
 	},
 
-
 	/**
-	 * Overwrite core methods to
-	 * handle the 2 split plots
+	 * Overwrite core to handle the 2 split plots
 	 */
 	plotlyReact(){
 		[ 'R', 'L' ].forEach(eye => {
@@ -147,7 +148,7 @@ const splitPlots = {
 	},
 
 	rebuild(){
-		// as layout options are used by both sides
+		// the same layout options are used by both sides
 		this.buildLayout(this.stored.get('layout'));
 
 		[ 'R', 'L' ].forEach(eye => {
@@ -164,7 +165,11 @@ const splitPlots = {
 		this.rebuild();
 	},
 
-	// User changes split layout balance
+	/**
+	 * If User changes the layout balance then
+	 * Plotly need to "re-layout" the plots
+	 * see: changeSplitLayout.js
+	 */
 	relayoutPlots(){
 		[ 'R', 'L' ].forEach(eye => {
 			if ( this.plots.has(eye) ){

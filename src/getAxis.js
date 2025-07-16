@@ -74,6 +74,15 @@ export const getAxis = function ( options ){
 		axis.title.standoff = 15;
 	}
 
+	// customTicks -allows CF, HM, LP, NLP to be included on the yAxis VA scale
+	// e.g. logMAR CF is set to "2", so [2] = ["CF"]
+	if( options.customTicks){
+		axis.tickmode = "array"; // must be array
+		axis.tickvals = options.customTicks.vals;
+		axis.ticktext = options.customTicks.text;
+		if( options.customTicks.reverseRange ) axis.autorange = "reversed"
+	}
+
 	// set nticks
 	if ( options.hasOwnProperty('maxAxisTicks') ){
 		axis.nticks = options.maxAxisTicks;
