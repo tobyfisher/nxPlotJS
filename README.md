@@ -52,9 +52,9 @@ After DOMContentLoaded, request a layout template, provide the `div` hook id, pa
 
 ### Splits plots (in Summary)
 
-Two unique plots, one for each eye. These are two separate Ploy.ly Plots, but using the same layouts (and possibly the same horizontal targets lines; target IOP for example)
+Two plots, one for each eye: two separate Ploy.ly Plots, but both using the same layout (and possibly the same horizontal targets lines e.g. target IOP)
 
-The correct DOM structure for Summary must be available:
+The correct DOM structure for Summary is expected and **must** be available:
 
 ```html
 <div class="oe-full-content oes-v2 oeplot use-full-screen">
