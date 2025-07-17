@@ -1,20 +1,21 @@
 # nxPlot JS
 
-A wrapper for Ploy.ly JS to maintain a consistent UI for all chart plots shown in OE. **nxPlot JS** manages most aspects of Plot.ly's API separated from the raw data for plotting of the charts and some aspects of the layouts. The benefits are:
+A wrapper for Ploy.ly JS to provide a consistent UIX for all chart plots shown in OE. **nxPlot JS** manages most aspects of Plot.ly's API separated from the data required for plotting of the charts and some aspects of the layouts. The benefits are:
 
 * Consistent Plot UIX
 * Plots are theme coloured (reacting to theme changes)
 * Summary plots provide a toolbar to change Plot.ly's 'hovermode'
 * Summary plots VA Units can be changed without reloading the data
+* Abstraction: this approach could also allow plotly JS to be replaced with another library
 
 ## Usage
 
-Load **nxPlot**, _obviously requires Plot.ly JS to work_
+`<head>` JS script load **nxPlot**, _obviously requires Plot.ly JS to work_
 ```html
 <script defer src="**/plotly-2.27.0.min.js"></script>
 <script defer src="**/nxPlot.min.js"></script>
 ```
-This provides global access to `nxPlot`
+After `DOMContentLoaded` global access is available to `nxPlot`
 
 ### Single plot example
 
@@ -26,7 +27,7 @@ After DOMContentLoaded, request a layout template, provide the `div` hook id, pa
 ```html
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        nxPlot('outcomes_Errors', "js-plot-outcomes")
+        nxPlot('outcomes_Errors', "js-plot-outcomes") // layout, div id
         .setSelectableUnits() // [optional]
         .buildLayout() // provide layout object 
         .buildData() // provide data for plotting

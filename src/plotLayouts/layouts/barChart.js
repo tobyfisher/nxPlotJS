@@ -1,10 +1,32 @@
 import { core } from "../core";
-import {customData} from "./customData";
+import { getAxis } from "../../getAxis";
+import { getLayout } from "../../getLayout";
 
 const build = {
 
 	buildLayout( layoutData ){
-		customData.buildLayout( layoutData );
+		this.storeLayoutDataForRebuild(layoutData);
+
+		const x1 = getAxis({
+			type: 'x',
+			numTicks: 20,
+			title: layoutData.xaxis.title
+		});
+
+		const y1 = getAxis({
+			type: 'y',
+			numTicks: 20,
+			title: layoutData.yaxis.y1.title
+		});
+
+		/** plotly layout **/
+		this.layout = getLayout({
+			plotTitle: layoutData.plotHeader,
+			xaxis: x1,
+			yaxes: [ y1 ],
+			barmode: "stack"
+		});
+
 		return this
 	},
 
