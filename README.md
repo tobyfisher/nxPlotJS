@@ -114,7 +114,7 @@ nxPlot('customData', graph.id)
 ```
 > [iDG: customData example](https://idg.knowego.com/edge/analytics/glaucoma-visual-field-progression/)
 
-## Handling CF, HM, PL, NPL
+### Handling CF, HM, PL, NPL
 The `base_value` for these are `1,2,3,4` respectively. However, some consideration will need to be given to what values are used in respect to the choosen VA scale. e.g. for logMAR, iDG has them set for 1.4, 1.6, 1.8 and 2:
 ```js
 customTicks: {
@@ -123,7 +123,6 @@ customTicks: {
     reverseRange: true
 }
 ```
-
 
 ## Theme change
 
