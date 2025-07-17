@@ -1,12 +1,12 @@
 # nxPlot JS
 
-A wrapper for Ploy.ly JS to provide a consistent UIX for all chart plots shown in OE. **nxPlot JS** manages most aspects of Plot.ly's API separated from the data required for plotting of the charts and some aspects of the layouts. The benefits are:
+Wrapper for Ploy.ly JS to provide a consistent UIX for all chart plots shown in OE. **nxPlot JS** manages Plot.ly's API separated from the data required to plot of the charts. The benefits of this approach:
 
 * Consistent Plot UIX
-* Plots are theme coloured (reacting to theme changes)
+* Plots are theme coloured (and react to theme changes)
 * Summary plots provide a toolbar to change Plot.ly's 'hovermode'
 * Summary plots VA Units can be changed without reloading the data
-* Abstraction: this approach could also allow plotly JS to be replaced with another library
+* Abstraction: this approach in theory allows plot.ly JS to be replaced with another library
 
 ## Usage
 
