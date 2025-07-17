@@ -115,7 +115,7 @@ nxPlot('customData', graph.id)
 > [iDG: customData example](https://idg.knowego.com/edge/analytics/glaucoma-visual-field-progression/)
 
 ### Handling CF, HM, PL, NPL
-The `base_value` for these are `1,2,3,4` respectively. However, some consideration will need to be given to what values are used in respect to the choosen VA scale. e.g. for logMAR, iDG has them set for 1.4, 1.6, 1.8 and 2:
+The `base_value` for these are respectively `1,2,3,4`. However, some consideration will need to be given to what values are used in respect to the choosen VA scale. e.g. for logMAR, iDG has them set for 1.4, 1.6, 1.8 and 2:
 ```js
 customTicks: {
     vals: [-0.2, 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2],
