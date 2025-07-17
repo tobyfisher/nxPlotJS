@@ -135,4 +135,4 @@ const build = {
 	}
 };
 
-export const splitRL_MedicalRetina_selectableVA = { ...splitCore, ...build };
+export const splitRL_MedicalRetina_vaChangeableUnits = { ...splitCore, ...build };

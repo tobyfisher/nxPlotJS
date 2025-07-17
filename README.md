@@ -67,7 +67,7 @@ The correct DOM structure for Summary must be available:
 <script>
     document.addEventListener('DOMContentLoaded', () => { 
         // 'false' for div ID as expected DOM should be present
-        nxPlot('splitRL_Glaucoma_selectableVA', false)
+        nxPlot('splitRL_Glaucoma_vaChangeableUnits', false)
         .setSelectableUnits() // if there are selectable VA units
         .buildLayout() // provide layout object
         .buildRightData()// provide data for Right Eye

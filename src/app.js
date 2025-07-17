@@ -23,11 +23,11 @@ const allowedTemplates = new Set([
 	"customData",
 	"barChart",
 	"eyesOutcomes_Errors",
-	"eyesOutcomes_offScale_selectableVA",
+	"eyesOutcomes_vaChangeableUnits",
 	"outcomes_Errors",
 	"splitRL_Adherence",
-	"splitRL_Glaucoma_selectableVA",
-	"splitRL_MedicalRetina_selectableVA",
+	"splitRL_Glaucoma_vaChangeableUnits",
+	"splitRL_MedicalRetina_vaChangeableUnits",
 	"splitRL_Strabismus"
 ]);
 

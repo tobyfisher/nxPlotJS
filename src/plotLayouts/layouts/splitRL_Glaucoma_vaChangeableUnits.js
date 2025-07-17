@@ -153,4 +153,4 @@ const build = {
 	}
 }
 
-export const splitRL_Glaucoma_selectableVA = { ...splitCore, ...build };
+export const splitRL_Glaucoma_vaChangeableUnits = { ...splitCore, ...build };

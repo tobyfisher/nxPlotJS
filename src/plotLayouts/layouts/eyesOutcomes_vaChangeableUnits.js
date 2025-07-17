@@ -27,8 +27,7 @@ const build = {
 		 * 0.06 gap between sub-plots:
 		 */
 		const domainLayout = [
-			[ 0, 0.15 ], // Off-scale: CF, HM, PL, NPL
-			[ 0.2, 1 ],
+			[ 0, 1 ],
 		];
 
 		/**
@@ -42,23 +41,11 @@ const build = {
 			noMirrorLines: true,
 		});
 
-		// Off-scale
 		const y1 = getAxis({
 			type: 'y',
-			domain: domainLayout[0],
-			useCategories: {
-				showAll: true,
-				categoryarray: [ "NPL", "PL", "HM", "CF" ]
-			},
-			spikes: true,
-		});
-
-		// CRT
-		const y2 = getAxis({
-			type: 'y',
 			domain: domainLayout[1],
-			title: layoutData.yaxis.y2.title,
-			range: layoutData.yaxis.y2.range,
+			title: layoutData.yaxis.y1.title,
+			range: layoutData.yaxis.y1.range,
 			spikes: true,
 		});
 
@@ -66,22 +53,21 @@ const build = {
 		 * Dynamic selectable unit Y axis
 		 * VA units used can be changed by the User
 		 */
-		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
-		const y3 = getAxis(
-			Object.assign({
-				type: 'y',
-				title: `VA - ${unitName}`,
-				domain: domainLayout[1],
-				rightSide: 'y2',
-				spikes: true,
-			}, getAxisTypeForRange(unitRange))
-		)
+		const { name: unitName, customTicks: unitTicks } = this.toolBar.getSelectedUnitNameRange();
+		const y2 = getAxis({
+			type: 'y',
+			title: `VA - ${unitName}`,
+			domain: domainLayout[0],
+			rightSide: 'y1',
+			spikes: true,
+			customTicks: unitTicks
+		});
 
 		/** plotly layout **/
 		this.layout = getLayout({
 			legend: true,
 			xaxis: x1,
-			yaxes: [ y1, y2, y3 ],
+			yaxes: [ y1, y2 ],
 			rangeSlider: true,
 			hovermode: this.toolBar.getHoverMode()
 		});
@@ -117,9 +103,8 @@ const build = {
 				const selectedVA = plotData[eyeType].VA.units[this.toolBar.getSelectedUnit()];
 
 				data = data.concat([
-					customTrace(plotData[eyeType].VA.offScale, 'y1', 'VA', shortName, colorSeries[0]),
-					customTrace(plotData[eyeType].CRT, 'y2', 'CRT', shortName, colorSeries[1], true),
-					customTrace(selectedVA, 'y3', 'VA', shortName, colorSeries[2])
+					customTrace(plotData[eyeType].CRT, 'y1', 'CRT', shortName, colorSeries[0], true),
+					customTrace(selectedVA, 'y2', 'VA', shortName, colorSeries[1])
 				]);
 			}
 		}
@@ -132,4 +117,4 @@ const build = {
 
 }
 
-export const eyesOutcomes_offScale_selectableVA = { ...core, ...build };
+export const eyesOutcomes_vaChangeableUnits = { ...core, ...build };
