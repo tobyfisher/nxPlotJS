@@ -1,6 +1,5 @@
 import * as colors from "../../colors";
 import { getAxis } from "../../getAxis";
-import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { getLayout } from "../../getLayout";
 import { toolBar } from "../../toolBar";
 import { core } from "../core";
@@ -50,8 +49,7 @@ const build = {
 		});
 
 		/**
-		 * Dynamic selectable unit Y axis
-		 * VA units used can be changed by the User
+		 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
 		 */
 		const { name: unitName, customTicks: unitTicks } = this.toolBar.getSelectedUnitNameRange();
 		const y2 = getAxis({
@@ -100,6 +98,9 @@ const build = {
 			if ( plotData.hasOwnProperty(eyeType) ){
 				const colorSeries = colors.getColorSeries(`${eyeType}Series`);
 				const shortName = eyeDataTypes[eyeType];
+				/**
+				 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
+				 */
 				const selectedVA = plotData[eyeType].VA.units[this.toolBar.getSelectedUnit()];
 
 				data = data.concat([

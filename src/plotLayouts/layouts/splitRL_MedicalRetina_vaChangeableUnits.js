@@ -1,12 +1,8 @@
-import * as helpers from "../../helpers";
 import { getAxis } from "../../getAxis";
-import { getLayout } from "../../getLayout";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
-import * as debug from "../../debug";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { dashedLine } from "./parts/lines";
-import { eventStyle } from "./parts/eventStyle";
 import { yTrace } from "./parts/yTrace";
 
 /**
@@ -39,24 +35,12 @@ const build = {
 		 * 0.06 gap between sub-plots:
 		 */
 		const domainLayout = [
-			[ 0.7, 1 ], 	// Events		y4
-			[ 0.15, 0.64 ],	// CRT | VA		y2 | y3
-			[ 0, 0.15 ],	// Offscale		y1 (y)
+			[ 0.7, 1 ], 	// Events		y3
+			[ 0, 0.64 ],	// CRT | VA		y1 | y2
 		];
 
-		// Off-scale
+		// CRT
 		const y1 = getAxis({
-			type: 'y',
-			domain: domainLayout[2],
-			useCategories: {
-				categoryarray: [ "NPL", "PL", "HM", "CF" ],
-				rangeFit: "padTop", // "exact", etc
-			},
-			spikes: true,
-		});
-
-		// Events
-		const y2 = getAxis({
 			type: 'y',
 			domain: domainLayout[1],
 			title: layoutData.yaxis.y2.title,
@@ -64,8 +48,22 @@ const build = {
 			spikes: true,
 		});
 
-		// y4 - Events
-		const y4 = getAxis({
+		/**
+		 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
+		 */
+		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
+		const y2 = getAxis(
+			Object.assign({
+				type: 'y',
+				title: `VA - ${unitName}`,
+				domain: domainLayout[1],
+				rightSide: 'y1',
+				spikes: true,
+			}, getAxisTypeForRange(unitRange))
+		);
+
+		// Events
+		const y3 = getAxis({
 			type: 'y',
 			domain: domainLayout[0],
 			useCategories: {
@@ -76,26 +74,11 @@ const build = {
 		});
 
 		/**
-		 * Dynamic selectable unit Y axis
-		 * VA units used can be changed by the User
-		 */
-		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
-		const y3 = getAxis(
-			Object.assign({
-				type: 'y',
-				title: `VA - ${unitName}`,
-				domain: domainLayout[1],
-				rightSide: 'y2',
-				spikes: true,
-			}, getAxisTypeForRange(unitRange))
-		);
-
-		/**
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForPlots({
 			legend: { y: domainLayout[1][1] }, // position relative to subplots
-			yaxes: [ y1, y2, y3, y4 ],
+			yaxes: [ y1, y2, y3 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
@@ -111,27 +94,24 @@ const build = {
 	 */
 	buildDataTraces( eye ){
 
-		const offScale = {
-			...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name}`),
-			mode: 'lines+markers',
-			hovertemplate: '%{y}<br>%{x}'
-		};
-
 		const CRT = {
-			...yTrace('y2', eye.CRT, `${eye.CRT.name}`),
+			...yTrace('y', eye.CRT, `${eye.CRT.name}`),
 			mode: 'lines+markers',
 			hovertemplate: 'CRT: %{y}<br>%{x}',
 			line: dashedLine()
 		};
 
+		/**
+		 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
+		 */
 		const selectedVA = eye.VA.units[this.toolBar.getSelectedUnit()];
 		const VA = {
-			...yTrace('y3', selectedVA, `${selectedVA.name}`),
+			...yTrace('y2', selectedVA, `${selectedVA.name}`),
 			mode: 'lines+markers',
 			hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
 		}
 
-		return [ offScale, CRT, VA, ...this.buildEvents(eye.events, 'y4') ]
+		return [ CRT, VA, ...this.buildEvents(eye.events, 'y3') ]
 	}
 };
 

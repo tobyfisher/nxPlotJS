@@ -1,11 +1,8 @@
-import * as debug from "../../debug";
-import * as helpers from "../../helpers";
 import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { dashedLine } from "./parts/lines";
-import { eventStyle } from "./parts/eventStyle";
 import { yTrace } from "./parts/yTrace";
 
 /**
@@ -39,45 +36,48 @@ const build = {
 		 * 0.06 gap between sub-plots:
 		 */
 		const domainLayout = [
-			[ 0.82, 1 ],	// Events		y5
-			[ 0.47, 0.77 ],	// IOP			y4
-			[ 0.1, 0.42 ],	// VFI | VA		y2 | y3
-			[ 0, 0.1 ],		// Offscale		y1 (y)
+			[ 0.82, 1 ],	// Events		y4
+			[ 0.47, 0.77 ],	// IOP			y3
+			[ 0, 0.42 ]		// VFI | VA		y1 (y) | y2
 		];
 
-		// Off-scale
-		const y1 = getAxis({
-			type: 'y',
-			domain: domainLayout[3],
-			useCategories: {
-				categoryarray: [ "NPL", "PL", "HM", "CF" ],
-				rangeFit: "padTop", // "exact", etc,
-			},
-			spikes: true,
-		});
 
 		// VFI
-		const y2 = getAxis({
+		const y1 = getAxis({
 			type: 'y',
 			domain: domainLayout[2],
-			title: layoutData.yaxis.y2.title,
-			range: layoutData.yaxis.y2.range,
+			title: layoutData.yaxis.y1.title,
+			range: layoutData.yaxis.y1.range,
 			spikes: true,
 			maxAxisTicks: 12,
 		});
 
+		/**
+		 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
+		 */
+		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
+		const y2 = getAxis(
+			Object.assign({
+				type: 'y',
+				title: `VA - ${unitName}`,
+				domain: domainLayout[2],
+				rightSide: 'y1',
+				spikes: true,
+			}, getAxisTypeForRange(unitRange))
+		);
+
 		// IOP
-		const y4 = getAxis({
+		const y3 = getAxis({
 			type: 'y',
 			domain: domainLayout[1],
-			title: layoutData.yaxis.y4.title,
-			range: layoutData.yaxis.y4.range,
+			title: layoutData.yaxis.y3.title,
+			range: layoutData.yaxis.y3.range,
 			maxAxisTicks: 12,
 			spikes: true,
 		});
 
 		// Events
-		const y5 = getAxis({
+		const y4 = getAxis({
 			type: 'y',
 			domain: domainLayout[0],
 			useCategories: {
@@ -88,26 +88,11 @@ const build = {
 		});
 
 		/**
-		 * Dynamic selectable unit Y axis
-		 * VA units used can be changed by the User
-		 */
-		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
-		const y3 = getAxis(
-			Object.assign({
-				type: 'y',
-				title: `VA - ${unitName}`,
-				domain: domainLayout[1],
-				rightSide: 'y2',
-				spikes: true,
-			}, getAxisTypeForRange(unitRange))
-		);
-
-		/**
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForPlots({
 			legend: { y: domainLayout[1][1] }, // position relative to subplots
-			yaxes: [ y1, y2, y3, y4, y5 ],
+			yaxes: [ y1, y2, y3, y4 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
@@ -123,33 +108,31 @@ const build = {
 	 */
 	buildDataTraces( eye ){
 
-		const offScale = {
-			...yTrace('y1', eye.VA.offScale, `${eye.VA.offScale.name}`),
-			mode: 'lines+markers',
-			hovertemplate: '%{y}<br>%{x}'
-		};
-
 		const VFI = {
-			...yTrace('y2', eye.VFI, eye.VFI.name),
+			...yTrace('y1', eye.VFI, eye.VFI.name),
 			mode: 'lines+markers',
 			hovertemplate: '%{y}<br>%{x}<extra></extra>',
 			line: dashedLine(),
 		};
 
-		const IOP = {
-			...yTrace('y4', eye.IOP, eye.IOP.name),
-			mode: 'lines+markers',
-			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
-		};
-
+		/**
+		 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
+		 */
 		const selectedVA = eye.VA.units[ this.toolBar.getSelectedUnit() ];
 		const VA = {
-			...yTrace('y3', selectedVA, `${selectedVA.name}`),
+			...yTrace('y2', selectedVA, `${selectedVA.name}`),
 			mode: 'lines+markers',
 			hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
 		}
 
-		return [ offScale, VFI, IOP, VA, ...this.buildEvents( eye.events, 'y5') ]
+		const IOP = {
+			...yTrace('y3', eye.IOP, eye.IOP.name),
+			mode: 'lines+markers',
+			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
+		};
+
+
+		return [ VFI, IOP, VA, ...this.buildEvents( eye.events, 'y4') ]
 	}
 }
 
