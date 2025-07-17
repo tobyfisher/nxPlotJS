@@ -40,13 +40,14 @@ const build = {
 		];
 
 		// VA
-		const y1 = getAxis({
-			type: 'y',
-			domain: domainLayout[1],
-			title: layoutData.yaxis.y1.title,
-			customTicks: layoutData.yaxis.y1.customTicks,
-			spikes: true
-		});
+		const y1 = getAxis(
+			Object.assign({
+				type: 'y',
+				domain: domainLayout[1],
+				title: layoutData.yaxis.y1.title,
+				spikes: true,
+			}, getAxisTypeForRange(layoutData.yaxis.y1.range))
+		);
 
 		// y2 - Events
 		const y2 = getAxis({

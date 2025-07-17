@@ -5,6 +5,7 @@ import { toolBar } from "../../toolBar";
 import { core } from "../core";
 import { dataLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
+import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 
 const build = {
 	prebuild(){
@@ -51,15 +52,18 @@ const build = {
 		/**
 		 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
 		 */
-		const { name: unitName, customTicks: unitTicks } = this.toolBar.getSelectedUnitNameRange();
-		const y2 = getAxis({
-			type: 'y',
-			title: `VA - ${unitName}`,
-			domain: domainLayout[0],
-			rightSide: 'y1',
-			spikes: true,
-			customTicks: unitTicks
-		});
+		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
+		const y2 = getAxis(
+			Object.assign({
+				type: 'y',
+				title: `VA - ${unitName}`,
+				domain: domainLayout[0],
+				rightSide: 'y1',
+				spikes: true,
+			}, getAxisTypeForRange(unitRange))
+		);
+
+		console.log( y2 );
 
 		/** plotly layout **/
 		this.layout = getLayout({

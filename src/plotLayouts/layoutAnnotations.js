@@ -14,9 +14,6 @@ const buildLayoutShapesAnnotations = ( layout, arr, buildLine, buildAnnotate ) =
 const annotateBase = {
 	showarrow: false,
 	align: "left",
-	font: {
-		color: getBlue()
-	},
 	borderpad: 2,
 };
 
@@ -44,6 +41,7 @@ const addLayoutVerticals = ( layout, verticals, height ) => {
 
 	const annotate = ( { name, x } ) => ({
 		...annotateBase,
+		font: { color: getBlue() },
 		text: name,
 		textangle: 90,
 		x,
@@ -81,6 +79,7 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 
 	const annotate = ( { name, y, yaxis } ) => ({
 		...annotateBase,
+		font: { color: getBlue() },
 		text: name,
 		xref: "paper",
 		x: 0,
