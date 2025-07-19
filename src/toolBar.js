@@ -58,7 +58,7 @@ export const toolBar = {
 	allowUserToChangeHoverMode(){
 		this.buildDropDown(
 			'plotPointsHoverMode',
-			'Plots hover info show as:',
+			'Plots hover info show:',
 			[
 				{ text: 'Single', value: this.hoverMode }, // default
 				{ text: 'Closest', value: 'x' },
