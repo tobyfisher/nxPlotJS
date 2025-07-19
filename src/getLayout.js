@@ -217,10 +217,6 @@ export const getLayout = function ( options ){
 				label: 'Show all',
 				step: "all",
 			}, {
-				label: '2 Yr',
-				step: "year",
-				count: 2, // 1 = year, 2 = 2 years
-			}, {
 				label: '1 Yr',
 				step: "year",
 				count: 1, // 1 = year, 2 = 2 years
