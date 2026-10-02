@@ -1,5 +1,5 @@
-export const yTrace = ( yaxis, { x, y }, name ) => ({
+export const yTrace = ( yaxis, { x, y }, name, type='scatter' ) => ({
 	yaxis, // note: y1 = y = default
 	x,y,name,
-	type: 'scatter',
+	type
 });

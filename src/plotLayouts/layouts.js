@@ -7,3 +7,4 @@ export * from './layouts/splitRL_Adherence';
 export * from './layouts/splitRL_MedicalRetina_vaChangeableUnits';
 export * from './layouts/splitRL_Glaucoma_vaChangeableUnits';
 export * from './layouts/splitRL_Strabismus';
+export * from './layouts/PCR_Risk';

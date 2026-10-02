@@ -9,7 +9,7 @@ import { buttonStyling } from "./helpers/buttons";
 	Options:
 	{
 		legend: false, 			// Optional {Boolean || Object} customise any of the defaults
-		colors: 'varied', 		// Optional {String} varied" or "twoPosNeg" or "rightEye" (defaults to "blues")
+		colors: 'varied', 		// Optional {String} varied" or "posNeg" or "rightEye" (defaults to "blues")
 		plotTitle: false, 		// Optional {String}
 		xaxis: x1,				// Required {Object} xaxis - see getAxis!
 		yaxes: [ y1 ],			// Required {Array} all yaxes - see getAxis!

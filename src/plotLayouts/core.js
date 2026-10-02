@@ -92,12 +92,12 @@ export const core = {
 
 	setPlotlyDiv( divID ){
 		if ( divID === false ){
-			debug.log(`assuming split view DOM is available...`);
+			debug.log(`Assumed split view DOM is available...`);
 			return false;
 		} else {
 			this.div = document.getElementById(divID);
 			if ( this.div === null ){
-				debug.error(`div is null: ${divID}`);
+				debug.error(`div is null, check id: ${divID}`);
 			}
 		}
 	},

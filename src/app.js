@@ -22,6 +22,7 @@ if( window.hasOwnProperty('Plotly') ){
 const allowedTemplates = new Set([
 	"customData",
 	"barChart",
+	"PCR_Risk",
 	"eyesOutcomes_Errors",
 	"eyesOutcomes_vaChangeableUnits",
 	"outcomes_Errors",
@@ -37,15 +38,11 @@ for( const template of allowedTemplates){
 }
 
 const nxPlot = ( requestedPlotLayout, divID = false ) => {
-	let nxLayout = false;
+	let nxLayout = plotTemplates.get(requestedPlotLayout);
 
-	try {
-		nxLayout = plotTemplates.get(requestedPlotLayout);
-		debug.log(`Building: ${ requestedPlotLayout}`);
-	} catch ({ name }){
-		console.error(`Requested plot template: "${requestedPlotLayout}" is invalid. 
-		Valid plotTemplates are:\n${Array.from(plotTemplates.keys()).join("\n")}` );
-		return nxLayout;
+	if( nxLayout === undefined ){
+		console.error(`Requested plot template: "${requestedPlotLayout}" is undefined. plotTemplates:\n${Array.from(plotTemplates.keys()).join("\n")}` );
+		return false;
 	}
 
 	nxLayout.setPlotlyDiv(divID); // Plotly requires a div
