@@ -72,7 +72,6 @@ const build = {
 
 		// Show "all" surgeons if array
 		const allSurgeons = plotData.surgeon.all;
-		console.log( allSurgeons );
 		if( allSurgeons.length ){
 			allSurgeons.forEach( plotData => {
 				this.data.push(
