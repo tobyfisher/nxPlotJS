@@ -119,6 +119,7 @@ export const core = {
 	},
 
 	rebuild(){
+
 		if ( this.stored.has(this.storeKeys.plot) ){
 			this.buildData(this.stored.get(this.storeKeys.plot));
 		}

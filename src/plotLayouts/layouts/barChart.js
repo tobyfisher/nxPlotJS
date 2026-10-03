@@ -31,6 +31,7 @@ const build = {
 	},
 
 	buildData( plotData ){
+
 		/**
 		 * Data - for Plotly
 		 * Simple trace, trace colours controlled by the Layout

@@ -9,7 +9,10 @@ const isDarkTheme = () => document.documentElement.classList.contains("theme-dar
  */
 const colours = {
 	dark: {
+		axis: { grid: '#292929', tick: '#666666' },
+		grey: '#666666',
 		blue: '#63d7d6',
+		orange: '#FF8C11',
 		highlight: '#fff',
 		green: '#65d235',
 		red: '#ea2b34',
@@ -22,7 +25,10 @@ const colours = {
 		dual: [ '#1472DE', '#2E4259' ],
 	},
 	light: {
+		axis: { grid: '#e6e6e6', tick: '#cccccc' },
+		grey: '#cccccc',
 		blue: '#00f',
+		orange: '#CE4100',
 		highlight: '#000',
 		green: '#418c20',
 		red: '#da3e43',
@@ -79,12 +85,20 @@ const getColor = ( colour ) => {
 	switch ( colour ){
 		case 'highlight':
 			return colours[theme].highlight;
+		case 'standard':
+			return colours[theme].standard[0];
+		case 'blue':
+			return colours[theme].blue;
+		case 'orange':
+			return colours[theme].orange;
 		case 'rightEye':
 			return colours[theme].green;
 		case 'leftEye':
 			return colours[theme].red;
 		case 'BEO':
 			return colours[theme].yellow;
+		case 'grey':
+			return colours[theme].grey;
 
 		default:
 			return 'pink'; // no match, flag failure to match as pink!
@@ -95,7 +109,7 @@ const getColor = ( colour ) => {
  * Axis colors used in getAxis and tools
  * @return {string}
  */
-const getAxisGridColor = () => isDarkTheme() ? '#292929' : '#e6e6e6';
-const getAxisTickColor = () => isDarkTheme() ? '#666' : '#ccc';
+const getAxisGridColor = () => colours[isDarkTheme() ? 'dark' : 'light'].axis.grid;
+const getAxisTickColor = () => colours[isDarkTheme() ? 'dark' : 'light'].axis.tick;
 
 export { isDarkTheme, getBlue, getColorSeries, getColor, getAxisTickColor, getAxisGridColor };

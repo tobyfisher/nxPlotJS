@@ -63,8 +63,6 @@ const build = {
 			}, getAxisTypeForRange(unitRange))
 		);
 
-		console.log( y2 );
-
 		/** plotly layout **/
 		this.layout = getLayout({
 			legend: true,
