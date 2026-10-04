@@ -36,7 +36,7 @@ const colours = {
 		greenSeries: [ '#418c20', '#598617', '#139149' ],
 		redSeries: [ '#da3e43', '#E64C02', '#E64562' ],
 		yellowSeries: [ '#FCCE14', '#E69812', '#FCBB21' ], // BEO
-		standard: [ '#94a2b8', '#8398b9', '#8292ab' ],
+		standard: [ '#6A83C7', '#5579CD', '#578BC6' ],
 		varied: [ '#0a2aea', '#ea0a8e', '#00b827', '#890aea' ],
 		dual: [ '#2126C2', '#8FAEC2' ],
 	}
