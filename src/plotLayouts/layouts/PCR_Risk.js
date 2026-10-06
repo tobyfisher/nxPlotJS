@@ -22,7 +22,7 @@ const build = {
 			type: 'y',
 			numTicks: 20,
 			title: layoutData.yaxis.y1.title,
-			range: [0,50]
+			range: [-2,50]
 		});
 
 		/** plotly layout **/
@@ -30,7 +30,8 @@ const build = {
 			// plotTitle: layoutData.plotHeader,
 			xaxis: x1,
 			yaxes: [ y1 ],
-			colors: 'posNeg'
+			colors: 'posNeg',
+			legend: { orientation: 'h', yanchor: 'top' }
 		});
 
 		return this
@@ -51,15 +52,23 @@ const build = {
 			hovertemplate: `%{y}%<extra></extra>`
 		});
 
+		const onePercent = ( plot, y, name, isDashed ) => ({
+			...yTrace(y, { x: [1,1000], y:[1,10] }, '1%'),
+			mode: 'lines',
+			line: dataLine( colors.getColor(`grey`), isDashed ),
+			hovertemplate: `%{y}%<extra></extra>`
+		});
+
 		const surgeon = ( plot, isCurrent = false ) => ({
-			...yTrace('y1', plot, "Surgeon"),
+			...yTrace('y1', plot, plot.name),
 			mode: 'markers',
 			marker: {
-				symbol: isCurrent ? 'square' : 'circle',
-				size: isCurrent ? 12 : 8,
-				color: colors.getColor(isCurrent ? 'orange' : 'standard')
+				symbol: 'circle',
+				size: isCurrent ? 10 : 8,
+				color: colors.getColor(isCurrent ? 'blue' : 'standard')
 			},
-			hovertemplate: `<b>${plot.name}</b><br>Operations: <b>%{x}</b><br>PCR Avg: <b>%{y}</b>`,
+			hovertemplate: `<b>${plot.name}</b><br>Operations: <b>%{x}</b><br>PCR Avg: <b>%{y}</b><extra></extra>`,
+			legendgroup: 'surgeon'
 		});
 
 
@@ -67,18 +76,9 @@ const build = {
 		this.data = [
 			percentageGuide(plotData.upper99, 'y1', '99%'),
 			percentageGuide(plotData.upper95, 'y1', '95%', true),
-			surgeon(plotData.surgeon.current, true)
+			surgeon(plotData.surgeon.current, true),
+			surgeon(plotData.surgeon.other, true)
 		];
-
-		// Show "all" surgeons if array
-		const allSurgeons = plotData.surgeon.all;
-		if( allSurgeons.length ){
-			allSurgeons.forEach( plotData => {
-				this.data.push(
-					surgeon(plotData)
-				)
-			});
-		}
 
 		return this
 	}
