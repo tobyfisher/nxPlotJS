@@ -3,6 +3,7 @@ import { addLayoutHorizontals, addLayoutVerticals } from "./layoutAnnotations";
 
 export const core = {
 	div: null,
+	splitDiv: new Map(),
 	data: [],
 	layout: {},
 	lines: {
@@ -90,15 +91,17 @@ export const core = {
 		// optional pre-build setup hook
 	},
 
-	setPlotlyDiv( divID ){
-		if ( divID === false ){
-			debug.log(`Assumed split view DOM is available...`);
-			return false;
-		} else {
-			this.div = document.getElementById(divID);
-			if ( this.div === null ){
-				debug.error(`div is null, check id: ${divID}`);
-			}
+	setPlotlyDiv( div, isSplitPlot ){
+		this.div = div;
+
+		if ( isSplitPlot ){
+			this.splitDiv.set('right', div.querySelector(`.oes-right-side`)) ;
+			this.splitDiv.set('left', div.querySelector(`.oes-left-side`)) ;
+			this.splitDiv.forEach( ( sideDiv, key ) => {
+				if( sideDiv === null || sideDiv === undefined ){
+					debug.error(`Requires fixed DOM structure, can not find: div class='.oes-${key}-side'`);
+				}
+			})
 		}
 	},
 

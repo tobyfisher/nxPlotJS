@@ -32,20 +32,41 @@ const allowedTemplates = new Set([
 	"splitRL_Strabismus"
 ]);
 
+
+
 const plotTemplates = new Map();
 for( const template of allowedTemplates){
 	plotTemplates.set(template, layouts[template]);
 }
 
-const nxPlot = ( requestedPlotLayout, divID = false ) => {
+const nxPlot = ( requestedPlotLayout, divID ) => {
 	let nxLayout = plotTemplates.get(requestedPlotLayout);
 
+	/**
+	 * check nxLayout exists
+	 */
 	if( nxLayout === undefined ){
 		console.error(`Requested plot template: "${requestedPlotLayout}" is undefined. plotTemplates:\n${Array.from(plotTemplates.keys()).join("\n")}` );
 		return false;
 	}
 
-	nxLayout.setPlotlyDiv(divID); // Plotly requires a div
+	/**
+	 * Must have a graphDiv
+	 */
+	const graphDiv = document.getElementById(divID);
+	if ( graphDiv === null ){
+		debug.error(`div is null?, check id: ${divID}`);
+		return false
+	}
+
+	/**
+	 * if it's a splitRL template graphDiv expects to have 2 child divs
+	 *
+	 * |- <div class="oes-right-side"><!-- JS hook --></div>
+	 * |- <div class="oes-left-side"><!-- JS hook --></div>
+	 */
+
+	nxLayout.setPlotlyDiv( graphDiv, requestedPlotLayout.startsWith('splitRL') );
 	nxLayout.prebuild(); // prebuild hook (optional), see in layouts for how this is used
 
 	/**

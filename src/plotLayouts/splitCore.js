@@ -46,13 +46,12 @@ const splitPlots = {
 	 */
 	buildSplitData( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
-		const div = document.querySelector(`.oes-${side}-side`);
-		if ( div === null ){
-			debug.error(`Requires fixed DOM structure, can not find: div.'.oes-${side}-side'`);
-		} else {
-			// setup header to allow User to change split layout balance
-			changeSplitLayout.init( this );
-		}
+		const div = this.splitDiv.get(side);
+
+		console.log(div)
+
+		// setup header to allow User to change split layout balance
+		changeSplitLayout.init(this);
 
 		const eyePlot = new Map();
 		eyePlot.set('storedPlotData', plotData); // for rebuilding
@@ -115,7 +114,7 @@ const splitPlots = {
 		 * ALL the Y values are the SAME, to look like a horizontal bar
 		 * extra data for the popup can be passed in with customdata
 		 */
-		return Object.values( events ).map(( event ) => ({
+		return Object.values(events).map(( event ) => ({
 			oeEventType: event.event, // store event type
 			...yTrace(y, event, event.name),
 			...eventStyle(event.event),

@@ -57,7 +57,7 @@ Two plots, one for each eye: two separate Ploy.ly Plots, but both using the same
 The correct DOM structure for Summary is expected and **must** be available:
 
 ```html
-<div class="oe-full-content oes-v2 oeplot use-full-screen">
+<div class="oe-full-content oes-v2 oeplot use-full-screen" id="js-nxplot-split">
     <div class="oes-right-side"><!-- nxPlotJS hook --></div>
     <div class="oes-left-side"><!-- nxPlotJS hook --></div>
 </div>
@@ -66,9 +66,8 @@ The correct DOM structure for Summary is expected and **must** be available:
 
 ```html
 <script>
-    document.addEventListener('DOMContentLoaded', () => { 
-        // 'false' for div ID as expected DOM should be present
-        nxPlot('splitRL_Glaucoma_vaChangeableUnits', false)
+    document.addEventListener('DOMContentLoaded', () => {
+        nxPlot('splitRL_Glaucoma_vaChangeableUnits', 'js-nxplot-split')
         .setSelectableUnits() // if there are selectable VA units
         .buildLayout() // provide layout object
         .buildRightData()// provide data for Right Eye
@@ -104,7 +103,7 @@ If custom traces are required you can use the layout and pass in your own trace 
 
 ```js
 /** nxPlot */
-nxPlot('customData', graph.id)
+nxPlot('customData', 'graphDiv-id-here')
   .buildLayout({ 
       xaxis: { title: 'Age (Yrs)' },
       yaxis: { y1: { title: 'Mean Deviation (dB)' } }
