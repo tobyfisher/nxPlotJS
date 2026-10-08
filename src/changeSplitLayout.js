@@ -1,5 +1,4 @@
-import * as debug from "debug";
-import * as utils from "utils";
+import * as utils from "./utils";
 
 export const changeSplitLayout = {
 	once: false,
@@ -89,7 +88,7 @@ export const changeSplitLayout = {
 				break;
 
 			default:
-				debug.error('oesChangeSidesLayout', `Unknown layout request ${layout}`);
+				// debug.error('oesChangeSidesLayout', `Unknown layout request ${layout}`);
 				return false;
 		}
 

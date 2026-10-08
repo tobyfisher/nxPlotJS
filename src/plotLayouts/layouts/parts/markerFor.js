@@ -1,4 +1,4 @@
-import * as debug from "debug";
+import * as debug from "../../../debug";
 /**
  * return settings for "marker" style in data
  * @param {String} Event type: "Drugs", etc

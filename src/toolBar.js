@@ -1,5 +1,5 @@
-import * as utils from "utils";
-import * as debug from "debug";
+import * as utils from "./utils";
+import * as debug from "./debug";
 
 /**
  * Toolbar (for Summary pages)

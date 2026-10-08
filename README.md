@@ -12,7 +12,7 @@ Wrapper for Ploy.ly JS to provide a consistent UIX for all chart plots shown in 
 
 `<head>` JS script loads **nxPlot**, _obviously requires Plot.ly JS first to work_
 ```html
-<script defer src="**/plotly-2.27.0.min.js"></script>
+<script defer src="**/plotly-4.1.1.min.js"></script>
 <script defer src="**/nxPlot.min.js"></script>
 ```
 After `DOMContentLoaded` global access is available to `nxPlot`

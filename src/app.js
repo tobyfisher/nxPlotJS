@@ -1,5 +1,5 @@
-import * as debug from "debug";
-import * as layouts from "plotLayouts/layouts";
+import * as debug from "./debug";
+import * as layouts from "./plotLayouts/layouts";
 import { getBlue, getColor, getColorSeries } from "./colors";
 
 /**
@@ -10,7 +10,9 @@ import { getBlue, getColor, getColorSeries } from "./colors";
  * https://plot.ly/javascript/reference/
  * @namespace "nxPlot" - publicly available
  *
- * Note: if User changes the theme generate a broadcast Event to let nxPlot know about it
+ * Generate a broadcast Event to let nxPlot know about it
+ * https://github.com/tobyfisher/nxPlotJS#theme-change
+ *
  */
 
 if( window.hasOwnProperty('Plotly') ){
@@ -67,7 +69,7 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	 */
 
 	nxLayout.setPlotlyDiv( graphDiv, requestedPlotLayout.startsWith('splitRL') );
-	nxLayout.prebuild(); // prebuild hook (optional), see in layouts for how this is used
+	nxLayout.prebuild(); // prebuild hook (optional), used to set up the toolbar
 
 	/**
 	 * nxPlotJS will react to OE theme change
