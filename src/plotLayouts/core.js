@@ -26,12 +26,17 @@ export const core = {
 		debug.error('needs overwriting in specific layout');
 	},
 
-	// Layouts overwrite these builds
+	/**
+	 * Each Template layout has it's own buildLayout
+	 * see plotLayouts/layouts/
+	 */
 	buildLayout(){
 		debug.error('define in specific layout');
 	},
 
-	// handle differently in splitPlots.js because there are 2 plots
+	/**
+	 * Single plots will handle this differently to splitPlots
+	 */
 	buildData(){
 		debug.error('define in specific layout');
 	},
@@ -85,10 +90,10 @@ export const core = {
 	},
 
 	/**
-	 * Called by app.js
+	 * Always called by app.js
 	 */
 	prebuild(){
-		// optional pre-build setup hook
+		// optional pre-build setup hook in templates
 	},
 
 	setPlotlyDiv( div, isSplitPlot ){
@@ -106,7 +111,7 @@ export const core = {
 	},
 
 	/**
-	 * when theme change happens need to reuse original layout data
+	 * A theme change needs to reuse the original layout data
 	 * splitCore does this a bit differently
 	 */
 	storeLayoutDataForRebuild( layoutData ){

@@ -51,7 +51,7 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	}
 
 	/**
-	 * Must have a graphDiv
+	 * Plotly must have a graphDiv
 	 */
 	const graphDiv = document.getElementById(divID);
 	if ( graphDiv === null ){
@@ -60,7 +60,7 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	}
 
 	/**
-	 * if it's a splitRL template graphDiv expects to have 2 child divs
+	 * However, if it's a splitRL template graphDiv must have 2 child divs:
 	 *
 	 * |- <div class="oes-right-side"><!-- JS hook --></div>
 	 * |- <div class="oes-left-side"><!-- JS hook --></div>

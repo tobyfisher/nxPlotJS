@@ -47,9 +47,7 @@ const splitPlots = {
 	buildSplitData( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
 		const div = this.splitDiv.get(side);
-
-		console.log(div)
-
+		
 		// setup header to allow User to change split layout balance
 		changeSplitLayout.init(this);
 
