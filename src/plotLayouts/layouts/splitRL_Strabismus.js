@@ -9,6 +9,7 @@ import { dashedLine, dataLine } from "./parts/lines";
 import { eventStyle } from "./parts/eventStyle";
 import { yTrace } from "./parts/yTrace";
 import * as colors from "../../colors";
+import { getLegend } from "../../getLegend";
 
 /**
  * OES(Summary) Strabismus
@@ -64,7 +65,7 @@ const build = {
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForPlots({
-			legend: { y: domainLayout[1][1] }, // position relative to subplots
+			legend:  getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
 			yaxes: [ y1, y2 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()

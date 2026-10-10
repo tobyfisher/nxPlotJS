@@ -6,6 +6,7 @@ import { errorY } from "./parts/errorY";
 import { dataLine } from "./parts/lines";
 import * as colors from "../../colors";
 import { customData } from "./customData";
+import { getLegend } from "../../getLegend";
 
 const build = {
 
@@ -32,7 +33,7 @@ const build = {
 			xaxis: x1,
 			yaxes: [ y1 ],
 			colors: 'posNeg',
-			legend: { orientation: 'h', yanchor: 'top' }
+			legend: getLegend.horizontal('top')
 		});
 
 		return this

@@ -8,7 +8,7 @@ import { buttonStyling } from "./helpers/buttons";
  *
 	Options:
 	{
-		legend: false, 			// Optional {Boolean || Object} customise any of the defaults
+ 		legend: false, 			// Optional {Boolean || Object} customise any of the defaults
 		colors: 'varied', 		// Optional {String} varied" or "posNeg" or "rightEye" (defaults to "blues")
 		plotTitle: false, 		// Optional {String}
 		xaxis: x1,				// Required {Object} xaxis - see getAxis!
@@ -108,30 +108,8 @@ export const getLayout = function ( options ){
 	Plot legend
 	*/
 	if ( options.hasOwnProperty('legend') ){
-
-		layout.showlegend = true; // default is true.
-		// basic set up for legend
-		// note: if "legendgroup" is add to the data traces
-		// the legends will be automatically grouped
-		const legendDefaults = {
-			font: {
-				size: 9
-			},
-			itemclick: 'toggleothers', //  ( default: "toggle" | "toggleothers" | false )
-			orientation: 'h', // 'v' || 'h'
-			// traceorder: "grouped", // or "reversed+grouped"
-			xanchor: 'right',
-			yanchor: 'bottom',
-			x: 1,
-			y: 1,
-		};
-
-		if ( typeof options.legend === "boolean" ){
-			layout.legend = legendDefaults;
-		} else {
-			// customise the defaults
-			layout.legend = Object.assign(legendDefaults, options.legend);
-		}
+		layout.showlegend = true;
+		layout.legend = options.legend;
 	} else {
 		layout.showlegend = false; // defaults to true otherwise
 	}

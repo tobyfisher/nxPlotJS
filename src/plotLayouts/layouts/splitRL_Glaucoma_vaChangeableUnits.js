@@ -4,6 +4,7 @@ import { splitCore } from "../splitCore";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { dashedLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
+import { getLegend } from "../../getLegend";
 
 /**
  * OES(Summary) Glaucoma
@@ -91,7 +92,7 @@ const build = {
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForPlots({
-			legend: { y: domainLayout[1][1] }, // position relative to subplots
+			legend:  getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
 			yaxes: [ y1, y2, y3, y4 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()

@@ -3,6 +3,7 @@ import { getLayout } from "../../getLayout";
 import { core } from "../core";
 import { errorY } from "./parts/errorY";
 import { yTrace } from "./parts/yTrace";
+import { getLegend } from "../../getLegend";
 
 const build = {
 
@@ -33,7 +34,7 @@ const build = {
 		/** plotly layout **/
 		this.layout = getLayout({
 			colors: 'varied',
-			legend: true,
+			legend: getLegend.horizontal('top'),
 			xaxis: x1,
 			yaxes: [ y1, y2 ],
 			rangeSlider: true,

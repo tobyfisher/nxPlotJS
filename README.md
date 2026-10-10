@@ -67,7 +67,7 @@ The correct DOM structure for Summary UI is expected and **must** be available, 
 
 Layout format is managed through CSS classes on `oes-split-grid`
 
-UI changes of layout requires this DOM in the header bar to control the layout:
+UI changes of layout requires the following DOM in the header bar, nxPlotJS will then manage the layout:
 
 ```html
 <div class="oes-ui-manage-layout" data-oes-layout="split-1-1" id="js-nxplot-manage-layout">
