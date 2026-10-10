@@ -223,7 +223,11 @@ export const getLayout = function ( options ){
 			}, {
 				label: '6 Mth',
 				step: "month",
-				count: 6, // 1 = year, 2 = 2 years
+				count: 6,
+			}, {
+				label: '1 Mth',
+				step: "month",
+				count: 1,
 			} ]
 		}, buttonStyling(dark));
 	}

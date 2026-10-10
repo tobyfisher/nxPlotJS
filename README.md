@@ -52,16 +52,31 @@ After DOMContentLoaded, request a layout template, provide the `div` hook id, pa
 
 ### Splits plots (in Summary)
 
-Two plots, one for each eye: two separate Ploy.ly Plots, but both using the same layout (and possibly the same horizontal targets lines e.g. target IOP)
+Two plots, one for each eye: two separate Ploy.ly Plots, but both using the same layout (and possibly the same horizontal targets lines e.g. target IOP, etc)
 
-The correct DOM structure for Summary is expected and **must** be available:
+The correct DOM structure for Summary UI is expected and **must** be available, nxPlotJS will look for `oes-right-side` and `oes-left-side` hooks:
 
 ```html
 <div class="oe-full-content oes-v2 oeplot use-full-screen" id="js-nxplot-split">
-    <div class="oes-right-side"><!-- nxPlotJS hook --></div>
-    <div class="oes-left-side"><!-- nxPlotJS hook --></div>
+	<div class="oes-split-grid split-1-1">
+		<div class="oes-right-side"><!-- Plotly JS --></div>
+		<div class="oes-left-side"><!-- Plotly JS --></div>
+	</div>
 </div>
 ```
+
+Layout format is managed through CSS classes on `oes-split-grid`
+
+UI changes of layout requires this DOM in the header bar to control the layout:
+
+```html
+<div class="oes-ui-manage-layout" data-oes-layout="split-1-1" id="js-nxplot-manage-layout">
+    <div class="oes-layout-btn" id="js-nx-right"><i class="oe-i lat-R small"></i></div>
+    <div class="oes-layout-btn" id="js-nx-left"><i class="oe-i lat-L small"></i></div>
+    <div class="oes-layout-btn" id="js-nx-layout"><i class="oes-layout-icon i-1-1"></i></div>
+</div>
+```
+
 ### Split plot example
 
 ```html

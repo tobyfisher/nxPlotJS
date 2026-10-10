@@ -6,7 +6,6 @@ import { getAxis } from "../getAxis";
 import { yTrace } from "./layouts/parts/yTrace";
 import { eventStyle } from "./layouts/parts/eventStyle";
 import { toolBar } from "../toolBar";
-import { changeSplitLayout } from "../changeSplitLayout";
 
 /**
  * Manage R / L plots shown side by side
@@ -47,9 +46,6 @@ const splitPlots = {
 	buildSplitData( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
 		const div = this.splitDiv.get(side);
-
-		// setup header to allow User to change split layout balance
-		changeSplitLayout.init(this);
 
 		const eyePlot = new Map();
 		eyePlot.set('storedPlotData', plotData); // for rebuilding

@@ -1,6 +1,7 @@
 import * as debug from "./debug";
 import * as layouts from "./plotLayouts/layouts";
 import { getBlue, getColor, getColorSeries } from "./colors";
+import { setupSplitLayoutView } from "./helpers/splitLayoutView";
 
 /**
  * nxPlotJS - Facade pattern
@@ -45,7 +46,7 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	let nxLayout = plotTemplates.get(requestedPlotLayout);
 
 	/**
-	 * check nxLayout exists
+	 * check requested nxLayout exists
 	 */
 	if( nxLayout === undefined ){
 		console.error(`Requested plot template: "${requestedPlotLayout}" is undefined. plotTemplates:\n${Array.from(plotTemplates.keys()).join("\n")}` );
@@ -62,17 +63,22 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	}
 
 	/**
-	 * However, if it's a splitRL template graphDiv must have 2 child divs:
+	 * However, if it's a "splitRL.." template graphDiv must have 2 child divs for each plot
 	 *
 	 * |- <div class="oes-right-side"><!-- JS hook --></div>
 	 * |- <div class="oes-left-side"><!-- JS hook --></div>
 	 */
-
 	nxLayout.setPlotlyDiv( graphDiv, requestedPlotLayout.startsWith('splitRL') );
 	nxLayout.prebuild(); // prebuild hook (optional), used to set up the toolbar
 
 	/**
-	 * nxPlotJS will react to OE theme change
+	 * set up split layout view controller in the oe-full-header\
+	 * (only if DOM exists...)
+	 */
+	setupSplitLayoutView( nxLayout );
+
+	/**
+	 * nxPlotJS will react to an OE theme change
 	 */
 	document.addEventListener('oeThemeChange', () => {
 		nxLayout.plotlyThemeChange();
