@@ -102,6 +102,9 @@ const build = {
 			PCR_average( plotData.NODAverage, 'NOD Average', dataLine( colors.getColor(`blue`), true ), 'NOD' ),
 			PCR_Curve( plotData.NODAverage,  0.998, 'NOD 99.8%',  dataLine( colors.getColor(`blue`) ), 'NOD' ),
 			PCR_Curve( plotData.NODAverage,  0.95, 'NOD 95%',  dataLine( colors.getColor(`blue`), true ), 'NOD' ),
+			PCR_average( plotData.LocalAverage, 'Local Average', dataLine( colors.getColor(`orange`), true ), 'Local' ),
+			PCR_Curve( plotData.LocalAverage,  0.998, 'Local 99.8%',  dataLine( colors.getColor(`orange`) ), 'Local' ),
+			PCR_Curve( plotData.LocalAverage,  0.95, 'Local 95%',  dataLine( colors.getColor(`orange`), true ), 'Local' ),
 		];
 
 		return this
