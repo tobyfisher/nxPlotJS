@@ -19,20 +19,28 @@ const legendDefaults = {
 
 export const getLegend = {
 
-	horizontal( yanchor, y = 1  ){
-		return Object.assign(legendDefaults, {
+	horizontal( yanchor, y = 1, toggleSelf = false  ) {
+		const legend = Object.assign(legendDefaults, {
 			orientation: 'h',
 			yanchor,
 			y
 		});
+
+		if ( toggleSelf ) legend.itemclick = "toggle";
+
+		return legend;
 	},
 
-	vertical( yanchor, y = 1  ){
-		return Object.assign(legendDefaults, {
+	vertical( yanchor, y = 1, toggleSelf = false  ){
+		const legend = Object.assign(legendDefaults, {
 			orientation: 'v',
 			yanchor,
 			y
-		})
+		});
+
+		if ( toggleSelf ) legend.itemclick = "toggle";
+
+		return legend;
 	}
 };
 	

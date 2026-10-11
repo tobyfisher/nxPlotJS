@@ -2,7 +2,7 @@ import { core } from "../core";
 import { getAxis } from "../../getAxis";
 import { getLayout } from "../../getLayout";
 import { yTrace } from "./parts/yTrace";
-import { dataLine } from "./parts/lines";
+import { dataLine, smoothLine } from "./parts/lines";
 import * as colors from "../../colors";
 import { getLegend } from "../../getLegend";
 import { generateXYforPCRCurve } from "../../helpers/PCR_curve";
@@ -32,7 +32,7 @@ const build = {
 			xaxis: x1,
 			yaxes: [ y1 ],
 			colors: 'posNeg',
-			legend: getLegend.horizontal('top')
+			legend: getLegend.horizontal('top', 1,true)
 		});
 
 		return this
@@ -50,7 +50,7 @@ const build = {
 
 
 		const PCR_Curve = ( baseLine, confidence, name, line, group  ) => {
-			const plot = generateXYforPCRCurve(baseLine, 1, 1000, 1, confidence);
+			const plot = generateXYforPCRCurve(baseLine, 0, 1000, 10, confidence);
 			return {
 				...yTrace('y1', plot, name),
 				mode: 'lines',
@@ -97,14 +97,14 @@ const build = {
 		this.data = [
 			percentageGuide(plotData.upper99, 'y1', 'OE 99.8%'),
 			percentageGuide(plotData.upper95, 'y1', 'OE 95%', true),
+			PCR_average( plotData.NODAverage, 'NOD Average', dataLine( colors.getColor(`blue`), true ), 'NOD' ),
+			PCR_Curve( plotData.NODAverage,  0.998, 'NOD 99.8%',  smoothLine( colors.getColor(`blue`) ), 'NOD' ),
+			PCR_Curve( plotData.NODAverage,  0.95, 'NOD 95%',  smoothLine( colors.getColor(`blue`), true ), 'NOD' ),
+			PCR_average( plotData.LocalAverage, 'Local Average', dataLine( colors.getColor(`orange`), true ), 'Local' ),
+			PCR_Curve( plotData.LocalAverage,  0.998, 'Local 99.8%',  smoothLine( colors.getColor(`orange`) ), 'Local' ),
+			PCR_Curve( plotData.LocalAverage,  0.95, 'Local 95%',  smoothLine( colors.getColor(`orange`), true ), 'Local' ),
 			surgeon(plotData.surgeon.other, false),
 			surgeon(plotData.surgeon.current, true),
-			PCR_average( plotData.NODAverage, 'NOD Average', dataLine( colors.getColor(`blue`), true ), 'NOD' ),
-			PCR_Curve( plotData.NODAverage,  0.998, 'NOD 99.8%',  dataLine( colors.getColor(`blue`) ), 'NOD' ),
-			PCR_Curve( plotData.NODAverage,  0.95, 'NOD 95%',  dataLine( colors.getColor(`blue`), true ), 'NOD' ),
-			PCR_average( plotData.LocalAverage, 'Local Average', dataLine( colors.getColor(`orange`), true ), 'Local' ),
-			PCR_Curve( plotData.LocalAverage,  0.998, 'Local 99.8%',  dataLine( colors.getColor(`orange`) ), 'Local' ),
-			PCR_Curve( plotData.LocalAverage,  0.95, 'Local 95%',  dataLine( colors.getColor(`orange`), true ), 'Local' ),
 		];
 
 		return this
