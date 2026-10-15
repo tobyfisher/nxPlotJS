@@ -84,7 +84,7 @@ const build = {
 
 		// VA fixed in LogMAR from Strabismus
 		const VA = {
-			...yTrace('y1', eye.VA.units.logMAR, eye.VA.units.logMAR.name),
+			...yTrace('y1', eye.VA, eye.VA.name),
 			mode: 'lines+markers',
 			hovertemplate: '%{y}<br>%{x}'
 		}
@@ -98,7 +98,7 @@ const build = {
 
 		// BEO is used before single eye test on young children
 		const BEO = {
-			...yTrace('y1', eye.BEO.VA.units.logMAR, eye.BEO.VA.units.logMAR.name),
+			...yTrace('y1', eye.BEO, eye.BEO.name),
 			mode: 'lines+markers',
 			hovertemplate: '%{y}<br>%{x}',
 			line: dataLine( colors.getColor(`BEO`), true)
