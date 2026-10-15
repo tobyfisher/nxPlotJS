@@ -143,7 +143,7 @@ customTicks: {
 
 `nxPlot.purge()`
 
-nxPlot purge will run `Plotly.purge()` on for a single or split plot
+nxPlot purge will run `Plotly.purge()` on a single or split plot.
 
 
 ## Theme change
