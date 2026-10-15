@@ -13,7 +13,7 @@ export const toolBar = {
 		hoverMode: 'closest',  // default, but shown as 'Single' as this makes sense?
 		vaUnits: ''
 	},
-	selectableUnits: false,
+	currentVA: 'currentVA',
 
 	/**
 	 * Setup - hard link with the current layout object
@@ -42,13 +42,17 @@ export const toolBar = {
 
 	userChangesSomething( what, newVal ){
 		switch( what ){
-			case "plotPointsHoverMode": this.userSelected.hoverMode = newVal;
+			case "plotPointsHoverMode":
+				this.userSelected.hoverMode = newVal;
+				this.layout.rebuild();
 			break;
-			case "vaUnits": this.userSelected.vaUnits = newVal;
+			case "vaUnits":
+				if( newVal !== this.currentVA){
+					console.log(`@Sabi: User requests a VA change (${newVal}) - how do you want to handle this?`);
+				}
 			break;
 			default: return;
 		}
-		this.layout.rebuild();
 	},
 
 	/**
@@ -71,31 +75,23 @@ export const toolBar = {
 	},
 
 	/**
-	 * Selectable units (VA only for now)
-	 * @param selectableUnits {Object}
-	 * @param label {String}
+	 * Selectable units (VA)
+	 * @param current {String}
+	 * @param available {Array}
 	 */
-	allowUserToSelectUnits: function ( selectableUnits ){
-		this.userSelected.vaUnits = Object.keys(selectableUnits).at(0); // set it to the first key in the list
-		this.selectableUnits = selectableUnits;
+	allowUserToSelectUnits: function ( current, available ){
 
-		const selectOptions = Object.entries(selectableUnits).map(
-			( [ key, value ] ) => ({ value: key, text: value.name })
-		);
+		const selectOptions = [ { text: current, value: this.currentVA } ];
+
+		available.forEach(  opt => {
+			selectOptions.push( opt )
+		});
 
 		this.buildDropDown(
 			'vaUnits',
-			'Select VA Units',
+			'Change VA Units',
 			selectOptions
 		);
-	},
-
-	getSelectedUnit(){
-		return this.userSelected.vaUnits;
-	},
-
-	getSelectedUnitNameRange(){
-		return this.selectableUnits[ this.getSelectedUnit() ];
 	},
 
 	buildDropDown( userSelects, labelText, selectOptions ){

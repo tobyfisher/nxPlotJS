@@ -173,6 +173,18 @@ const splitPlots = {
 				);
 			}
 		});
+	},
+
+	/**
+	 * Purge - wipe and start again
+	 */
+	purge(){
+		[ 'R', 'L' ].forEach(eye => {
+			if ( this.plots.has(eye) ){
+				const side = this.plots.get(eye);
+				Plotly.purge(side.get('div'));
+			}
+		});
 	}
 }
 

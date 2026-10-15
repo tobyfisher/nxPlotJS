@@ -1,7 +1,6 @@
 import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
-import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { dashedLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
@@ -23,13 +22,13 @@ const build = {
 		this.procedureVericalHeight = 0.77 // DomainLayout[1][1]
 	},
 
-	setSelectableUnits( selectableUnits ){
-		this.toolBar.allowUserToSelectUnits(selectableUnits);
+	setSelectableUnits( { current, available } ){
+		this.toolBar.allowUserToSelectUnits( current, available);
 		return this
 	},
 
 	buildLayout( layoutData ){
-		this.storeLayoutDataForRebuild( layoutData );
+		this.storeLayoutDataForRebuild(layoutData);
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -42,7 +41,6 @@ const build = {
 			[ 0, 0.42 ]		// VFI | VA		y1 (y) | y2
 		];
 
-
 		// VFI
 		const y1 = getAxis({
 			type: 'y',
@@ -53,19 +51,15 @@ const build = {
 			maxAxisTicks: 12,
 		});
 
-		/**
-		 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
-		 */
-		const { name: unitName, range: unitRange } = this.toolBar.getSelectedUnitNameRange();
-		const y2 = getAxis(
-			Object.assign({
-				type: 'y',
-				title: `VA - ${unitName}`,
-				domain: domainLayout[2],
-				rightSide: 'y1',
-				spikes: true,
-			}, getAxisTypeForRange(unitRange))
-		);
+		// VA
+		const y2 = getAxis({
+			type: 'y',
+			title: layoutData.yaxis.y2.title,
+			range: layoutData.yaxis.y2.range,
+			domain: domainLayout[2],
+			rightSide: 'y1',
+			spikes: true,
+		});
 
 		// IOP
 		const y3 = getAxis({
@@ -92,7 +86,7 @@ const build = {
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForPlots({
-			legend:  getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
+			legend: getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
 			yaxes: [ y1, y2, y3, y4 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
@@ -116,14 +110,10 @@ const build = {
 			line: dashedLine(),
 		};
 
-		/**
-		 * Changeable VA units, selected by the User via toolbar (defaults to first in list)
-		 */
-		const selectedVA = eye.VA.units[ this.toolBar.getSelectedUnit() ];
 		const VA = {
-			...yTrace('y2', selectedVA, `${selectedVA.name}`),
+			...yTrace('y2', eye.VA,  eye.VA.name),
 			mode: 'lines+markers',
-			hovertemplate: selectedVA.name + ': %{y}<br>%{x}'
+			hovertemplate: `${eye.VA.name}: %{y}<br>%{x}`
 		}
 
 		const IOP = {
@@ -132,9 +122,8 @@ const build = {
 			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
 		};
 
-
-		return [ VFI, IOP, VA, ...this.buildEvents( eye.events, 'y4') ]
+		return [ VFI, IOP, VA, ...this.buildEvents(eye.events, 'y4') ]
 	}
 }
 
-export const splitRL_Glaucoma_vaChangeableUnits = { ...splitCore, ...build };
+export const splitRL_Glaucoma = { ...splitCore, ...build };

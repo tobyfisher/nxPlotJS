@@ -145,5 +145,12 @@ export const core = {
 	 */
 	plotlyThemeChange(){
 		this.rebuild();
+	},
+
+	/**
+	 * Purge - wipe and start again
+	 */
+	purge(){
+		Plotly.purge(this.div);
 	}
 }

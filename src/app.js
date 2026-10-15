@@ -27,11 +27,10 @@ const allowedTemplates = new Set([
 	"barChart",
 	"PCR_Risk",
 	"eyesOutcomes_Errors",
-	"eyesOutcomes_vaChangeableUnits",
 	"outcomes_Errors",
 	"splitRL_Adherence",
-	"splitRL_Glaucoma_vaChangeableUnits",
-	"splitRL_MedicalRetina_vaChangeableUnits",
+	"splitRL_Glaucoma",
+	"splitRL_MedicalRetina",
 	"splitRL_Strabismus"
 ]);
 
