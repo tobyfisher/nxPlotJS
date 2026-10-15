@@ -82,7 +82,7 @@ UI changes of layout requires the following DOM in the header bar, nxPlotJS will
 ```html
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        nxPlot('splitRL_Glaucoma_vaChangeableUnits', 'js-nxplot-split')
+        nxPlot('splitRL_Glaucoma', 'js-nxplot-split')
         .setSelectableUnits() // if there are selectable VA units
         .buildLayout() // provide layout object
         .buildRightData()// provide data for Right Eye
@@ -94,11 +94,12 @@ UI changes of layout requires the following DOM in the header bar, nxPlotJS will
 </script>
 ```
 
-> [iDG: SplitPlot for Glaucoma with selectable VA Units](https://idg.knowego.com/edge/oes/glaucoma/)
-
+> [iDG: SplitPlot for Glaucoma](https://idg.knowego.com/edge/oes/glaucoma/)
+> 
+> [iDG: SplitPlot for MR](https://idg.knowego.com/edge/oes/medical-retina/)
+> 
 > [iDG: SplitPlot for Adherence](https://idg.knowego.com/edge/oes/adherence/)
 
-> [iDG: SplitPlot for MR with selectable VA units](https://idg.knowego.com/edge/oes/medical-retina/)
 
 
 ### Adding Horizontal &amp; Vertical plot lines
@@ -108,7 +109,7 @@ Horizontal & verical lines can be added to a plot, but in the case of SplitPlots
 #### Examples; both expect an Array
 
 ```js
-.addHorizontalLines([ { 'name': 'Target IOP', 'y': 15, 'yaxis': 'y4' } ])
+.addHorizontalLines([ { 'name': 'Target IOP', 'y': 15, 'yaxis': 'y3' } ])
 .addVerticalLines([ { name: 'Over 14 days', x: 14 } ], 1)
 ```
 
@@ -137,6 +138,13 @@ customTicks: {
     reverseRange: true
 }
 ```
+
+## Purging Plotly
+
+`nxPlot.purge()`
+
+nxPlot purge will run `Plotly.purge()` on for a single or split plot
+
 
 ## Theme change
 
