@@ -5,7 +5,7 @@ import * as debug from "../debug";
 import { getAxis } from "../getAxis";
 import { yTrace } from "./layouts/parts/yTrace";
 import { eventStyle } from "./layouts/parts/eventStyle";
-import { toolBar } from "../toolBar";
+import { log } from "../debug";
 
 /**
  * Manage R / L plots shown side by side
@@ -41,7 +41,7 @@ const splitPlots = {
 	},
 
 	/**
-	 * API uses the above methods to access this
+	 * API (in HTML) uses the above methods to access this
 	 */
 	buildSplitData( eye, plotData ){
 		const side = eye === 'R' ? 'right' : 'left';
@@ -75,11 +75,11 @@ const splitPlots = {
 	},
 
 	/**
-	 * Each specific split layout will set this up
-	 * the layout is used for both split plots
+	 * Each split layout will request this, it is the
+	 * "base" layout that is used for both split plots
 	 */
-	setBaseLayoutForPlots( layoutSpecific ){
-		// timeline
+	setBaseLayoutForSplitPlots( layoutSpecific ){
+
 		const x1 = getAxis({
 			type: 'x',
 			numTicks: 10,
@@ -130,6 +130,8 @@ const splitPlots = {
 
 				this.drawLines(side.get('layout'));
 
+				log(`"${eye}" side: plotly.react()`);
+
 				Plotly.react(
 					side.get('div'),
 					side.get('data'),
@@ -140,12 +142,16 @@ const splitPlots = {
 		});
 	},
 
+
 	rebuild(){
+		log('splitCore: rebuild plots');
+		log('updating colours in base layout for both sides');
 		// the same layout options are used by both sides
 		this.buildLayout(this.stored.get('layout'));
 
 		[ 'R', 'L' ].forEach(eye => {
 			if ( this.plots.has(eye) ){
+				log(`"${eye}" side: update colours using stored data`);
 				const side = this.plots.get(eye);
 				this.buildSplitData(eye, side.get('storedPlotData'));
 			}
@@ -154,25 +160,23 @@ const splitPlots = {
 		this.plotlyReact();
 	},
 
-	plotlyThemeChange(){
-		this.rebuild();
-	},
+	relayout(){
+		log('splitCore: relayout()');
+		const update = {
+			hovermode: this.toolBar.getHoverMode()
+		};
 
-	/**
-	 * If User changes the layout balance then
-	 * Plotly need to "re-layout" the plots
-	 * see: changeSplitLayout.js
-	 */
-	relayoutPlots(){
 		[ 'R', 'L' ].forEach(eye => {
 			if ( this.plots.has(eye) ){
+				log(`"${eye}" side: plotly.relayout()`);
 				const side = this.plots.get(eye);
-				Plotly.relayout(
-					side.get('div'),
-					side.get('layout')
-				);
+				Plotly.relayout(side.get('div'), update)
 			}
 		});
+	},
+
+	plotlyThemeChange(){
+		this.rebuild();
 	},
 
 	/**

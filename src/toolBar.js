@@ -9,10 +9,7 @@ import * as debug from "./debug";
 export const toolBar = {
 	layout: null,
 	div: null,
-	userSelected: {
-		hoverMode: 'closest',  // default, but shown as 'Single' as this makes sense?
-		vaUnits: ''
-	},
+	hoverMode: 'closest',  // default, but shown as 'Single' as this makes sense?
 	currentVA: 'currentVA',
 
 	/**
@@ -43,8 +40,9 @@ export const toolBar = {
 	userChangesSomething( what, newVal ){
 		switch( what ){
 			case "plotPointsHoverMode":
-				this.userSelected.hoverMode = newVal;
-				this.layout.rebuild();
+				this.hoverMode = newVal;
+				debug.log(`change hovermode to "${newVal}"`);
+				this.layout.relayout();
 			break;
 			case "vaUnits":
 				if( newVal !== this.currentVA){
@@ -71,7 +69,7 @@ export const toolBar = {
 	},
 
 	getHoverMode(){
-		return this.userSelected.hoverMode;
+		return this.hoverMode;
 	},
 
 	/**

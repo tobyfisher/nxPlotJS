@@ -86,7 +86,7 @@ export const splitLayoutView =  {
 		}
 
 		// plotJS needs to relayout it's plots
-		this.nxPlotLayout.relayoutPlots();
+		this.nxPlotLayout.relayout();
 	},
 
 	buildSplitBtns( div ){

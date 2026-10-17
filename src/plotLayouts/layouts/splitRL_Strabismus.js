@@ -64,7 +64,7 @@ const build = {
 		/**
 		 * set up base layout for both plots
 		 */
-		this.setBaseLayoutForPlots({
+		this.setBaseLayoutForSplitPlots({
 			legend:  getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
 			yaxes: [ y1, y2 ],
 			subplot: domainLayout.length, // num of sub-plots

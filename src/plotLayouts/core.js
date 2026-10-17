@@ -1,5 +1,6 @@
 import * as debug from "../debug";
 import { addLayoutHorizontals, addLayoutVerticals } from "./layoutAnnotations";
+import { log } from "../debug";
 
 export const core = {
 	div: null,
@@ -60,6 +61,7 @@ export const core = {
 		 * Standard initiate Plot.ly
 		 * Use "react" for new plot or re-building a plot
 		 */
+		log('core: plotly.react()');
 		Plotly.react(
 			this.div,
 			this.data,
@@ -76,12 +78,14 @@ export const core = {
 	 */
 	drawLines( layout ){
 		if ( this.lines.v.verticals.length ){
+			log('update colours in verticals')
 			addLayoutVerticals(
 				layout,
 				this.lines.v.verticals,
 				this.lines.v.h);
 		}
 		if ( this.lines.horizontals.length ){
+			log('update colours in horizontals')
 			addLayoutHorizontals(
 				layout,
 				this.lines.horizontals
@@ -127,15 +131,22 @@ export const core = {
 	},
 
 	rebuild(){
+		log('core: rebuilding plot using react()');
 
 		if ( this.stored.has(this.storeKeys.plot) ){
+			log('updating colours in stored data');
 			this.buildData(this.stored.get(this.storeKeys.plot));
 		}
 		if ( this.stored.has(this.storeKeys.layout) ){
+			log('updating colours in stored layout');
 			this.buildLayout(this.stored.get(this.storeKeys.layout));
 		}
 
 		this.plotlyReact();
+	},
+
+	relayout(){
+		debug.error('only used in splitCore');
 	},
 
 	/**
