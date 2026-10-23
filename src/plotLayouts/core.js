@@ -104,8 +104,8 @@ export const core = {
 		this.div = div;
 
 		if ( isSplitPlot ){
-			this.splitDiv.set('right', div.querySelector(`.oes-right-side`)) ;
-			this.splitDiv.set('left', div.querySelector(`.oes-left-side`)) ;
+			this.splitDiv.set('right', div.querySelector(`.oes-right-side > .right-eye-plot`)) ;
+			this.splitDiv.set('left', div.querySelector(`.oes-left-side > .left-eye-plot`)) ;
 			this.splitDiv.forEach( ( sideDiv, key ) => {
 				if( sideDiv === null || sideDiv === undefined ){
 					debug.error(`Requires fixed DOM structure, can not find: div class='.oes-${key}-side'`);
