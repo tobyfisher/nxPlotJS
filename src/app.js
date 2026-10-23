@@ -17,7 +17,8 @@ import { setupSplitLayoutView } from "./helpers/splitLayoutView";
  */
 
 if( window.hasOwnProperty('Plotly') ){
-	debug.log(`nxPlot is available, using Plot.ly v${Plotly.version}`);
+	// https://github.com/plotly/plotly.js/blob/main/dist/README.md#plotlyjs-basic
+	debug.log(`nxPlot is available, using Plot.ly v${Plotly.version} basic - supports: bar, pie and scatter`);
 } else {
 	debug.error('Plot.ly JS is required');
 }

@@ -6,6 +6,7 @@ import { getAxis } from "../getAxis";
 import { yTrace } from "./layouts/parts/yTrace";
 import { eventStyle } from "./layouts/parts/eventStyle";
 import { log } from "../debug";
+import { addReportDateLine } from "./reportDateLine";
 
 /**
  * Manage R / L plots shown side by side
@@ -58,6 +59,10 @@ const splitPlots = {
 			plotTitle: `${eye + side.substring(1)} eye`,
 			...this.baseLayout
 		});
+
+		// add report line and record it's shape index
+		const reportLineIndex = addReportDateLine( sideSpecificLayout, "2027-01-01" );
+		eyePlot.set('dateLineShape', `shapes[${reportLineIndex}]`);
 
 		// any procedures?
 		if ( plotData.hasOwnProperty('procedures') ){
@@ -173,6 +178,19 @@ const splitPlots = {
 				Plotly.relayout(side.get('div'), update)
 			}
 		});
+	},
+
+	showReportDate( eye, isoDate = "" ){
+		if( this.plots.has(eye) === false ) return;
+		const side = this.plots.get(eye);
+		const shapeRef = this.plots.get('');
+
+		const update = {};
+		update[`${shapeRef}.visible`] = (isoDate !== "");
+		update[`${shapeRef}.x0`] = isoDate;
+		update[`${shapeRef}.x1`] = isoDate;
+
+		Plotly.relayout(side.get('div'), update);
 	},
 
 	plotlyThemeChange(){
