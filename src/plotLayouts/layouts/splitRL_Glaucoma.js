@@ -29,6 +29,9 @@ const build = {
 
 	buildLayout( layoutData ){
 		this.storeLayoutDataForRebuild(layoutData);
+
+		const hasReports = false // layoutData.hasOwnProperty('reports');
+
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -37,9 +40,23 @@ const build = {
 		 */
 		const domainLayout = [
 			[ 0.82, 1 ],	// Events		y4
-			[ 0.47, 0.77 ],	// IOP			y3
-			[ 0, 0.42 ]		// VFI | VA		y1 (y) | y2
+			[ 0.47, 0.78 ],	// IOP			y3
+			[ 0, 0.43 ]		// VFI | VA		y1 (y) | y2
 		];
+
+		let yR;
+
+		if( hasReports){
+			domainLayout[0] = [0.82, 0.86],
+			domainLayout[3] = [0.88, 1]
+
+			// add "y5"
+			yR = {
+				visible: false,
+				showgrid: false,
+				domain: domainLayout[3],
+			};
+		}
 
 		// VFI
 		const y1 = getAxis({
@@ -82,12 +99,15 @@ const build = {
 			spikes: true,
 		});
 
+		const yaxes = [y1, y2, y3, y4 ];
+		if( hasReports ) yaxes.push( yR );
+
 		/**
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForSplitPlots({
-			legend: getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
-			yaxes: [ y1, y2, y3, y4 ],
+			legend: getLegend.horizontal('middle', domainLayout[1][1]), // position relative to subplots
+			yaxes,
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});

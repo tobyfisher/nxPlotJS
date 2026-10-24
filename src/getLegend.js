@@ -22,6 +22,8 @@ export const getLegend = {
 	horizontal( yanchor, y = 1, toggleSelf = false  ) {
 		const legend = Object.assign(legendDefaults, {
 			orientation: 'h',
+			xanchor: 'left',
+			x: 0,
 			yanchor,
 			y
 		});

@@ -44,6 +44,10 @@ export const getAxis = function ( options ){
 	// axis? x or y
 	const isY = options.type === 'y';
 
+	if( options.type === 'x'){
+		axis.anchor = 'y';
+	}
+
 	// balance axis lines on other side of plot area
 	if ( options.hasOwnProperty('noMirrorLines')){
 		axis.mirror = false;

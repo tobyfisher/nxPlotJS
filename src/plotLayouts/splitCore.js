@@ -60,9 +60,12 @@ const splitPlots = {
 			...this.baseLayout
 		});
 
-		// add report line and record it's shape index
-		const reportLineIndex = addReportDateLine( sideSpecificLayout, "2027-01-01" );
-		eyePlot.set('dateLineShape', `shapes[${reportLineIndex}]`);
+		// any reports?
+		if ( plotData.hasOwnProperty('reports') ){
+			// add report date line and track shape index
+			const shapeIndex = addReportDateLine( sideSpecificLayout, "2027-01-01" );
+			eyePlot.set('reportShapeIndex', `shapes[${shapeIndex}]`);
+		}
 
 		// any procedures?
 		if ( plotData.hasOwnProperty('procedures') ){
@@ -101,6 +104,8 @@ const splitPlots = {
 		};
 
 		this.baseLayout = { ...base, ...layoutSpecific };
+
+		console.log(this.baseLayout);
 	},
 
 	/**
@@ -180,10 +185,18 @@ const splitPlots = {
 		});
 	},
 
-	showReportDate( eye, isoDate = "" ){
+	/**
+	 * Report need to show where they exist on the appropriate plot
+	 * @param eye
+	 * @param isoDate
+	 */
+	markReportDate( eye, isoDate = "" ){
 		if( this.plots.has(eye) === false ) return;
 		const side = this.plots.get(eye);
-		const shapeRef = this.plots.get('');
+
+		if( side.has('reportShapeIndex') === false) return;
+
+		const shapeRef = side.get('reportShapeIndex');
 
 		const update = {};
 		update[`${shapeRef}.visible`] = (isoDate !== "");

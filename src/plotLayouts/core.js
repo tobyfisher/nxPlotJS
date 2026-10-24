@@ -158,6 +158,10 @@ export const core = {
 		this.rebuild();
 	},
 
+	markReportDate(){
+		debug.error('reports are only supported in splitCore');
+	},
+
 	/**
 	 * Purge - wipe and start again
 	 */

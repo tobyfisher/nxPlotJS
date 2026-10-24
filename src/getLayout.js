@@ -122,7 +122,8 @@ export const getLayout = function ( options ){
 		layout.grid = {
 			rows: options.subplot,
 			columns: 1,
-			pattern: 'independent',
+			pattern: 'coupled',
+			xside: "bottom plot"
 		};
 	}
 
@@ -161,7 +162,7 @@ export const getLayout = function ( options ){
 	if ( options.hasOwnProperty('rangeSlider') ){
 
 		const rangeslider = {
-			thickness: 0.08
+			thickness: 0.05
 		};
 
 		if ( dark ){
@@ -190,7 +191,9 @@ export const getLayout = function ( options ){
 	if ( options.hasOwnProperty('dateRangeButtons') ){
 		layout.xaxis.rangeselector = Object.assign({
 			x: 1,
+			y: 1,
 			xanchor: 'right',
+			yanchor: 'bottom',
 			buttons: [ {
 				label: 'Show all',
 				step: "all",
