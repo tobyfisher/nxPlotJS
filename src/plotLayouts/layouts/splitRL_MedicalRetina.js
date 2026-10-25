@@ -36,31 +36,52 @@ const build = {
 		 * 0.06 gap between sub-plots:
 		 */
 		const domainLayout = [
-			[ 0.7, 1 ], 	// Events		y3
-			[ 0, 0.64 ],	// CRT | VA		y1 | y2
+			[ 0.82, 1 ], 	// Events		  y5
+			[ 0.47, 0.78 ],	// CRT | VA		  y3 | y4
+			[ 0, 0.43 ],	// Total Vol | %  y1 | y2
 		];
 
-		// CRT
+
+		// Volumae
 		const y1 = getAxis({
 			type: 'y',
-			domain: domainLayout[1],
+			domain: domainLayout[2],
 			title: layoutData.yaxis.y1.title,
 			range: layoutData.yaxis.y1.range,
 			spikes: true,
 		});
 
-		// VA
+		// percentage change
 		const y2 = getAxis({
 			type: 'y',
+			domain: domainLayout[2],
 			title: layoutData.yaxis.y2.title,
 			range: layoutData.yaxis.y2.range,
-			domain: domainLayout[1],
 			rightSide: 'y1',
 			spikes: true,
 		});
 
-		// Events
+		// CRT
 		const y3 = getAxis({
+			type: 'y',
+			domain: domainLayout[1],
+			title: layoutData.yaxis.y3.title,
+			range: layoutData.yaxis.y3.range,
+			spikes: true,
+		});
+
+		// VA
+		const y4 = getAxis({
+			type: 'y',
+			title: layoutData.yaxis.y4.title,
+			range: layoutData.yaxis.y4.range,
+			domain: domainLayout[1],
+			rightSide: 'y3',
+			spikes: true,
+		});
+
+		// Events
+		const y5 = getAxis({
 			type: 'y',
 			domain: domainLayout[0],
 			useCategories: {
@@ -71,14 +92,14 @@ const build = {
 			hideLabels: true,
 		});
 
-		this.addEventAnnotations(layoutData.allEvents, 'y3', 12);
+		this.addEventAnnotations(layoutData.allEvents, 'y5', 12);
 
 		/**
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForSplitPlots({
-			legend: getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
-			yaxes: [ y1, y2, y3 ],
+			legend: getLegend.horizontal('middle', domainLayout[1][1]), // position relative to subplots
+			yaxes: [ y1, y2, y3, y4, y5 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
@@ -94,20 +115,33 @@ const build = {
 	 */
 	buildDataTraces( eye ){
 
+		const volume = {
+			...yTrace('y1', eye.volume, eye.volume.name),
+			mode: 'lines+markers',
+			hovertemplate: `${eye.volume.name}: %{y}<br>%{x}`
+		}
+
+		const change = {
+			...yTrace('y2', eye.change, eye.change.name),
+			mode: 'lines',
+			hovertemplate: `${eye.change.name}: %{y}<br>%{x}`,
+			line: dashedLine()
+		}
+
 		const CRT = {
-			...yTrace('y', eye.CRT, `${eye.CRT.name}`),
+			...yTrace('y3', eye.CRT, `${eye.CRT.name}`),
 			mode: 'lines+markers',
 			hovertemplate: 'CRT: %{y}<br>%{x}',
 			line: dashedLine()
 		};
 
 		const VA = {
-			...yTrace('y2', eye.VA, eye.VA.name),
+			...yTrace('y4', eye.VA, eye.VA.name),
 			mode: 'lines+markers',
 			hovertemplate: `${eye.VA.name}: %{y}<br>%{x}`
 		}
 
-		return [ CRT, VA, ...this.buildEvents(eye.events, 'y3') ]
+		return [ volume, change, CRT, VA, ...this.buildEvents(eye.events, 'y5') ]
 	}
 };
 
