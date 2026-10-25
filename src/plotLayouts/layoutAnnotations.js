@@ -1,7 +1,7 @@
-import { getBlue } from "../colors";
+import { getBlue, getColor } from "../colors";
 
 /**
- * build layout
+ * update layout shapes and annotations
  */
 const buildLayoutShapesAnnotations = ( layout, arr, buildLine, buildAnnotate ) => {
 	layout.shapes = layout.shapes.concat(arr.map(buildLine));
@@ -14,7 +14,6 @@ const buildLayoutShapesAnnotations = ( layout, arr, buildLine, buildAnnotate ) =
 const annotateBase = {
 	showarrow: false,
 	align: "left",
-	borderpad: 2,
 };
 
 /**
@@ -73,7 +72,7 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 		line: {
 			color: getBlue(),
 			width: 2,
-			dash: "3px,12px",
+			dash: "3px,18px",
 		}
 	});
 
@@ -91,4 +90,29 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 	buildLayoutShapesAnnotations(layout, horizontals, line, annotate);
 };
 
-export { addLayoutVerticals, addLayoutHorizontals }
+/**
+ * Add a grey text annotation instead of using a yaxis label (because drug names are so long)
+ */
+const annotateEventNames = ( events, yaxis, fontSize ) => {
+
+	const annotate = ( name ) => ({
+		...annotateBase,
+		font: {
+			color: getColor('label'),
+			size: fontSize,
+			weight: 500,
+		},
+		text: name,
+		y: name,
+		yref: yaxis, // assign to the yaxis
+		yshift: 8, // shift up
+		x: 0,
+		xanchor: "left",
+		xref: "paper",
+		opacity: 0.8
+	});
+
+	return events.map(annotate);
+}
+
+export { addLayoutVerticals, addLayoutHorizontals, annotateEventNames };

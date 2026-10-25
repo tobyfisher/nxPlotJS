@@ -94,12 +94,18 @@ export const getAxis = function ( options ){
 
 	// use Dates? - OE data formatting
 	if ( options.hasOwnProperty('useDates') ){
-		axis.tickformat = "%b %Y"; // d Mth Y
+		// https://d3js.org/d3-time-format
+		axis.tickformat = "%b %Y"; // Mth Y
 	}
 
 	// turn off zoom?
 	if ( options.hasOwnProperty('fixRange') ){
 		axis.fixedrange = true;
+	}
+
+	// hide the event tick labels (as drug names are long!)
+	if ( options.hasOwnProperty('hideLabels') ){
+		axis.showticklabels = false;
 	}
 
 	// manually set axes data range
@@ -131,10 +137,7 @@ export const getAxis = function ( options ){
 					axis.range = [ -1, arr.length ];
 					break;
 				case "padTop":
-					axis.range = [ 0, arr.length ];
-					break;
-				case "padBottom":
-					axis.range = [ -1, arr.length - 1 ];
+					axis.range = [ -0.5, arr.length ];
 					break;
 			}
 		}

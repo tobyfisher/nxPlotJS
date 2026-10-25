@@ -1,5 +1,6 @@
 import * as colors from "./colors";
 import { buttonStyling } from "./helpers/buttons";
+import { getColor } from "./colors";
 
 /**
  * Build Plotly layout: colours and layout based on theme and standardized settings
@@ -46,7 +47,7 @@ export const getLayout = function ( options ){
 		font: {
 			family: "Roboto, 'Open Sans', verdana, arial, sans-serif",
 			size: 11,
-			color: dark ? '#aaa' : '#333',
+			color: getColor('label'),
 		},
 
 		// default set up for hoverlabels
@@ -93,15 +94,16 @@ export const getLayout = function ( options ){
 			y: 1,
 			yanchor: 'top',
 			pad: {
-				t: 20 // px gap from top
+				t: 10 // px gap from top
 			},
 			font: {
-				size: 15,
+				size: 13,
+				weight: '500',
 				// color:'#f00' - can override base font
 			},
 		};
 		// adjust the margin area
-		layout.margin.t = 50;
+		layout.margin.t = 35;
 	}
 
 	/*

@@ -1,15 +1,11 @@
-import * as helpers from "../../helpers";
 import { getAxis } from "../../getAxis";
-import { getLayout } from "../../getLayout";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
-import * as debug from "../../debug";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
-import { dashedLine, dataLine } from "./parts/lines";
-import { eventStyle } from "./parts/eventStyle";
 import { yTrace } from "./parts/yTrace";
 import * as colors from "../../colors";
 import { getLegend } from "../../getLegend";
+import { dataLine } from "./parts/lines";
 
 /**
  * OES(Summary) Strabismus
@@ -36,8 +32,8 @@ const build = {
 		 * use a 0.06 gap between sub-plots:
 		 */
 		const domainLayout = [
-			[ 0.7, 1 ], 	// Events	y2
-			[ 0, 0.64 ]	    // VA		y1
+			[ 0.68, 1 ], 	// Events	y2
+			[ 0, 0.60 ]	    // VA		y1
 		];
 
 		// VA
@@ -56,10 +52,13 @@ const build = {
 			domain: domainLayout[0],
 			useCategories: {
 				categoryarray: layoutData.allEvents,
-				rangeFit: "pad", // "exact", etc
+				rangeFit: "padTop", // "exact", etc
 			},
 			spikes: true,
+			hideLabels: true,
 		});
+
+		this.addEventAnnotations(layoutData.allEvents, 'y2', 12);
 
 		/**
 		 * set up base layout for both plots

@@ -1,12 +1,13 @@
 import { core } from "./core";
 import { getLayout } from "../getLayout";
-import { addLayoutVerticals } from "./layoutAnnotations";
+import { addLayoutVerticals, annotateEventNames } from "./layoutAnnotations";
 import * as debug from "../debug";
 import { getAxis } from "../getAxis";
 import { yTrace } from "./layouts/parts/yTrace";
 import { eventStyle } from "./layouts/parts/eventStyle";
 import { log } from "../debug";
 import { addReportDateLine } from "./reportDateLine";
+import { getColor } from "../colors";
 
 /**
  * Manage R / L plots shown side by side
@@ -56,9 +57,13 @@ const splitPlots = {
 		/** plotly layout **/
 		const sideSpecificLayout = getLayout({
 			colors: `${side}EyeSeries`,
-			plotTitle: `${eye + side.substring(1)} eye`,
 			...this.baseLayout
 		});
+
+		// Event annotations (replaces Y axis labels because drugs names are long!)
+		if( this.eventAnnotations.length){
+			sideSpecificLayout.annotations = sideSpecificLayout.annotations.concat(this.eventAnnotations);
+		}
 
 		// any reports?
 		if ( plotData.hasOwnProperty('reports') ){
@@ -104,8 +109,14 @@ const splitPlots = {
 		};
 
 		this.baseLayout = { ...base, ...layoutSpecific };
+	},
 
-		console.log(this.baseLayout);
+	/**
+	 * Replace Event tick labels with Annotations
+	 * however, need to stort and add them later after getLayout();
+	 */
+	addEventAnnotations( eventNames, yaxis, fontSize = 10 ){
+		this.eventAnnotations = annotateEventNames( eventNames, yaxis, fontSize );
 	},
 
 	/**

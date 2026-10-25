@@ -30,8 +30,6 @@ const build = {
 	buildLayout( layoutData ){
 		this.storeLayoutDataForRebuild(layoutData);
 
-		const hasReports = false // layoutData.hasOwnProperty('reports');
-
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -44,13 +42,16 @@ const build = {
 			[ 0, 0.43 ]		// VFI | VA		y1 (y) | y2
 		];
 
+
+		const hasReports = false; // layoutData.hasOwnProperty('reports');
 		let yR;
 
 		if( hasReports){
+			// update grid domain layout
 			domainLayout[0] = [0.82, 0.86],
 			domainLayout[3] = [0.88, 1]
 
-			// add "y5"
+			// new "y5" axis
 			yR = {
 				visible: false,
 				showgrid: false,
@@ -94,13 +95,18 @@ const build = {
 			domain: domainLayout[0],
 			useCategories: {
 				categoryarray: layoutData.allEvents,
-				rangeFit: "pad", // "exact", etc
+				rangeFit: "padTop", // "exact", etc
 			},
 			spikes: true,
+			hideLabels: true,
 		});
 
+		this.addEventAnnotations(layoutData.allEvents, 'y4');
+
 		const yaxes = [y1, y2, y3, y4 ];
-		if( hasReports ) yaxes.push( yR );
+		if( hasReports ) {
+			yaxes.push( yR );
+		}
 
 		/**
 		 * set up base layout for both plots
@@ -111,6 +117,8 @@ const build = {
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
+
+
 
 		return this
 	},

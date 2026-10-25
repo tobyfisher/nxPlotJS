@@ -65,10 +65,13 @@ const build = {
 			domain: domainLayout[0],
 			useCategories: {
 				categoryarray: layoutData.allEvents,
-				rangeFit: "pad", // "exact", etc
+				rangeFit: "padTop", // "exact", etc
 			},
 			spikes: true,
+			hideLabels: true,
 		});
+
+		this.addEventAnnotations(layoutData.allEvents, 'y3', 12);
 
 		/**
 		 * set up base layout for both plots

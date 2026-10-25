@@ -16,18 +16,18 @@ export const eventStyle = ( type, color = false ) => {
 		case 'management':
 		case 'image':
 		case 'injection':
-			style.mode = "markers";
+			style.mode = "markers+text";
 			break;
-		case 'drug':
+		case 'duration':
 			style.mode = "lines+markers";
 			style.line = {
-				width: 3,
+				width: 4,
 			};
 			break;
 		default: debug.error(`eventStyle - unknown type: ${type}`);
 	}
 
-	// add color, but preserve other properties
+	// add specific color, otherwise it picks up the layout color
 	if ( color ){
 		if ( style.marker ) style.marker.color = color;
 		if ( style.line ) style.line.color = color;

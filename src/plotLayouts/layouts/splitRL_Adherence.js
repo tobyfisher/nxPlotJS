@@ -29,8 +29,8 @@ const build = {
 		 * note: 0.06 gap between sub-plots:
 		 */
 		const domainLayout = [
-			[ 0.7, 1 ], // Events - y2
-			[ 0, 0.64 ]	// 24hrs - y1 (y)
+			[ 0.8, 1 ], // Events - y2
+			[ 0, 0.76 ]	// 24hrs - y1 (y)
 		];
 
 		// Daily adherence
@@ -51,17 +51,20 @@ const build = {
 				rangeFit: "pad", // "exact", etc
 			},
 			spikes: true,
+			hideLabels: true
 		});
 
 		/**
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForSplitPlots({
-			legend: getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
+			legend: getLegend.horizontal('top', domainLayout[1][1]), // position relative to subplots
 			yaxes: [ y1, y2 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
+
+		this.addEventAnnotations(layoutData.allEvents, 'y2')
 
 		return this
 	},

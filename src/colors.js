@@ -11,6 +11,7 @@ const colours = {
 	dark: {
 		axis: { grid: '#292929', tick: '#666666' },
 		grey: '#666666',
+		label: '#aaa',
 		blue: '#63d7d6',
 		orange: '#FF8C11',
 		highlight: '#fff',
@@ -27,7 +28,8 @@ const colours = {
 	light: {
 		axis: { grid: '#e6e6e6', tick: '#cccccc' },
 		grey: '#cccccc',
-		blue: '#00f',
+		label: '#333',
+		blue: '#00a',
 		orange: '#CE4100',
 		highlight: '#000',
 		green: '#418c20',
@@ -99,6 +101,8 @@ const getColor = ( colour ) => {
 			return colours[theme].yellow;
 		case 'grey':
 			return colours[theme].grey;
+		case 'label':
+			return colours[theme].label;
 
 		default:
 			return 'pink'; // no match, flag failure to match as pink!

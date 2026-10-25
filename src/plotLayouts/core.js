@@ -14,6 +14,7 @@ export const core = {
 		},
 		horizontals: [],
 	},
+	eventAnnotations: [],
 	storeKeys: {
 		layout: 'layout',
 		plot: 'plot'

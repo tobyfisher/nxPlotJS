@@ -10,15 +10,16 @@ export const markerFor = ( type ) => {
 	switch ( type ){
 		case 'management':
 			symbol = "square";
-			size = 9;
+			size = 10;
 			break;
+		case "report":
 		case 'image':
-			symbol = "triangle-down";
+			symbol = "circle";
 			size = 11;
 			break;
-		case 'drug':
+		case 'duration':
 			symbol = "diamond";
-			size = 9;
+			size = 6;
 			break;
 		case 'injection':
 			symbol = "star-diamond";
