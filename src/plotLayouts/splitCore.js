@@ -3,7 +3,7 @@ import { getLayout } from "../getLayout";
 import { addLayoutVerticals, annotateEventNames } from "./layoutAnnotations";
 import * as debug from "../debug";
 import { getAxis } from "../getAxis";
-import { yTrace } from "./layouts/parts/yTrace";
+import { yTrace, yBars } from "./layouts/parts/yTrace";
 import { eventStyle } from "./layouts/parts/eventStyle";
 import { log } from "../debug";
 import { addReportDateLine } from "./reportDateLine";
@@ -123,7 +123,7 @@ const splitPlots = {
 	 * Events subplot
 	 * @returns {Array}
 	 */
-	buildEvents( events, y ){
+	buildEvents( events, yaxis ){
 		/**
 		 * Event data are all individual traces
 		 * ALL the Y values are the SAME, to look like a horizontal bar
@@ -131,7 +131,7 @@ const splitPlots = {
 		 */
 		return Object.values(events).map(( event ) => ({
 			oeEventType: event.event, // store event type
-			...yTrace(y, event, event.name),
+			...yTrace(yaxis, event, event.name),
 			...eventStyle(event.event),
 			customdata: event.customdata,
 			hovertemplate: event.customdata ?

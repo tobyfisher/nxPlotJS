@@ -1,4 +1,5 @@
 import { getBlue, getColor } from "../colors";
+import { fontWeight } from "../fonts";
 
 /**
  * update layout shapes and annotations
@@ -98,18 +99,19 @@ const annotateEventNames = ( events, yaxis, fontSize ) => {
 	const annotate = ( name ) => ({
 		...annotateBase,
 		font: {
-			color: getColor('label'),
-			size: fontSize,
-			weight: 500,
+			color: getColor('highlight'),
+			size: 12,
+			weight: fontWeight,
+			shadow: "auto"
 		},
 		text: name,
 		y: name,
 		yref: yaxis, // assign to the yaxis
-		yshift: 7, // shift up
+		yshift: 1, // shift up
 		x: 0,
 		xanchor: "left",
 		xref: "paper",
-		opacity: 0.7
+		opacity: 0.8
 	});
 
 	return events.map(annotate);

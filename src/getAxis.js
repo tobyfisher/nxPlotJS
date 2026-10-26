@@ -59,6 +59,11 @@ export const getAxis = function ( options ){
 		axis.mirror = false;
 	}
 
+	// hide the grid lines for this axis
+	if ( options.hasOwnProperty('hideGridLines') ){
+		axis.showgrid = false;
+	}
+
 	// subplot?
 	if ( options.hasOwnProperty('domain') && isY ){
 		axis.domain = options.domain;
@@ -145,7 +150,7 @@ export const getAxis = function ( options ){
 					axis.range = [ 0, arr.length - 1 ];
 					break;
 				case "pad":
-					axis.range = [ -1, arr.length ];
+					axis.range = [ -0.5, arr.length - 0.5 ];
 					break;
 				case "padTop":
 					axis.range = [ -0.5, arr.length ];

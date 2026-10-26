@@ -7,7 +7,7 @@
 
 const legendDefaults = {
 		font: {
-			size: 9
+			size: 10
 		},
 		itemclick: 'toggleothers', //  ( default: "toggle" | "toggleothers" | false )
 		// traceorder: "grouped", // or "reversed+grouped"

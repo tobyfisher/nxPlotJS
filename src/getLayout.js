@@ -65,7 +65,8 @@ export const getLayout = function ( options ){
 		},
 		// Shapes and Annotations added through layoutAnnotations
 		shapes: [],
-		annotations: []
+		annotations: [],
+		barmode: 'stack'
 	};
 
 	/*
@@ -102,8 +103,7 @@ export const getLayout = function ( options ){
 			},
 			font: {
 				size: 14,
-				weight: '500',
-				// color:'#f00' - can override base font
+				weight: fontWeight("light")
 			},
 		};
 		// adjust the margin area

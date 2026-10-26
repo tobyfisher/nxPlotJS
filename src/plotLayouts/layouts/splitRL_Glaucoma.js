@@ -2,7 +2,7 @@ import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
 import { dashedLine } from "./parts/lines";
-import { yTrace } from "./parts/yTrace";
+import { yTrace, yBars } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
 
 /**
@@ -37,9 +37,9 @@ const build = {
 		 * 0.06 gap between sub-plots:
 		 */
 		const domainLayout = [
-			[ 0.82, 1 ],	// Events		y4
-			[ 0.47, 0.78 ],	// IOP			y3
-			[ 0, 0.43 ]		// VFI | VA		y1 (y) | y2
+			[ 0.8, 1 ],	// Events		y4
+			[ 0.42, 0.78 ],	// IOP			y3
+			[ 0, 0.38 ]		// VFI | VA		y1 (y) | y2
 		];
 
 
@@ -95,10 +95,11 @@ const build = {
 			domain: domainLayout[0],
 			useCategories: {
 				categoryarray: layoutData.allEvents,
-				rangeFit: "padTop", // "exact", etc
+				rangeFit: "pad", // "exact", etc
 			},
 			spikes: true,
 			hideLabels: true,
+			hideGridLines: true,
 		});
 
 		this.addEventAnnotations(layoutData.allEvents, 'y4');
@@ -150,7 +151,42 @@ const build = {
 			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
 		};
 
-		return [ VFI, IOP, VA, ...this.buildEvents(eye.events, 'y4') ]
+		const test = {
+			yaxis: 'y4', // note: y1 = y = default
+			base: 1262304000000,
+			x: [31536000000],
+			y: ['Generic Hylo Night eye ointment preservative free (No Preservative)'],
+			xperiodalignment: "start",
+			name: "test",
+			type: 'bar',
+			orientation: 'h',
+			width: 0.8,
+			showlegend: false,
+			marker: {
+				color: "#363",
+				cornerradius: 3,
+			},
+			hovertemplate: '%{y}<br>%{x}<extra></extra>',
+		};
+
+		const test2 = {
+			yaxis: 'y4', // note: y1 = y = default
+			base: 1325376000000,
+			x: [31536000000],
+			y: ['Generic Hylo Night eye ointment preservative free (No Preservative)'],
+			xperiodalignment: "start",
+			name: "test",
+			type: 'bar',
+			orientation: 'h',
+			showlegend: false,
+			marker: {
+				color: "#242",
+			}
+		};
+
+
+
+		return [ VFI, IOP, VA, test, test2, ...this.buildEvents(eye.events, 'y4') ]
 	}
 }
 
