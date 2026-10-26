@@ -71,8 +71,8 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 		y1: y,
 		line: {
 			color: getBlue(),
-			width: 2,
-			dash: "3px,18px",
+			width: 1,
+			dash: "2px,8px",
 		}
 	});
 
@@ -105,7 +105,7 @@ const annotateEventNames = ( events, yaxis, fontSize ) => {
 		text: name,
 		y: name,
 		yref: yaxis, // assign to the yaxis
-		yshift: 8, // shift up
+		yshift: 7, // shift up
 		x: 0,
 		xanchor: "left",
 		xref: "paper",

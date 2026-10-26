@@ -2,9 +2,10 @@ import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
-import { dashedLine } from "./parts/lines";
+import { dashedLine, smoothLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
+import { getBlue } from "../../colors";
 
 /**
  * OES(Summary) Med Retina
@@ -125,7 +126,7 @@ const build = {
 			...yTrace('y2', eye.change, eye.change.name),
 			mode: 'lines',
 			hovertemplate: `${eye.change.name}: %{y}<br>%{x}`,
-			line: dashedLine()
+			line: smoothLine( getBlue(), true, 1 )
 		}
 
 		const CRT = {

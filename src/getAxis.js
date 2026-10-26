@@ -46,6 +46,8 @@ export const getAxis = function ( options ){
 
 	if( options.type === 'x'){
 		axis.anchor = 'y';
+		// minallowed: '2025-01-01',
+		// maxallowed: '2026-01-01'
 	}
 
 	// balance axis lines on other side of plot area
@@ -96,6 +98,10 @@ export const getAxis = function ( options ){
 	if ( options.hasOwnProperty('useDates') ){
 		// https://d3js.org/d3-time-format
 		axis.tickformat = "%b %Y"; // Mth Y
+
+		if(!isY){
+			axis.type = "date"; // or let plotly figure it out
+		}
 	}
 
 	// turn off zoom?
