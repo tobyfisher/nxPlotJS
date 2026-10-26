@@ -1,0 +1,1 @@
+export const isDarkTheme = () => document.documentElement.classList.contains("theme-dark");

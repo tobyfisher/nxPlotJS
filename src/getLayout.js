@@ -1,6 +1,8 @@
 import * as colors from "./colors";
 import { buttonStyling } from "./helpers/buttons";
 import { getColor } from "./colors";
+import { fontWeight } from "./fonts";
+import { isDarkTheme } from "./helpers/isDarkTheme";
 
 /**
  * Build Plotly layout: colours and layout based on theme and standardized settings
@@ -23,7 +25,7 @@ import { getColor } from "./colors";
  */
 export const getLayout = function ( options ){
 	// set up layout colours based on OE theme settings: "dark" or "light"
-	const dark = colors.isDarkTheme();
+	const dark = isDarkTheme();
 
 	// build the Plotly layout obj
 	const layout = {
@@ -48,6 +50,7 @@ export const getLayout = function ( options ){
 			family: "Roboto, 'Open Sans', verdana, arial, sans-serif",
 			size: 11,
 			color: getColor('label'),
+			weight: fontWeight("light"),
 		},
 
 		// default set up for hoverlabels
@@ -55,8 +58,9 @@ export const getLayout = function ( options ){
 			bgcolor: dark ? "#003" : '#fff',
 			bordercolor: dark ? '#009' : '#00f',
 			font: {
-				size: 11, // override base font
+				size: 10, // override base font
 				color: colors.getBlue(dark),
+				weight: fontWeight(),
 			}
 		},
 		// Shapes and Annotations added through layoutAnnotations
@@ -97,7 +101,7 @@ export const getLayout = function ( options ){
 				t: 10 // px gap from top
 			},
 			font: {
-				size: 13,
+				size: 14,
 				weight: '500',
 				// color:'#f00' - can override base font
 			},

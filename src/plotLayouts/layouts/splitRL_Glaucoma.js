@@ -112,7 +112,7 @@ const build = {
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForSplitPlots({
-			legend: getLegend.horizontal('middle', domainLayout[1][1]), // position relative to subplots
+			legend: getLegend.horizontal('bottom', domainLayout[2][1]), // position relative to subplots
 			yaxes,
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()

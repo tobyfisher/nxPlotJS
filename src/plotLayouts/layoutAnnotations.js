@@ -109,7 +109,7 @@ const annotateEventNames = ( events, yaxis, fontSize ) => {
 		x: 0,
 		xanchor: "left",
 		xref: "paper",
-		opacity: 0.8
+		opacity: 0.7
 	});
 
 	return events.map(annotate);

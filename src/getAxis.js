@@ -1,4 +1,5 @@
 import * as colors from "./colors";
+import { isDarkTheme } from "./helpers/isDarkTheme";
 
 /**
  * Build an axis object
@@ -23,7 +24,7 @@ import * as colors from "./colors";
  */
 export const getAxis = function ( options ){
 	// set up layout colours based on OE theme settings: "dark" or "light"
-	const dark = colors.isDarkTheme();
+	const dark = isDarkTheme();
 
 	// default
 	let axis = {
@@ -32,6 +33,9 @@ export const getAxis = function ( options ){
 		showgrid: true,
 		gridcolor: colors.getAxisGridColor(),
 		tickmode: "auto",
+		tickfont: {
+			size: 10,
+		},
 		nticks: 10, // max. # of ticks. Actual # of ticks auto to be less than or equal to `nticks`. `tickmode` must be set to "auto".
 		ticks: "outside",
 		ticklen: 3, // px
@@ -66,7 +70,7 @@ export const getAxis = function ( options ){
 			text: options.title,
 			standoff: isY ? 10 : 20, // px offset
 			font: {
-				size: 12,
+				size: 11,
 			}
 		};
 	}
@@ -101,6 +105,7 @@ export const getAxis = function ( options ){
 
 		if(!isY){
 			axis.type = "date"; // or let plotly figure it out
+			axis.tickfont.size = 11 // bump this up
 		}
 	}
 
@@ -151,7 +156,7 @@ export const getAxis = function ( options ){
 
 	// spikes
 	if ( options.hasOwnProperty('spikes') ){
-		const dark = colors.isDarkTheme()
+		const dark = isDarkTheme()
 		axis.showspikes = true;
 		axis.spikecolor = dark ? '#0ff' : '#00f';
 		axis.spikethickness = dark ? 0.5 : 1;

@@ -1,4 +1,5 @@
 import * as colors from "../colors";
+import { isDarkTheme } from "./isDarkTheme";
 
 /**
  * Consistent buttons styling
@@ -7,10 +8,10 @@ import * as colors from "../colors";
  */
 const buttonStyling = ( dark ) => ({
 	font: {
-		color: dark ? '#ccc' : '#666',
+		color: dark ? '#aaa' : '#555',
 	},
-	bgcolor: dark ? 'rgb(30,46,66)' : 'rgb(255,255,255)',
-	activecolor: dark ? 'rgb(7,69,152)' : 'rgb(225,225,225)',
+	bgcolor: dark ? 'rgb(30,36,46)' : 'rgb(255,255,255)',
+	activecolor: dark ? 'rgb(30,50,100)' : 'rgb(225,225,235)',
 	bordercolor: dark ? 'rgb(10,26,36)' : 'rgb(255,255,255)',
 	borderwidth: 2,
 });
@@ -47,7 +48,7 @@ const addDropDown = ( layout ) => {
 		x: 0,
 		y: 0.35,
 		buttons: buttons, // add buttons to menu
-	}, buttonStyling(colors.isDarkTheme()));
+	}, buttonStyling(isDarkTheme()));
 
 	// could be multiple menus
 	layout.updatemenus = [ menu ];

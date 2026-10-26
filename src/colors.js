@@ -1,10 +1,7 @@
-/**
- * plot color styles based on UI theme mode
- * @returns {Boolean}
- */
-const isDarkTheme = () => document.documentElement.classList.contains("theme-dark");
+import { isDarkTheme } from "./helpers/isDarkTheme";
 
 /**
+ * plot color styles based on UI theme mode
  * Theme colours
  */
 const colours = {
@@ -116,4 +113,4 @@ const getColor = ( colour ) => {
 const getAxisGridColor = () => colours[isDarkTheme() ? 'dark' : 'light'].axis.grid;
 const getAxisTickColor = () => colours[isDarkTheme() ? 'dark' : 'light'].axis.tick;
 
-export { isDarkTheme, getBlue, getColorSeries, getColor, getAxisTickColor, getAxisGridColor };
+export { getBlue, getColorSeries, getColor, getAxisTickColor, getAxisGridColor };
