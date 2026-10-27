@@ -58,7 +58,7 @@ export const getLayout = function ( options ){
 			bgcolor: dark ? "#003" : '#fff',
 			bordercolor: dark ? '#009' : '#00f',
 			font: {
-				size: 10, // override base font
+				size: 11, // override base font
 				color: colors.getBlue(dark),
 				weight: fontWeight(),
 			}

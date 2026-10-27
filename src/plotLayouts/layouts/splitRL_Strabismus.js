@@ -3,9 +3,9 @@ import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
 import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { yTrace } from "./parts/yTrace";
-import * as colors from "../../colors";
 import { getLegend } from "../../getLegend";
 import { dataLine } from "./parts/lines";
+import * as colors from "../../colors";
 
 /**
  * OES(Summary) Strabismus
@@ -52,7 +52,7 @@ const build = {
 			domain: domainLayout[0],
 			useCategories: {
 				categoryarray: layoutData.allEvents,
-				rangeFit: "padTop", // "exact", etc
+				rangeFit: "pad", // "exact", etc
 			},
 			spikes: true,
 			hideLabels: true,

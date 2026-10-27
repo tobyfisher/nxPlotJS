@@ -49,9 +49,11 @@ export const getAxis = function ( options ){
 	const isY = options.type === 'y';
 
 	if( options.type === 'x'){
-		axis.anchor = 'y';
+		axis.anchor = 'y'; // always anchored to y or y1
 		// minallowed: '2025-01-01',
 		// maxallowed: '2026-01-01'
+	} else {
+		axis.anchor = 'x';
 	}
 
 	// balance axis lines on other side of plot area
@@ -158,14 +160,13 @@ export const getAxis = function ( options ){
 			}
 		}
 	}
-
 	// spikes
 	if ( options.hasOwnProperty('spikes') ){
-		const dark = isDarkTheme()
 		axis.showspikes = true;
-		axis.spikecolor = dark ? '#0ff' : '#00f';
-		axis.spikethickness = dark ? 0.5 : 1;
-		axis.spikedash = dark ? "1px,3px" : "2px,3px";
+		axis.spikecolor = isDarkTheme() ? '#0ff' : '#00f';
+		axis.spikethickness = isDarkTheme() ? 0.5 : 1;
+		axis.spikedash = isDarkTheme() ? "1px,3px" : "2px,3px";
+		axis.spikemode = "across";
 	}
 
 	return axis;

@@ -94,15 +94,14 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 /**
  * Add a grey text annotation instead of using a yaxis label (because drug names are so long)
  */
-const annotateEventNames = ( events, yaxis, fontSize ) => {
+const annotateEventNames = ( events, yaxis ) => {
 
 	const annotate = ( name ) => ({
 		...annotateBase,
 		font: {
 			color: getColor('highlight'),
-			size: 12,
-			weight: fontWeight,
-			shadow: "auto"
+			size: 13,
+			weight: fontWeight("light"),
 		},
 		text: name,
 		y: name,
@@ -111,7 +110,7 @@ const annotateEventNames = ( events, yaxis, fontSize ) => {
 		x: 0,
 		xanchor: "left",
 		xref: "paper",
-		opacity: 0.8
+		opacity: 0.5
 	});
 
 	return events.map(annotate);

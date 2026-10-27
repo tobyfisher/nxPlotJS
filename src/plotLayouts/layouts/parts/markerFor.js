@@ -1,11 +1,17 @@
 import * as debug from "../../../debug";
 /**
  * return settings for "marker" style in data
- * @param {String} Event type: "Drugs", etc
  * @returns {Object}
+ * @param type {String}
+ * @param many {Number}
  */
-export const markerFor = ( type ) => {
-	let symbol, size;
+export const markerFor = ( type, many = 0 ) => {
+	let symbol = "circle"
+	let size = 8;
+
+	// Use Marker size to indicate many of same on marker
+	// e.g. 4 reports on the same date
+	const increaseSize = many * 0.5;
 
 	switch ( type ){
 		case 'management':
@@ -17,7 +23,7 @@ export const markerFor = ( type ) => {
 			symbol = "circle";
 			size = 11;
 			break;
-		case 'duration':
+		case 'drop':
 			symbol = "diamond";
 			size = 6;
 			break;
@@ -26,9 +32,9 @@ export const markerFor = ( type ) => {
 			size = 10;
 			break;
 		default :
-			debug.error('markerFor', `Unknown marker type: ${ type }`);
+			debug.error(`markerFor: Unknown marker type: ${ type }`);
 
 	}
 
-	return { symbol, size };
+	return { symbol, size: (size + increaseSize) };
 };

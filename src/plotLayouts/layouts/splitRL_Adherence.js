@@ -2,7 +2,7 @@ import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
 import { yTrace } from "./parts/yTrace";
-import { eventStyle } from "./parts/eventStyle";
+import { event } from "./parts/event";
 import { getLegend } from "../../getLegend";
 
 /**

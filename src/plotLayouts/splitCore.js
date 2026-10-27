@@ -3,11 +3,8 @@ import { getLayout } from "../getLayout";
 import { addLayoutVerticals, annotateEventNames } from "./layoutAnnotations";
 import * as debug from "../debug";
 import { getAxis } from "../getAxis";
-import { yTrace, yBars } from "./layouts/parts/yTrace";
-import { eventStyle } from "./layouts/parts/eventStyle";
 import { log } from "../debug";
 import { addReportDateLine } from "./reportDateLine";
-import { getColor } from "../colors";
 
 /**
  * Manage R / L plots shown side by side
@@ -112,33 +109,11 @@ const splitPlots = {
 	},
 
 	/**
-	 * Replace Event tick labels with Annotations
-	 * however, need to stort and add them later after getLayout();
+	 * Replace Event yAxis tick labels with Annotations
+	 * however, need to store and add them later after getLayout();
 	 */
-	addEventAnnotations( eventNames, yaxis, fontSize = 10 ){
-		this.eventAnnotations = annotateEventNames( eventNames, yaxis, fontSize );
-	},
-
-	/**
-	 * Events subplot
-	 * @returns {Array}
-	 */
-	buildEvents( events, yaxis ){
-		/**
-		 * Event data are all individual traces
-		 * ALL the Y values are the SAME, to look like a horizontal bar
-		 * extra data for the popup can be passed in with customdata
-		 */
-		return Object.values(events).map(( event ) => ({
-			oeEventType: event.event, // store event type
-			...yTrace(yaxis, event, event.name),
-			...eventStyle(event.event),
-			customdata: event.customdata,
-			hovertemplate: event.customdata ?
-				'%{y}<br>%{customdata}<br>%{x}<extra></extra>' :
-				'%{y}<br>%{x}<extra></extra>',
-			showlegend: false
-		}));
+	addEventAnnotations( eventNames, yaxis){
+		this.eventAnnotations = annotateEventNames( eventNames, yaxis );
 	},
 
 	/**
@@ -201,7 +176,7 @@ const splitPlots = {
 	 * @param eye
 	 * @param isoDate
 	 */
-	markReportDate( eye, isoDate = "" ){
+	highlightDate( eye, isoDate = "" ){
 		if( this.plots.has(eye) === false ) return;
 		const side = this.plots.get(eye);
 

@@ -87,7 +87,7 @@ const build = {
 			domain: domainLayout[0],
 			useCategories: {
 				categoryarray: layoutData.allEvents,
-				rangeFit: "padTop", // "exact", etc
+				rangeFit: "pad", // "exact", etc
 			},
 			spikes: true,
 			hideLabels: true,

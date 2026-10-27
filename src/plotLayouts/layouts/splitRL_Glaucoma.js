@@ -2,8 +2,10 @@ import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
 import { dashedLine } from "./parts/lines";
-import { yTrace, yBars } from "./parts/yTrace";
+import { calcEventLayout, eventAxis, buildEvents } from "./parts/event";
+import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
+import { convertDomain } from "./parts/domain";
 
 /**
  * OES(Summary) Glaucoma
@@ -19,7 +21,6 @@ const build = {
 	prebuild(){
 		this.toolBar = toolBar.linkToLayout(this);
 		this.toolBar.allowUserToChangeHoverMode();
-		this.procedureVericalHeight = 0.77 // DomainLayout[1][1]
 	},
 
 	setSelectableUnits( { current, available } ){
@@ -36,28 +37,20 @@ const build = {
 		 * e.g. sub-plotting within plot.ly - Navigator is outside this
 		 * 0.06 gap between sub-plots:
 		 */
+
+		const eventDomainHeight = calcEventLayout(layoutData.allEvents.length);
+
+		// Events   	y4
+		// IOP       	y3 [<-- key data]
+		// VFI | VA		y1 (y) | y2
+
 		const domainLayout = [
-			[ 0.8, 1 ],	// Events		y4
-			[ 0.42, 0.78 ],	// IOP			y3
-			[ 0, 0.38 ]		// VFI | VA		y1 (y) | y2
+			convertDomain([ 100-eventDomainHeight, 100 ]),
+			convertDomain([ 54, 96].map(x => x - eventDomainHeight)),
+			convertDomain([ 0, 50-eventDomainHeight])
 		];
 
-
-		const hasReports = false; // layoutData.hasOwnProperty('reports');
-		let yR;
-
-		if( hasReports){
-			// update grid domain layout
-			domainLayout[0] = [0.82, 0.86],
-			domainLayout[3] = [0.88, 1]
-
-			// new "y5" axis
-			yR = {
-				visible: false,
-				showgrid: false,
-				domain: domainLayout[3],
-			};
-		}
+		this.procedureVericalHeight = domainLayout[1][1];
 
 		// VFI
 		const y1 = getAxis({
@@ -90,36 +83,18 @@ const build = {
 		});
 
 		// Events
-		const y4 = getAxis({
-			type: 'y',
-			domain: domainLayout[0],
-			useCategories: {
-				categoryarray: layoutData.allEvents,
-				rangeFit: "pad", // "exact", etc
-			},
-			spikes: true,
-			hideLabels: true,
-			hideGridLines: true,
-		});
-
+		const y4 = eventAxis( domainLayout[0], layoutData.allEvents )
 		this.addEventAnnotations(layoutData.allEvents, 'y4');
-
-		const yaxes = [y1, y2, y3, y4 ];
-		if( hasReports ) {
-			yaxes.push( yR );
-		}
 
 		/**
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForSplitPlots({
 			legend: getLegend.horizontal('bottom', domainLayout[2][1]), // position relative to subplots
-			yaxes,
+			yaxes: [y1, y2, y3, y4 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
-
-
 
 		return this
 	},
@@ -151,42 +126,7 @@ const build = {
 			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
 		};
 
-		const test = {
-			yaxis: 'y4', // note: y1 = y = default
-			base: 1262304000000,
-			x: [31536000000],
-			y: ['Generic Hylo Night eye ointment preservative free (No Preservative)'],
-			xperiodalignment: "start",
-			name: "test",
-			type: 'bar',
-			orientation: 'h',
-			width: 0.8,
-			showlegend: false,
-			marker: {
-				color: "#363",
-				cornerradius: 3,
-			},
-			hovertemplate: '%{y}<br>%{x}<extra></extra>',
-		};
-
-		const test2 = {
-			yaxis: 'y4', // note: y1 = y = default
-			base: 1325376000000,
-			x: [31536000000],
-			y: ['Generic Hylo Night eye ointment preservative free (No Preservative)'],
-			xperiodalignment: "start",
-			name: "test",
-			type: 'bar',
-			orientation: 'h',
-			showlegend: false,
-			marker: {
-				color: "#242",
-			}
-		};
-
-
-
-		return [ VFI, IOP, VA, test, test2, ...this.buildEvents(eye.events, 'y4') ]
+		return [ VFI, IOP, VA, ...buildEvents(eye.events, 'y4') ]
 	}
 }
 
