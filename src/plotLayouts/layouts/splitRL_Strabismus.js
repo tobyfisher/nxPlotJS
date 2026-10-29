@@ -79,7 +79,7 @@ const build = {
 	 * for each eye side plot
 	 * @param eye - plot data
 	 */
-	buildDataTraces( eye ){
+	buildSideDataTraces( eye ){
 
 		// VA fixed in LogMAR from Strabismus
 		const VA = {

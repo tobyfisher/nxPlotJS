@@ -113,7 +113,7 @@ const build = {
 	 * Data traces need to be built slightly differently
 	 * for each eye side plot
 	 */
-	buildDataTraces( eye ){
+	buildSideDataTraces( eye ){
 
 		const volume = {
 			...yTrace('y1', eye.volume, eye.volume.name),

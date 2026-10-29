@@ -164,7 +164,7 @@ export const getAxis = function ( options ){
 	if ( options.hasOwnProperty('spikes') ){
 		axis.showspikes = true;
 		axis.spikecolor = colors.getBlue('spike');
-		axis.spikethickness = isDarkTheme() ? 0.5 : 1;
+		axis.spikethickness = isDarkTheme() ? 0.5 : 1.5;
 		axis.spikedash = isDarkTheme() ? "1px,3px" : "2px,3px";
 		axis.spikemode = "across";
 	}

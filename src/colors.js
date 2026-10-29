@@ -12,6 +12,7 @@ const colours = {
 		label: '#aaa',
 		grey: '#666',
 		highlight: '#fff',
+		max: '#000',
 		blue: {
 			oe: '#63d7d6',
 			spike: '#6ff',
@@ -29,12 +30,12 @@ const colours = {
 		},
 		split: {
 			right: {
-				barBgColor: '#0f0',
-				barOutlineColor: '#0f0',
+				barBgColor: '#027C28',
+				barLineColor: '#42D100',
 			},
 			left: {
-				barBgColor: '#f00',
-				barOutlineColor: '#f00',
+				barBgColor: '#A40911',
+				barLineColor: '#F31D06',
 			}
 		},
 	},
@@ -45,10 +46,11 @@ const colours = {
 		label: '#333',
 		grey: '#ccc',
 		highlight: '#000',
+		max: '#fff',
 		blue: {
 			oe:'#00a',
-			spike: '#11f',
-			annotate: '#33f',
+			spike: '#11a',
+			annotate: '#1765CF',
 		},
 		orange: '#CE4100',
 		green: '#418c20',
@@ -62,12 +64,12 @@ const colours = {
 		},
 		split: {
 			right: {
-				barBgColor: '#030',
-				barOutlineColor: '#030',
+				barBgColor: '#78E970',
+				barLineColor: '#0A9A00',
 			},
 			left: {
-				barBgColor: '#300',
-				barOutlineColor: '#300',
+				barBgColor: '#FD8383',
+				barLineColor: '#B70202',
 			}
 		},
 	}

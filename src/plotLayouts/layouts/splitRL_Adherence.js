@@ -75,7 +75,7 @@ const build = {
 	 * for each eye side plot
 	 * @param eye - plot data
 	 */
-	buildDataTraces( eye ){
+	buildSideDataTraces( eye ){
 		/**.
 		 * Daily adherence will have the same Drug name as Events
 		 */

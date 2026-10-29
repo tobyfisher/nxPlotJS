@@ -110,7 +110,7 @@ const annotateEventNames = ( events, yaxis ) => {
 		x: 0,
 		xanchor: "left",
 		xref: "paper",
-		opacity: isDarkTheme() ? 0.5 : 0.7
+		opacity: isDarkTheme() ? 0.6 : 0.8
 	});
 
 	return events.map(annotate);

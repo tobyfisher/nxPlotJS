@@ -18,7 +18,7 @@ const splitPlots = {
 		debug.error('Split plots use buildRightData() and/or buildLeftData() instead')
 	},
 
-	buildDataTraces(){
+	buildSideDataTraces(){
 		debug.error('Override in specific split layout!');
 		return {};
 	},
@@ -49,7 +49,7 @@ const splitPlots = {
 		const eyePlot = new Map();
 		eyePlot.set('storedPlotData', plotData); // for rebuilding
 		eyePlot.set('div', div);
-		eyePlot.set('data', this.buildDataTraces(plotData, side)); // note: see specific split plot layout
+		eyePlot.set('data', this.buildSideDataTraces(plotData, side)); // note: see specific split plot layout
 
 		/** plotly layout **/
 		const sideSpecificLayout = getLayout({

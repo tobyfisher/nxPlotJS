@@ -6,7 +6,7 @@ import { calcEventLayout, eventAxis, buildEvents } from "./parts/event";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
 import { convertDomain } from "./parts/domain";
-import { getEventColor } from "../../colors";
+import { getEventColor, getSplitColors } from "../../colors";
 import { errorY } from "./parts/errorY";
 
 /**
@@ -107,7 +107,9 @@ const build = {
 	 * for each eye side plot
 	 * @param eye - plot data
 	 */
-	buildDataTraces( eye, side ){
+	buildSideDataTraces( eye, side ){
+		
+		const sideSpecificColours = getSplitColors(side)
 
 		const VFI = {
 			...yTrace('y1', eye.VFI, eye.VFI.name),
@@ -129,7 +131,7 @@ const build = {
 			error_y: errorY(eye.IOP)
 		};
 
-		return [ VFI, IOP, VA, ...buildEvents(eye.events, 'y4', side) ]
+		return [ VFI, IOP, VA, ...buildEvents(eye.events, 'y4', sideSpecificColours) ]
 	}
 }
 

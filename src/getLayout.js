@@ -54,11 +54,12 @@ export const getLayout = function ( options ){
 
 		// default set up for hoverlabels
 		hoverlabel: {
-			bgcolor: dark ? "#003" : '#fff',
-			bordercolor: dark ? '#009' : '#00f',
+			bgcolor: colors.getColor('max'),
+			bordercolor: colors.getBlue('spike'),
+			align: "left",
 			font: {
-				size: 11, // override base font
-				color: colors.getBlue(dark),
+				size: dark ? 10 : 11, // override base font
+				color: colors.getBlue(),
 				weight: fontWeight(),
 			}
 		},

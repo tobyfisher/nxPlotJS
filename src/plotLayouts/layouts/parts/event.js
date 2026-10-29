@@ -37,14 +37,14 @@ const eventAxis = ( domain, events ) => {
  * ALL Y values should be same for each trace
  * @returns {Array}
  */
-const buildEvents = ( events, yaxis, side ) => {
+const buildEvents = ( events, yaxis, sideColors ) => {
 
 	const
 		traces = [];
 
 	for( const event of events ) {
 		if ( event.event === "durationBar" ){
-			traces.push(horizontalBarTrace(event, yaxis));
+			traces.push(horizontalBarTrace(event, yaxis, sideColors ));
 		} else {
 			traces.push(eventTrace(event, yaxis));
 		}
@@ -70,7 +70,7 @@ const eventTrace = ( eventData, yaxis, color ) => {
 
 const horizontalBarTrace = (
 	{ xStart, msDuration, name, y, customdata },
-	yaxis ) => ({
+	yaxis, sideColors ) => ({
 	type: 'bar',
 	orientation: 'h',
 	width: 0.6,
@@ -83,13 +83,13 @@ const horizontalBarTrace = (
 	xperiodalignment: "start",
 	showlegend: false,
 	marker: {
-		cornerradius: 3,
+		cornerradius: 1.5,
 		thicknessmode: "fraction",
 		opacity: 0.9,
-		color: "pink",
+		color: sideColors.barBgColor,
 		line: {
 			width: 1,
-			color: "#f00",
+			color: sideColors.barLineColor,
 		}
 	},
 	xhoverformat: "%e %b %Y",
