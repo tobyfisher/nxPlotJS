@@ -48,8 +48,8 @@ const build = {
 
 		const domainLayout = [
 			convertDomain([ 100-eventDomainHeight, 100 ]),
-			convertDomain([ 54, 96].map(x => x - eventDomainHeight)),
-			convertDomain([ 0, 50-eventDomainHeight])
+			convertDomain([ 58, 96].map(x => x - eventDomainHeight)),
+			convertDomain([ 0, 54-eventDomainHeight])
 		];
 
 		this.procedureVericalHeight = domainLayout[1][1];

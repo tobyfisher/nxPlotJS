@@ -11,8 +11,8 @@ export const markerFor = ( type ) => {
 
 	switch ( type ){
 		case 'management':
-			symbol = "square";
-			size = 10;
+			symbol = "diamond-open-dot";
+			size = 12;
 			break;
 		case "report":
 		case 'image':
@@ -20,12 +20,12 @@ export const markerFor = ( type ) => {
 			size = 11;
 			break;
 		case 'drop':
-			symbol = "diamond";
-			size = 6;
+			symbol = "circle-open";
+			size = 12;
 			break;
 		case 'injection':
 			symbol = "star-diamond";
-			size = 10;
+			size = 12;
 			break;
 		default :
 			debug.error(`markerFor: Unknown marker type: ${ type }`);

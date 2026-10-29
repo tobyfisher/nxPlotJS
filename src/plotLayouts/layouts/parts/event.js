@@ -57,7 +57,7 @@ const eventTrace = ( eventData, yaxis, color ) => {
 	trace.mode = "markers";
 	trace.showlegend = false;
 	trace.marker = markerFor(eventData.event);
-	trace.marker.opacity = 0.8;
+	trace.marker.opacity = 0.9;
 	trace.customdata = eventData.customdata;
 	trace.hovertemplate = '%{y}<br>%{customdata}<br>%{x}<extra></extra>';
 
