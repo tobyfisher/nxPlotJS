@@ -1,7 +1,6 @@
 import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
-import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
 import { dataLine } from "./parts/lines";
@@ -47,14 +46,13 @@ const build = {
 		this.procedureVericalHeight = domainLayout[1][1];
 
 		// VA
-		const y1 = getAxis(
-			Object.assign({
-				type: 'y',
-				domain: domainLayout[1],
-				title: layoutData.yaxis.y1.title,
-				spikes: true,
-			}, getAxisTypeForRange(layoutData.yaxis.y1.range))
-		);
+		const y1 = getAxis({
+			type: 'y',
+			domain: domainLayout[1],
+			range: layoutData.yaxis.y1.range,
+			title: layoutData.yaxis.y1.title,
+			spikes: true
+		});
 
 		// Events
 		const y2 = eventAxis( domainLayout[0], layoutData.allEvents )

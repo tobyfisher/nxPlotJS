@@ -47,7 +47,7 @@ export const getAxis = function ( options ){
 	// axis? x or y
 	const isY = options.type === 'y';
 
-	if( options.type === 'x'){
+	if ( options.type === 'x' ){
 		axis.anchor = 'y'; // always anchored to y or y1
 		// minallowed: '2025-01-01',
 		// maxallowed: '2026-01-01'
@@ -56,7 +56,7 @@ export const getAxis = function ( options ){
 	}
 
 	// balance axis lines on other side of plot area
-	if ( options.hasOwnProperty('noMirrorLines')){
+	if ( options.hasOwnProperty('noMirrorLines') ){
 		axis.mirror = false;
 	}
 
@@ -90,52 +90,46 @@ export const getAxis = function ( options ){
 		axis.title.standoff = 15;
 	}
 
-	// customTicks -allows CF, HM, LP, NLP to be included on the yAxis VA scale
-	// e.g. logMAR CF is set to "2", so [2] = ["CF"]
-	if( options.customTicks){
-		axis.tickmode = "array"; // must be array
-		axis.tickvals = options.customTicks.vals;
-		axis.ticktext = options.customTicks.text;
-		axis.range = options.customTicks.vals;
-		console.log( options.customTicks );
-
-		axis.autorange = false;
-		if( options.customTicks.reverseRange ) axis.autorange = "reversed"
-
-	}
-
-	// set nticks
-	if ( options.hasOwnProperty('maxAxisTicks') ){
-		axis.nticks = options.maxAxisTicks;
-	}
-
-	// use Dates? - OE data formatting
-	if ( options.hasOwnProperty('useDates') ){
-		// https://d3js.org/d3-time-format
-		axis.tickformat = "%b %Y"; // Mth Y
-
-		if(!isY){
-			axis.type = "date"; // or let plotly figure it out
-			axis.tickfont.size = 11 // bump this up
-		}
-	}
-
-	// hide the event tick labels (as drug names are long!)
-	if ( options.hasOwnProperty('hideLabels') ){
-		axis.showticklabels = false;
-	}
-
-	// manually set axes data range
+	// axis range
 	if ( options.hasOwnProperty('range') ){
-		axis.range = options.range;
+
+		// as a range is set, it is assumed it is a fixed range
+		axis.autorange = false;
+
+		if ( Array.isArray(options.range) ){
+			// e.g [1,10] - the range for the axis
+			axis.range = options.range;
+
+		} else {
+			// or it's "custom" ticks:
+			// range: {
+			// 		vals: [0, 0.4, 0.8, 1.2, 1.6, 1.8, 2, 2.1, 2.2, 2.3],
+			// 		text: [0, 0.4 ,0.8, 1.2, 1.6, "CF", "HM", "LP", "NLP"],
+			// 		reverseRange: true
+			// },
+
+			axis.tickmode = "array"; // must be an array
+			axis.tickvals = options.range.vals;
+			axis.ticktext = options.range.text;
+
+			const
+				r0 = options.range.vals[0],
+				rLast = options.range.vals.at(-1)
+
+			/**
+			 * range sets the yAxis limits AND direction
+			 */
+			if( options.range.reverseRange ){
+				// e.g 0 at the top
+				axis.range = [ rLast, r0 ];
+			} else {
+				axis.range = [ r0, rLast ];
+			}
+		}
+
 	}
 
-	// set range type... otherwise Plotly will figure it out
-	if ( options.hasOwnProperty('axisType') ){
-		axis.type = options.axisType;
-	}
-
-	// categories (assuming this will only be used for yAxis)
+	// categories (e.g used for events)
 	if ( options.hasOwnProperty('useCategories') ){
 		let arr = options.useCategories.categoryarray;
 
@@ -159,6 +153,33 @@ export const getAxis = function ( options ){
 			}
 		}
 	}
+
+	// set nticks
+	if ( options.hasOwnProperty('maxAxisTicks') ){
+		axis.nticks = options.maxAxisTicks;
+	}
+
+	// use Dates? - OE data formatting
+	if ( options.hasOwnProperty('useDates') ){
+		// https://d3js.org/d3-time-format
+		axis.tickformat = "%b %Y"; // Mth Y
+
+		if ( !isY ){
+			axis.type = "date"; // or let plotly figure it out
+			axis.tickfont.size = 11 // bump this up
+		}
+	}
+
+	// hide the event tick labels (as drug names are long!)
+	if ( options.hasOwnProperty('hideLabels') ){
+		axis.showticklabels = false;
+	}
+
+	// set range type... otherwise Plotly will figure it out
+	if ( options.hasOwnProperty('axisType') ){
+		axis.type = options.axisType;
+	}
+
 	// spikes
 	if ( options.hasOwnProperty('spikes') ){
 		axis.showspikes = true;
