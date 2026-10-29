@@ -39,12 +39,12 @@ const build = {
 		const trace = {
 			y: plotData.y,
 			name: plotData.name,
-			type: 'bar'
+			type: 'bar',
+			hovertemplate: '%{name} %{y}<br>%{x}<extra></extra>',
 		};
 
 		// optional trace settings if provide by plotData:
 		if ( plotData.hasOwnProperty('x') ) trace.x = plotData.x;
-		if ( plotData.hasOwnProperty('hovertemplate') ) trace.hovertemplate = plotData.hovertemplate;
 
 		/** plotly data **/
 		this.data = [ trace ];

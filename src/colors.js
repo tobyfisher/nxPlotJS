@@ -6,38 +6,70 @@ import { isDarkTheme } from "./helpers/isDarkTheme";
  */
 const colours = {
 	dark: {
+		paper: 'rgba(100,100,100,0.1)',
+		plot: '#111',
 		axis: { grid: '#292929', tick: '#666666' },
-		grey: '#666666',
 		label: '#aaa',
-		blue: '#63d7d6',
-		orange: '#FF8C11',
+		grey: '#666',
 		highlight: '#fff',
+		blue: {
+			oe: '#63d7d6',
+			spike: '#6ff',
+			annotate: '#34A3CB',
+		},
+		orange: '#FF8C11',
 		green: '#65d235',
 		red: '#ea2b34',
 		yellow: '#E8B131',
-		greenSeries: [ '#65d235', '#A5D712', '#02B546' ],
-		redSeries: [ '#ea2b34', '#F64A2D', '#C92845' ],
-		yellowSeries: [ '#FAD94B', '#E8B131', '#F1F555' ], // BEO (Both Eyes Open)
-		standard: [ '#1451b3', '#175ece', '#1a69e5' ],
-		varied: [ '#0a83ea', '#18949f', '#781cea', '#3f0aea' ],
-		dual: [ '#1472DE', '#2E4259' ],
+		colorwaySeries: {
+			eyeGreen: [ '#09AA46' ],
+			eyeRed: [ '#82171C' ],
+			standard: [ '#1451b3', '#175ece', '#1a69e5', '#0a83ea', '#18949f', '#781cea', '#3f0aea' ],
+			dual: [ '#1472DE', '#2E4259' ]
+		},
+		split: {
+			right: {
+				barBgColor: '#0f0',
+				barOutlineColor: '#0f0',
+			},
+			left: {
+				barBgColor: '#f00',
+				barOutlineColor: '#f00',
+			}
+		},
 	},
 	light: {
+		paper: 'rgba(255,255,255,0.4)',
+		plot: '#fff',
 		axis: { grid: '#e6e6e6', tick: '#cccccc' },
-		grey: '#cccccc',
 		label: '#333',
-		blue: '#00a',
-		orange: '#CE4100',
+		grey: '#ccc',
 		highlight: '#000',
+		blue: {
+			oe:'#00a',
+			spike: '#11f',
+			annotate: '#33f',
+		},
+		orange: '#CE4100',
 		green: '#418c20',
 		red: '#da3e43',
 		yellow: '#E69812',
-		greenSeries: [ '#418c20', '#598617', '#139149' ],
-		redSeries: [ '#da3e43', '#E64C02', '#E64562' ],
-		yellowSeries: [ '#FCCE14', '#E69812', '#FCBB21' ], // BEO
-		standard: [ '#6A83C7', '#5579CD', '#578BC6' ],
-		varied: [ '#0a2aea', '#ea0a8e', '#00b827', '#890aea' ],
-		dual: [ '#2126C2', '#8FAEC2' ],
+		colorwaySeries: {
+			eyeGreen: [ '#86E481' ],
+			eyeRed: [ '#da3e43' ],
+			standard: [ '#6A83C7', '#5579CD', '#578BC6', '#0a2aea', '#ea0a8e', '#00b827', '#890aea' ],
+			dual: [ '#2126C2', '#8FAEC2' ],
+		},
+		split: {
+			right: {
+				barBgColor: '#030',
+				barOutlineColor: '#030',
+			},
+			left: {
+				barBgColor: '#300',
+				barOutlineColor: '#300',
+			}
+		},
 	}
 };
 
@@ -46,29 +78,26 @@ const colours = {
  * @param {Boolean} dark
  * @returns {Array} of colour series
  */
-const getBlue = () => isDarkTheme() ? colours.dark.blue : colours.light.blue;
+const getBlue = ( blue = "oe" ) => colours[isDarkTheme() ? 'dark' : 'light'].blue[blue];
 
 /**
- * Get color series
+ * Get color series, default base for layouts
+ * can be overridden in individual traces
  * @param {String} colour name
  * @returns {Array} of colour series
  */
 const getColorSeries = ( colorName ) => {
 	const theme = isDarkTheme() ? 'dark' : 'light';
 	switch ( colorName ){
-		case "varied":
-			return colours[theme].varied;
 		case "posNeg":
-			return colours[theme].dual;
-		case "rightEyeSeries":
-			return colours[theme].greenSeries;
-		case "leftEyeSeries":
-			return colours[theme].redSeries;
-		case "BEOSeries":
-			return colours[theme].yellowSeries;
+			return colours[theme].colorwaySeries.dual;
+		case "rightEye":
+			return colours[theme].colorwaySeries.eyeGreen;
+		case "leftEye":
+			return colours[theme].colorwaySeries.eyeRed;
 
 		default:
-			return colours[theme].standard;
+			return colours[theme].colorwaySeries.standard;
 	}
 };
 
@@ -82,29 +111,27 @@ const getColorSeries = ( colorName ) => {
 const getColor = ( colour ) => {
 	const theme = isDarkTheme() ? 'dark' : 'light';
 	switch ( colour ){
-		case 'highlight':
-			return colours[theme].highlight;
 		case 'standard':
 			return colours[theme].standard[0];
-		case 'blue':
-			return colours[theme].blue;
-		case 'orange':
-			return colours[theme].orange;
 		case 'rightEye':
-			return colours[theme].green;
+			return colours[theme].eyeGreen;
 		case 'leftEye':
-			return colours[theme].red;
+			return colours[theme].eyeRed;
 		case 'BEO':
 			return colours[theme].yellow;
-		case 'grey':
-			return colours[theme].grey;
-		case 'label':
-			return colours[theme].label;
 
 		default:
-			return 'pink'; // no match, flag failure to match as pink!
+			// a specific colour
+			return colours[theme][colour];
 	}
 };
+
+/**
+ * Split charts require side specific colours
+ * @param side
+ * @return {*}
+ */
+const getSplitColors = ( side ) => colours[isDarkTheme() ? 'dark' : 'light'].split[side];
 
 /**
  * Axis colors used in getAxis and tools
@@ -113,4 +140,4 @@ const getColor = ( colour ) => {
 const getAxisGridColor = () => colours[isDarkTheme() ? 'dark' : 'light'].axis.grid;
 const getAxisTickColor = () => colours[isDarkTheme() ? 'dark' : 'light'].axis.tick;
 
-export { getBlue, getColorSeries, getColor, getAxisTickColor, getAxisGridColor };
+export { getBlue, getColorSeries, getColor, getAxisTickColor, getAxisGridColor, getSplitColors };

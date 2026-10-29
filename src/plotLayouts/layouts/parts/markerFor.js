@@ -36,5 +36,5 @@ export const markerFor = ( type, many = 0 ) => {
 
 	}
 
-	return { symbol, size: (size + increaseSize) };
+	return { symbol, size: (size + increaseSize)  };
 };

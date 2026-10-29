@@ -1,4 +1,4 @@
-import { markerFor} from "./markerFor";
+import { markerFor } from "./markerFor";
 import * as debug from "../../../debug";
 import { getAxis } from "../../../getAxis";
 import { yTrace } from "./yTrace";
@@ -8,7 +8,7 @@ import { yTrace } from "./yTrace";
  * Always allows for a single row, if there NO Events it shows a message "No events"
  * @param numOfEvents
  */
-const calcEventLayout = ( numOfEvents = 0) => {
+const calcEventLayout = ( numOfEvents = 0 ) => {
 	const row = 4; // % percentage of plot
 	const domainShift = row * numOfEvents;
 	return Math.max(row, domainShift);
@@ -33,31 +33,34 @@ const eventAxis = ( domain, events ) => {
 }
 
 /**
- * Events subplot
+ * build Event traces for plotly
+ * ALL Y values should be same for each trace
  * @returns {Array}
  */
-const buildEvents = ( events, yaxis ) => {
-	/**
-	 * Convert all Event data objects into Event traces for plotly
-	 * ALL Y values should be the SAME!
-	 */
-	return Object.values(events).map(( eventData ) => {
-		if(eventData.event === "durationBar"){
-			return horizontalBarTrace( eventData, yaxis );
+const buildEvents = ( events, yaxis, side ) => {
+
+	const
+		traces = [];
+
+	for( const event of events ) {
+		if ( event.event === "durationBar" ){
+			traces.push(horizontalBarTrace(event, yaxis));
 		} else {
-			return eventTrace( eventData, yaxis );
+			traces.push(eventTrace(event, yaxis));
 		}
-	});
+	}
+
+	return traces;
 };
 
-const eventTrace = ( eventData, yaxis ) => {
+const eventTrace = ( eventData, yaxis, color ) => {
 	const trace = yTrace(yaxis, eventData, eventData.name);
 	trace.mode = "markers";
 	trace.showlegend = false;
-	trace.marker =  markerFor(eventData.event);
+	trace.marker = markerFor(eventData.event);
 
 	if ( eventData.customdata !== undefined ){
-		trace.customdata = [eventData.customdata];
+		trace.customdata = [ eventData.customdata ];
 		//trace.hovertemplate = '%{y}<br>%{customdata}<br>%{x}<extra></extra>';
 	} else {
 		trace.hovertemplate = '%{y}<br>%{x}<extra></extra>';
@@ -65,32 +68,33 @@ const eventTrace = ( eventData, yaxis ) => {
 	return trace;
 }
 
-
-const horizontalBarTrace = ( eventData, yaxis ) => ({
+const horizontalBarTrace = (
+	{ xStart, msDuration, name, y, customdata },
+	yaxis ) => ({
 	type: 'bar',
 	orientation: 'h',
-	width: 0.8,
+	width: 0.6,
 	yaxis,
-	base: Date.parse(eventData.start),
-	x: [ (Date.parse( eventData.end) - Date.parse(eventData.start))],
-	y: [ eventData.name ],
-	name: eventData.name,
-	customdata: [eventData.customdata],
+	base: Date.parse(xStart),
+	x: [ msDuration ],
+	y,
+	name,
+	customdata,
 	xperiodalignment: "start",
 	showlegend: false,
 	marker: {
-		color: "#363",
-			cornerradius: 3,
-			thicknessmode: "fraction",
-			line: {
+		cornerradius: 3,
+		thicknessmode: "fraction",
+		opacity: 0.9,
+		color: "pink",
+		line: {
 			width: 1,
-				color: "#3a3",
+			color: "#f00",
 		}
 	},
 	xhoverformat: "%e %b %Y",
 	hovertemplate: '%{y}<br>%{customdata}<extra></extra>',
 });
-
 
 export { calcEventLayout, eventAxis, buildEvents };
 

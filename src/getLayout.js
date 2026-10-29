@@ -1,6 +1,5 @@
 import * as colors from "./colors";
 import { buttonStyling } from "./helpers/buttons";
-import { getColor } from "./colors";
 import { fontWeight } from "./fonts";
 import { isDarkTheme } from "./helpers/isDarkTheme";
 
@@ -40,16 +39,16 @@ export const getLayout = function ( options ){
 			autoexpand: true, // auto margin expansion computations
 		},
 		// Paper = chart area. Set at opacity 0.5 for both, to hide the 'paper' set to: 0
-		paper_bgcolor: dark ? 'rgba(100,100,100,0.1)' : 'rgba(255,255,255,0.4)',
+		paper_bgcolor: colors.getColor('paper'),
 
 		// actual plot area
-		plot_bgcolor: dark ? '#111' : '#fff',
+		plot_bgcolor: colors.getColor('plot'),
 
 		// base font settings
 		font: {
 			family: "Roboto, 'Open Sans', verdana, arial, sans-serif",
 			size: 11,
-			color: getColor('label'),
+			color: colors.getColor('label'),
 			weight: fontWeight("light"),
 		},
 
@@ -197,7 +196,7 @@ export const getLayout = function ( options ){
 	if ( options.hasOwnProperty('dateRangeButtons') ){
 		layout.xaxis.rangeselector = Object.assign({
 			x: 1,
-			y: 1,
+			y: 1.02,
 			xanchor: 'right',
 			yanchor: 'bottom',
 			buttons: [ {

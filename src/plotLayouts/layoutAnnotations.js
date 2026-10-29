@@ -1,5 +1,6 @@
 import { getBlue, getColor } from "../colors";
 import { fontWeight } from "../fonts";
+import { isDarkTheme } from "../helpers/isDarkTheme";
 
 /**
  * update layout shapes and annotations
@@ -34,14 +35,14 @@ const addLayoutVerticals = ( layout, verticals, height ) => {
 		x1: x,
 		y1: height,
 		line: {
-			color: getBlue(),
+			color: getBlue('annotate'),
 			width: 0.5
 		}
 	});
 
 	const annotate = ( { name, x } ) => ({
 		...annotateBase,
-		font: { color: getBlue() },
+		font: { color: getBlue('annotate') },
 		text: name,
 		textangle: 90,
 		x,
@@ -71,7 +72,7 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 		x1: 1,
 		y1: y,
 		line: {
-			color: getBlue(),
+			color: getBlue('annotate'),
 			width: 1,
 			dash: "2px,8px",
 		}
@@ -79,7 +80,7 @@ const addLayoutHorizontals = ( layout, horizontals ) => {
 
 	const annotate = ( { name, y, yaxis } ) => ({
 		...annotateBase,
-		font: { color: getBlue() },
+		font: { color: getBlue('annotate') },
 		text: name,
 		xref: "paper",
 		x: 0,
@@ -100,17 +101,16 @@ const annotateEventNames = ( events, yaxis ) => {
 		...annotateBase,
 		font: {
 			color: getColor('highlight'),
-			size: 13,
-			weight: fontWeight("light"),
+			size: 10,
+			weight: fontWeight()
 		},
 		text: name,
 		y: name,
 		yref: yaxis, // assign to the yaxis
-		yshift: 1, // shift up
 		x: 0,
 		xanchor: "left",
 		xref: "paper",
-		opacity: 0.5
+		opacity: isDarkTheme() ? 0.5 : 0.7
 	});
 
 	return events.map(annotate);

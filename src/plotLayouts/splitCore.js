@@ -49,11 +49,11 @@ const splitPlots = {
 		const eyePlot = new Map();
 		eyePlot.set('storedPlotData', plotData); // for rebuilding
 		eyePlot.set('div', div);
-		eyePlot.set('data', this.buildDataTraces(plotData)); // note: see specific split plot layout
+		eyePlot.set('data', this.buildDataTraces(plotData, side)); // note: see specific split plot layout
 
 		/** plotly layout **/
 		const sideSpecificLayout = getLayout({
-			colors: `${side}EyeSeries`,
+			colors: `${side}Eye`,
 			...this.baseLayout
 		});
 
@@ -134,6 +134,10 @@ const splitPlots = {
 					side.get('layout'),
 					{ displayModeBar: false, responsive: true }
 				);
+
+				// side.get('div').on('plotly_hover', function(data){
+				// 	console.log( data );
+				// })
 			}
 		});
 	},

@@ -33,7 +33,6 @@ const build = {
 
 		/** plotly layout **/
 		this.layout = getLayout({
-			colors: 'varied',
 			legend: getLegend.horizontal('top'),
 			xaxis: x1,
 			yaxes: [ y1, y2 ],

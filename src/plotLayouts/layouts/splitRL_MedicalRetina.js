@@ -5,7 +5,9 @@ import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { dashedLine, smoothLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
-import { getBlue } from "../../colors";
+import { getBlue, getEventColor } from "../../colors";
+import { buildEvents, calcEventLayout, eventAxis } from "./parts/event";
+import { convertDomain } from "./parts/domain";
 
 /**
  * OES(Summary) Med Retina
@@ -20,7 +22,6 @@ const build = {
 	prebuild(){
 		this.toolBar = toolBar.linkToLayout(this);
 		this.toolBar.allowUserToChangeHoverMode();
-		this.procedureVericalHeight = 0.64 // DomainLayout[1][1]
 	},
 
 	setSelectableUnits( { current, available } ){
@@ -36,12 +37,20 @@ const build = {
 		 * e.g. sub-plotting within plot.ly - Navigator is outside this
 		 * 0.06 gap between sub-plots:
 		 */
+
+		const eventDomainHeight = calcEventLayout(layoutData.allEvents.length);
+
+		// Events		  y5
+		// CRT | VA		  y3 | y4
+		// Total Vol | %  y1 | y2
+
 		const domainLayout = [
-			[ 0.82, 1 ], 	// Events		  y5
-			[ 0.47, 0.78 ],	// CRT | VA		  y3 | y4
-			[ 0, 0.43 ],	// Total Vol | %  y1 | y2
+			convertDomain([ 100-eventDomainHeight, 100 ]),
+			convertDomain([ 54, 96].map(x => x - eventDomainHeight)),
+			convertDomain([ 0, 50-eventDomainHeight])
 		];
 
+		this.procedureVericalHeight = domainLayout[1][1];
 
 		// Volumae
 		const y1 = getAxis({
@@ -82,18 +91,9 @@ const build = {
 		});
 
 		// Events
-		const y5 = getAxis({
-			type: 'y',
-			domain: domainLayout[0],
-			useCategories: {
-				categoryarray: layoutData.allEvents,
-				rangeFit: "pad", // "exact", etc
-			},
-			spikes: true,
-			hideLabels: true,
-		});
+		const y5 = eventAxis( domainLayout[0], layoutData.allEvents )
+		this.addEventAnnotations(layoutData.allEvents, 'y5');
 
-		this.addEventAnnotations(layoutData.allEvents, 'y5', 12);
 
 		/**
 		 * set up base layout for both plots
@@ -112,7 +112,6 @@ const build = {
 	 * see: splitCore.js
 	 * Data traces need to be built slightly differently
 	 * for each eye side plot
-	 * @param eye - plot data
 	 */
 	buildDataTraces( eye ){
 
@@ -142,7 +141,7 @@ const build = {
 			hovertemplate: `${eye.VA.name}: %{y}<br>%{x}`
 		}
 
-		return [ volume, change, CRT, VA, ...this.buildEvents(eye.events, 'y5') ]
+		return [ volume, change, CRT, VA, ...buildEvents(eye.events, 'y5') ]
 	}
 };
 

@@ -6,6 +6,8 @@ import { calcEventLayout, eventAxis, buildEvents } from "./parts/event";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
 import { convertDomain } from "./parts/domain";
+import { getEventColor } from "../../colors";
+import { errorY } from "./parts/errorY";
 
 /**
  * OES(Summary) Glaucoma
@@ -105,7 +107,7 @@ const build = {
 	 * for each eye side plot
 	 * @param eye - plot data
 	 */
-	buildDataTraces( eye ){
+	buildDataTraces( eye, side ){
 
 		const VFI = {
 			...yTrace('y1', eye.VFI, eye.VFI.name),
@@ -124,9 +126,10 @@ const build = {
 			...yTrace('y3', eye.IOP, eye.IOP.name),
 			mode: 'lines+markers',
 			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
+			error_y: errorY(eye.IOP)
 		};
 
-		return [ VFI, IOP, VA, ...buildEvents(eye.events, 'y4') ]
+		return [ VFI, IOP, VA, ...buildEvents(eye.events, 'y4', side) ]
 	}
 }
 
