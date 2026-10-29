@@ -1,7 +1,6 @@
 import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
-import { getAxisTypeForRange } from "../../getAxisTypeForRange";
 import { dashedLine, smoothLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";

@@ -5,13 +5,9 @@ import * as debug from "../../../debug";
  * @param type {String}
  * @param many {Number}
  */
-export const markerFor = ( type, many = 0 ) => {
+export const markerFor = ( type ) => {
 	let symbol = "circle"
 	let size = 8;
-
-	// Use Marker size to indicate many of same on marker
-	// e.g. 4 reports on the same date
-	const increaseSize = many * 0.5;
 
 	switch ( type ){
 		case 'management':
@@ -36,5 +32,5 @@ export const markerFor = ( type, many = 0 ) => {
 
 	}
 
-	return { symbol, size: (size + increaseSize)  };
+	return { symbol, size  };
 };

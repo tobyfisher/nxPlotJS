@@ -1,5 +1,4 @@
 import { markerFor } from "./markerFor";
-import * as debug from "../../../debug";
 import { getAxis } from "../../../getAxis";
 import { yTrace } from "./yTrace";
 
@@ -58,13 +57,10 @@ const eventTrace = ( eventData, yaxis, color ) => {
 	trace.mode = "markers";
 	trace.showlegend = false;
 	trace.marker = markerFor(eventData.event);
+	trace.marker.opacity = 0.8;
+	trace.customdata = eventData.customdata;
+	trace.hovertemplate = '%{y}<br>%{customdata}<br>%{x}<extra></extra>';
 
-	if ( eventData.customdata !== undefined ){
-		trace.customdata = [ eventData.customdata ];
-		//trace.hovertemplate = '%{y}<br>%{customdata}<br>%{x}<extra></extra>';
-	} else {
-		trace.hovertemplate = '%{y}<br>%{x}<extra></extra>';
-	}
 	return trace;
 }
 
@@ -83,12 +79,12 @@ const horizontalBarTrace = (
 	xperiodalignment: "start",
 	showlegend: false,
 	marker: {
-		cornerradius: 1.5,
+		cornerradius: 1,
 		thicknessmode: "fraction",
 		opacity: 0.9,
 		color: sideColors.barBgColor,
 		line: {
-			width: 1,
+			width: 2,
 			color: sideColors.barLineColor,
 		}
 	},

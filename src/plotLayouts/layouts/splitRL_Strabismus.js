@@ -6,6 +6,9 @@ import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
 import { dataLine } from "./parts/lines";
 import * as colors from "../../colors";
+import { buildEvents, calcEventLayout, eventAxis } from "./parts/event";
+import { convertDomain } from "./parts/domain";
+import { getSplitColors } from "../../colors";
 
 /**
  * OES(Summary) Strabismus
@@ -20,7 +23,6 @@ const build = {
 	prebuild(){
 		this.toolBar = toolBar.linkToLayout(this);
 		this.toolBar.allowUserToChangeHoverMode();
-		this.procedureVericalHeight = 0.64 // DomainLayout[1][1]
 	},
 
 	buildLayout( layoutData ){
@@ -31,10 +33,18 @@ const build = {
 		 * e.g. sub-plotting within plot.ly - Navigator is outside this
 		 * use a 0.06 gap between sub-plots:
 		 */
+
+		const eventDomainHeight = calcEventLayout(layoutData.allEvents.length);
+
+		// Events	y2
+		// VA		y1
+
 		const domainLayout = [
-			[ 0.68, 1 ], 	// Events	y2
-			[ 0, 0.60 ]	    // VA		y1
+			convertDomain([ 100-eventDomainHeight, 100 ]),
+			convertDomain([ 0, 90-eventDomainHeight])
 		];
+
+		this.procedureVericalHeight = domainLayout[1][1];
 
 		// VA
 		const y1 = getAxis(
@@ -46,19 +56,9 @@ const build = {
 			}, getAxisTypeForRange(layoutData.yaxis.y1.range))
 		);
 
-		// y2 - Events
-		const y2 = getAxis({
-			type: 'y',
-			domain: domainLayout[0],
-			useCategories: {
-				categoryarray: layoutData.allEvents,
-				rangeFit: "pad", // "exact", etc
-			},
-			spikes: true,
-			hideLabels: true,
-		});
-
-		this.addEventAnnotations(layoutData.allEvents, 'y2', 12);
+		// Events
+		const y2 = eventAxis( domainLayout[0], layoutData.allEvents )
+		this.addEventAnnotations(layoutData.allEvents, 'y2');
 
 		/**
 		 * set up base layout for both plots
@@ -79,7 +79,9 @@ const build = {
 	 * for each eye side plot
 	 * @param eye - plot data
 	 */
-	buildSideDataTraces( eye ){
+	buildSideDataTraces( eye, side ){
+
+		const sideSpecificColours = getSplitColors(side)
 
 		// VA fixed in LogMAR from Strabismus
 		const VA = {
@@ -103,7 +105,7 @@ const build = {
 			line: dataLine( colors.getColor(`BEO`), true)
 		}
 
-		return [ VA, BEO, all, ...this.buildEvents(eye.events, 'y2') ]
+		return [ VA, BEO, all, ...buildEvents(eye.events, 'y2', sideSpecificColours) ]
 	}
 };
 

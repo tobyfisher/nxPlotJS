@@ -14,7 +14,6 @@ import { isDarkTheme } from "./helpers/isDarkTheme";
 		rightSide: false		// Options 	{String} - yAxis to overlay 'y'
 		maxAxisTicks: false, 	// Optional {Number}
 		useDates: false, 		// Options 	{Boolean}
-		fixRange: false,		// Options 	{Boolean}
 		range: false, 			// Optional {Array} e.g. [0, 100]
 		axisType: false			// Optional {String} 
 		useCategories: 			// Optional {Object} e.g. { showAll:true, categoryarray:[] }
@@ -97,7 +96,12 @@ export const getAxis = function ( options ){
 		axis.tickmode = "array"; // must be array
 		axis.tickvals = options.customTicks.vals;
 		axis.ticktext = options.customTicks.text;
+		axis.range = options.customTicks.vals;
+		console.log( options.customTicks );
+
+		axis.autorange = false;
 		if( options.customTicks.reverseRange ) axis.autorange = "reversed"
+
 	}
 
 	// set nticks
@@ -114,11 +118,6 @@ export const getAxis = function ( options ){
 			axis.type = "date"; // or let plotly figure it out
 			axis.tickfont.size = 11 // bump this up
 		}
-	}
-
-	// turn off zoom?
-	if ( options.hasOwnProperty('fixRange') ){
-		axis.fixedrange = true;
 	}
 
 	// hide the event tick labels (as drug names are long!)

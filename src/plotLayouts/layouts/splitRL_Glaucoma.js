@@ -6,7 +6,7 @@ import { calcEventLayout, eventAxis, buildEvents } from "./parts/event";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
 import { convertDomain } from "./parts/domain";
-import { getEventColor, getSplitColors } from "../../colors";
+import { getSplitColors } from "../../colors";
 import { errorY } from "./parts/errorY";
 
 /**
@@ -121,7 +121,7 @@ const build = {
 		const VA = {
 			...yTrace('y2', eye.VA,  eye.VA.name),
 			mode: 'lines+markers',
-			hovertemplate: `${eye.VA.name}: %{y}<br>%{x}`
+			hovertemplate: `%{y} <sup>${eye.VA.name}</sup><br>%{x}<extra>VA</extra>`
 		}
 
 		const IOP = {

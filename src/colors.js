@@ -23,19 +23,19 @@ const colours = {
 		red: '#ea2b34',
 		yellow: '#E8B131',
 		colorwaySeries: {
-			eyeGreen: [ '#09AA46' ],
-			eyeRed: [ '#82171C' ],
+			eyeGreen: [ '#43C800' ],
+			eyeRed: [ '#F11000' ],
 			standard: [ '#1451b3', '#175ece', '#1a69e5', '#0a83ea', '#18949f', '#781cea', '#3f0aea' ],
 			dual: [ '#1472DE', '#2E4259' ]
 		},
 		split: {
 			right: {
 				barBgColor: '#027C28',
-				barLineColor: '#42D100',
+				barLineColor: '#3AB700',
 			},
 			left: {
 				barBgColor: '#A40911',
-				barLineColor: '#F31D06',
+				barLineColor: '#D41605',
 			}
 		},
 	},
@@ -65,11 +65,11 @@ const colours = {
 		split: {
 			right: {
 				barBgColor: '#78E970',
-				barLineColor: '#0A9A00',
+				barLineColor: '#0DBE00',
 			},
 			left: {
 				barBgColor: '#FD8383',
-				barLineColor: '#B70202',
+				barLineColor: '#DF0202',
 			}
 		},
 	}
