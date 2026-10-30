@@ -1,5 +1,6 @@
 import * as colors from "../colors";
 import { isDarkTheme } from "./isDarkTheme";
+import { fontWeight } from "../fonts";
 
 /**
  * Consistent buttons styling
@@ -8,12 +9,14 @@ import { isDarkTheme } from "./isDarkTheme";
  */
 const buttonStyling = ( dark ) => ({
 	font: {
-		color: dark ? '#aaa' : '#555',
+		color: dark ? colors.getColor('label') : '#666',
+		weight: fontWeight(),
+		size: 10
 	},
-	bgcolor: dark ? 'rgb(30,36,46)' : 'rgb(255,255,255)',
-	activecolor: dark ? 'rgb(30,50,100)' : 'rgb(225,225,235)',
-	bordercolor: dark ? 'rgb(10,26,36)' : 'rgb(255,255,255)',
-	borderwidth: 2,
+	bgcolor: dark ? 'rgba(100,100,100,0.1)' : 'rgba(150,150,150,0.1)',
+	activecolor: dark ? '#0A335F' : 'rgb(255,255,255)',
+	bordercolor: dark ? '#444' : '#fff',
+	borderwidth: dark ? 1 : 2,
 });
 
 /**

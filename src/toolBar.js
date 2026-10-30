@@ -46,7 +46,7 @@ export const toolBar = {
 			break;
 			case "vaUnits":
 				if( newVal !== this.currentVA){
-					console.log(`@Sabi: User requests a VA change (${newVal}) - how do you want to handle this?`);
+					debug.log(`request change VA Units to "${newVal}"`);
 				}
 			break;
 			default: return;

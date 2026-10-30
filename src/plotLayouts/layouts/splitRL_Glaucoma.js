@@ -94,6 +94,7 @@ const build = {
 		this.setBaseLayoutForSplitPlots({
 			legend: getLegend.horizontal('bottom', domainLayout[2][1]), // position relative to subplots
 			yaxes: [y1, y2, y3, y4 ],
+			dateRange: layoutData.xaxis.dateRange,
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
@@ -116,29 +117,32 @@ const build = {
 			mode: 'lines+markers',
 			hovertemplate: `%{y} <sup>${eye.VFI.name}</sup><br>%{x}<extra>VFI</extra>`,
 			line: customTraceLine({ color: getColor('standard'), dashed: true }),
+			zorder: 1,
 		};
 
 		const MD = {
 			...yTrace('y1', eye.MD, eye.MD.name),
 			mode: 'lines+markers',
 			hovertemplate: `%{y} <sup>${eye.MD.name}</sup><br>%{x}<extra>MD</extra>`,
-			line: customTraceLine({ color: getColor('orange'), dashed: true }),
+			line: customTraceLine({ color: getColor('orange') }),
+			zorder: 1,
 		};
 
 		const VA = {
 			...yTrace('y2', eye.VA,  eye.VA.name),
 			mode: 'lines+markers',
-			hovertemplate: `%{y} <sup>${eye.VA.name}</sup><br>%{x}<extra>VA</extra>`
+			hovertemplate: `%{y} <sup>${eye.VA.name}</sup><br>%{x}<extra>VA</extra>`,
 		}
 
 		const IOP = {
 			...yTrace('y3', eye.IOP, eye.IOP.name),
 			mode: 'lines+markers',
 			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
-			error_y: errorY(eye.IOP)
+			error_y: errorY(eye.IOP),
+			line: customTraceLine({ color: getColor('highlight') }),
 		};
 
-		return [ VFI, MD, IOP, VA, ...buildEvents(eye.events, 'y4', sideSpecificColours) ]
+		return [ VA, VFI, MD, IOP, ...buildEvents(eye.events, 'y4', sideSpecificColours) ]
 	}
 }
 

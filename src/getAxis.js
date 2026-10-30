@@ -167,12 +167,21 @@ export const getAxis = function ( options ){
 
 	// use Dates? - OE data formatting
 	if ( options.hasOwnProperty('useDates') ){
+
 		// https://d3js.org/d3-time-format
 		axis.tickformat = "%b %Y"; // Mth Y
+		axis.type = "date"; // or plotly will try and figure it out
 
 		if ( !isY ){
-			axis.type = "date"; // or plotly will try and figure it out
+			// xaxis
 			axis.tickfont.size = 11 // bump this up
+			axis.autorange = true;
+		}
+
+		if( options.hasOwnProperty('dateRange')
+			&& options.dateRange !== undefined  ){
+			axis.range = [ options.dateRange.firstDate, options.dateRange.lastDate ];
+			axis.autorange = false;
 		}
 	}
 

@@ -33,7 +33,7 @@ export const getLayout = function ( options ){
 		margin: {
 			l: 50, // 80 default, if Y axis has a title this will need more
 			r: 50, // change if y2 axis is added (see below)
-			t: 30, // if there is a title will need upping to 60
+			t: 10, // if there is a title will need upping to 60
 			b: 40, // allow for xaxis title
 			pad: 4, // px between plotting area and the axis lines
 			autoexpand: true, // auto margin expansion computations
@@ -72,8 +72,8 @@ export const getLayout = function ( options ){
 	/*
 	Customise hovermode
 	*/
-	if( options.hasOwnProperty('hovermode')  ){
-		layout.hovermode =  options.hovermode
+	if ( options.hasOwnProperty('hovermode') ){
+		layout.hovermode = options.hovermode
 	} else {
 		layout.hovermode = 'closest'; // "x" | "y" | "closest" | false | "x unified" | "y unified"
 	}
@@ -180,14 +180,13 @@ export const getLayout = function ( options ){
 			rangeslider.bordercolor = layout.plot_bgcolor;
 		}
 
-		/*
-		if not a boolean assume a range array
-		note: there is bug in Plot.ly (known) that this won't
-		restrict the range, but it helps with the dateRangebuttons
-		*/
-		if ( typeof options.rangeSlider !== "boolean" ){
-			rangeslider.range = options.rangeSlider;
+		// if a date range has been set on the xaxis match it here
+		if( options.xaxis.type === "date" && Array.isArray( options.xaxis.range)){
+			rangeslider.range = options.xaxis.range;
 		}
+
+
+
 
 		// update layout:
 		layout.xaxis.rangeslider = rangeslider;
@@ -204,6 +203,10 @@ export const getLayout = function ( options ){
 				label: 'Show all',
 				step: "all",
 			}, {
+				label: '5 Yr',
+				step: "year",
+				count: 5, // 1 = year, 2 = 2 years
+			}, {
 				label: '1 Yr',
 				step: "year",
 				count: 1, // 1 = year, 2 = 2 years
@@ -219,7 +222,7 @@ export const getLayout = function ( options ){
 		}, buttonStyling(dark));
 	}
 
-	if( options.hasOwnProperty('barmode') ){
+	if ( options.hasOwnProperty('barmode') ){
 		layout.barmode = options.barmode;
 	}
 

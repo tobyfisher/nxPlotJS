@@ -22,7 +22,7 @@ const colours = {
 			eyeGreen: [ '#43C800' ],
 			eyeRed: [ '#F11000' ],
 			eyeBEO: ['#E69812'],
-			standard: [ '#175ece', '#9800B3', '#FF8C11',  '#008E51' ],
+			standard: [ '#3988E9', '#AE00AB', '#ED7A00',  '#008E51' ],
 			dual: [ '#117CE1', '#1B43AA' ]
 		},
 		split: {

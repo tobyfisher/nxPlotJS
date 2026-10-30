@@ -90,22 +90,21 @@ const splitPlots = {
 	 */
 	setBaseLayoutForSplitPlots( layoutSpecific ){
 
-		const x1 = getAxis({
-			type: 'x',
-			numTicks: 10,
-			useDates: true,
-			spikes: true,
-			noMirrorLines: true,
-		});
-
-		const base = {
+		const layoutDefaults = {
 			legend: { yanchor: 'bottom' },
-			xaxis: x1,
+			xaxis: getAxis({
+				type: 'x',
+				numTicks: 10,
+				useDates: true,
+				dateRange: layoutSpecific.dateRange,
+				spikes: true,
+				noMirrorLines: true,
+			}),
 			rangeSlider: true,
 			dateRangeButtons: true,
 		};
 
-		this.baseLayout = { ...base, ...layoutSpecific };
+		this.baseLayout = { ...layoutDefaults, ...layoutSpecific };
 	},
 
 	/**
