@@ -139,7 +139,7 @@ const build = {
 			mode: 'lines+markers',
 			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
 			error_y: errorY(eye.IOP),
-			line: customTraceLine({ color: getColor('highlight') }),
+			line: customTraceLine({ color: getColor('primary') }),
 		};
 
 		return [ VA, VFI, MD, IOP, ...buildEvents(eye.events, 'y4', sideSpecificColours) ]

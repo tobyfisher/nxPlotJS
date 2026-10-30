@@ -4,7 +4,7 @@ import { splitCore } from "../splitCore";
 import { customTraceLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
-import { getBlue, getEventColor } from "../../colors";
+import { getBlue, getColor } from "../../colors";
 import { buildEvents, calcEventLayout, eventAxis } from "./parts/event";
 import { convertDomain } from "./parts/domain";
 
@@ -45,8 +45,8 @@ const build = {
 
 		const domainLayout = [
 			convertDomain([ 100 - eventDomainHeight, 100 ]),
-			convertDomain([ 54, 96 ].map(x => x - eventDomainHeight)),
-			convertDomain([ 0, 50 - eventDomainHeight ])
+			convertDomain([ 59, 96 ].map(x => x - eventDomainHeight)),
+			convertDomain([ 0, 55 - eventDomainHeight ])
 		];
 
 		this.procedureVericalHeight = domainLayout[1][1];
@@ -97,7 +97,7 @@ const build = {
 		 * set up base layout for both plots
 		 */
 		this.setBaseLayoutForSplitPlots({
-			legend: getLegend.horizontal('middle', domainLayout[1][1]), // position relative to subplots
+			legend: getLegend.horizontal('bottom', domainLayout[2][1]), // position relative to subplots
 			yaxes: [ y1, y2, y3, y4, y5 ],
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
@@ -116,21 +116,22 @@ const build = {
 		const volume = {
 			...yTrace('y1', eye.volume, eye.volume.name),
 			mode: 'lines+markers',
-			hovertemplate: `${eye.volume.name}: %{y}<br>%{x}`
+			hovertemplate: `${eye.volume.name}: %{y}<br>%{x}`,
+			line: customTraceLine({ color: getColor('orange') })
 		}
 
 		const change = {
 			...yTrace('y2', eye.change, eye.change.name),
 			mode: 'lines',
 			hovertemplate: `${eye.change.name}: %{y}<br>%{x}`,
-			line: customTraceLine({ smooth: true, width: 1, color: getBlue() })
+			line: customTraceLine({ smooth: true, width: 1, color: getBlue(), dashed: true })
 		}
 
 		const CRT = {
 			...yTrace('y3', eye.CRT, `${eye.CRT.name}`),
 			mode: 'lines+markers',
 			hovertemplate: 'CRT: %{y}<br>%{x}',
-			line: customTraceLine({ dashed: true })
+			line: customTraceLine({ color: getColor('primary') })
 		};
 
 		const VA = {

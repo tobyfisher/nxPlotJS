@@ -13,6 +13,7 @@ const colours = {
 		grey: '#666',
 		highlight: '#fff',
 		max: '#000',
+		primary: '#AFD2DD',
 		blue: {
 			oe: '#63d7d6',
 			spike: '#6ff',
@@ -44,6 +45,7 @@ const colours = {
 		grey: '#ccc',
 		highlight: '#000',
 		max: '#fff',
+		primary: '#00295B',
 		blue: {
 			oe:'#00a',
 			spike: '#11a',

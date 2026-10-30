@@ -1,6 +1,6 @@
-export const yTrace = ( yaxis, { x, y }, name, xformat = "%e %b %Y" ) => ({
+export const yTrace = ( yaxis, { x, y }, name, isDate = true  ) => ({
 	yaxis, // note: y1 = y = default
 	x,y,name,
 	type: 'scatter',
-	xhoverformat: xformat
+	xhoverformat: isDate ? "%e %b %Y" : "",
 });
