@@ -74,7 +74,7 @@ export const getAxis = function ( options ){
 	if ( options.hasOwnProperty('title') ){
 		axis.title = {
 			text: options.title,
-			standoff: isY ? 10 : 20, // px offset
+			standoff: 10, // px offset
 			font: {
 				size: 11,
 			}

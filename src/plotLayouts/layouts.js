@@ -1,4 +1,4 @@
-export * from './layouts/customData';
+export * from './layouts/_layoutOnly';
 export * from './layouts/barChart';
 export * from './layouts/eyesOutcomes_Errors';
 export * from './layouts/outcomes_Errors';

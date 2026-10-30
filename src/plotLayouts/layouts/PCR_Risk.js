@@ -28,7 +28,6 @@ const build = {
 
 		/** plotly layout **/
 		this.layout = getLayout({
-			// plotTitle: layoutData.plotHeader,
 			xaxis: x1,
 			yaxes: [ y1 ],
 			colors: 'duo',
@@ -70,51 +69,41 @@ const build = {
 			}
 		}
 
-		const percentageGuide = ( plot, y, name, isDashed ) => ({
-			...yTrace(y, plot, name),
-			mode: 'lines',
-			line: customTraceLine({ smooth: true, color: colors.getColor(`grey`), dashed: isDashed }),
-			hovertemplate: pcrHover(name),
-			legendgroup: "OE",
-		});
-
 		const surgeon = ( plot, isCurrent = false ) => ({
 			...yTrace('y1', plot, plot.name),
 			mode: 'markers',
 			marker: {
-				symbol: 'circle',
+				symbol: isCurrent ? 'circle' : 'circle-open',
 				size: isCurrent ? 10 : 8,
-				color: isCurrent ? colors.getColor('purple') : colors.getColor( 'standard')
+				color: isCurrent ? colors.getColor('primary') : colors.getColor( 'standard')
 			},
 			customdata: plot.surgeon,
 			hovertemplate: `<b>%{customdata}</b><br>Operations: <b>%{x}</b><br>PCR Avg: <b>%{y}</b><extra></extra>`,
-			legendgroup: 'surgeon'
+			legendgroup: 'surgeon',
+			zorder:9
 		});
 
 
 		/** plotly data **/
 		this.data = [
-			percentageGuide(plotData.upper99, 'y1', 'OE 99.8%'),
-			percentageGuide(plotData.upper95, 'y1', 'OE 95%', true),
-
 			PCR_average( plotData.NODAverage, 'NOD Average',
-				customTraceLine({ color: colors.getColor(`purple`), dashed: true }), 'NOD' ),
+				customTraceLine({ color: colors.getColor(`orange`), dash: "5px,10px", width:1 }), 'NOD' ),
 			PCR_Curve(
 				plotData.NODAverage,  0.998, 'NOD 99.8%',
-				customTraceLine({ smooth: true, color: colors.getColor(`purple`) }), 'NOD' ),
+				customTraceLine({ smooth: true, color: colors.getColor(`orange`) }), 'NOD' ),
 			PCR_Curve(
 				plotData.NODAverage,  0.95, 'NOD 95%',
-				customTraceLine({ smooth: true, color: colors.getColor(`purple`), dashed: true }), 'NOD' ),
+				customTraceLine({ smooth: true, color: colors.getColor(`orange`), dashed: true }), 'NOD' ),
 
 			PCR_average(
 				plotData.LocalAverage, 'Local Average',
-				customTraceLine({ color: colors.getColor(`orange`), dashed: true }), 'Local' ),
+				customTraceLine({ color: colors.getColor(`grey`), dash: "5px,10px", width:1 }), 'Local' ),
 			PCR_Curve(
 				plotData.LocalAverage,  0.998, 'Local 99.8%',
-				customTraceLine({ smooth: true, color: colors.getColor(`orange`) }), 'Local' ),
+				customTraceLine({ smooth: true, color: colors.getColor(`grey`), width:1 }), 'Local' ),
 			PCR_Curve(
 				plotData.LocalAverage,  0.95, 'Local 95%',
-				customTraceLine({ smooth: true, color: colors.getColor(`orange`), dashed: true }), 'Local' ),
+				customTraceLine({ smooth: true, color: colors.getColor(`grey`), dashed: true, width:1 }), 'Local' ),
 
 			surgeon(plotData.surgeon.other, false),
 			surgeon(plotData.surgeon.current, true),

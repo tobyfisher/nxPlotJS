@@ -24,7 +24,6 @@ if( window.hasOwnProperty('Plotly') ){
 }
 
 const allowedTemplates = new Set([
-	"customData",
 	"barChart",
 	"PCR_Risk",
 	"eyesOutcomes_Errors",

@@ -21,7 +21,7 @@ const build = {
 
 		/** plotly layout **/
 		this.layout = getLayout({
-			plotTitle: layoutData.plotHeader,
+			plotTitle: layoutData.plotTitle,
 			xaxis: x1,
 			yaxes: [ y1 ],
 			barmode: "stack"

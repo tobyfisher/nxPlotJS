@@ -5,6 +5,10 @@ const customTraceLine = ( opts ) => {
 		line.dash = "2px,2px";
 	}
 
+	if( opts.dash ){
+		line.dash = opts.dash;
+	}
+
 	if( opts.width ){
 		line.width = opts.width;
 	}

@@ -21,7 +21,7 @@ const build = {
 
 		/** plotly layout **/
 		this.layout = getLayout({
-			plotTitle: layoutData.plotHeader,
+			plotTitle: layoutData.plotTitle,
 			xaxis: x1,
 			yaxes: [ y1 ],
 			barmode: "stack"
@@ -31,7 +31,7 @@ const build = {
 	},
 
 	/**
-	 * Custom data allows traces to setup externally
+	 * Pass in data as Plotly expects
 	 * only the standardise layout for nxPlot is used
 	 */
 	buildData( dataTrace ){
@@ -41,4 +41,4 @@ const build = {
 	}
 }
 
-export const customData = { ...core, ...build };
+export const _layoutOnly = { ...core, ...build };
