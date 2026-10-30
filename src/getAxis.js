@@ -97,8 +97,10 @@ export const getAxis = function ( options ){
 		axis.autorange = false;
 
 		if ( Array.isArray(options.range) ){
-			// e.g [1,10] - the range for the axis
-			axis.range = options.range;
+			/**
+			 * range sets the yAxis limits AND direction
+			 */
+			axis.range = options.range; // e.g [1,10] - the range for the axis
 
 		} else {
 			// or it's "custom" ticks:
@@ -112,7 +114,6 @@ export const getAxis = function ( options ){
 			axis.tickvals = options.range.vals;
 			axis.ticktext = options.range.text;
 
-
 			const
 				r0 = options.range.vals[0],
 				rLast = options.range.vals.at(-1)
@@ -121,7 +122,6 @@ export const getAxis = function ( options ){
 			 * range sets the yAxis limits AND direction
 			 */
 			if( options.range.reverseRange ){
-				// e.g 0 at the top
 				axis.range = [ rLast, r0 ];
 			} else {
 				axis.range = [ r0, rLast ];
@@ -155,6 +155,11 @@ export const getAxis = function ( options ){
 		}
 	}
 
+	// hide the event tick labels (as drug names are long!)
+	if ( options.hasOwnProperty('hideLabels') ){
+		axis.showticklabels = false;
+	}
+
 	// set nticks
 	if ( options.hasOwnProperty('maxAxisTicks') ){
 		axis.nticks = options.maxAxisTicks;
@@ -166,19 +171,9 @@ export const getAxis = function ( options ){
 		axis.tickformat = "%b %Y"; // Mth Y
 
 		if ( !isY ){
-			axis.type = "date"; // or let plotly figure it out
+			axis.type = "date"; // or plotly will try and figure it out
 			axis.tickfont.size = 11 // bump this up
 		}
-	}
-
-	// hide the event tick labels (as drug names are long!)
-	if ( options.hasOwnProperty('hideLabels') ){
-		axis.showticklabels = false;
-	}
-
-	// set range type... otherwise Plotly will figure it out
-	if ( options.hasOwnProperty('axisType') ){
-		axis.type = options.axisType;
 	}
 
 	// spikes

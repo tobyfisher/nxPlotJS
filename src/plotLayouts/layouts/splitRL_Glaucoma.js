@@ -84,8 +84,6 @@ const build = {
 			spikes: true,
 		});
 
-		console.log(y3);
-
 		// Events
 		const y4 = eventAxis( domainLayout[0], layoutData.allEvents )
 		this.addEventAnnotations(layoutData.allEvents, 'y4');
