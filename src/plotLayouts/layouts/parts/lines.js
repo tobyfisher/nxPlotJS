@@ -21,6 +21,4 @@ const customTraceLine = ( opts ) => {
 	return line;
 }
 
-
-
 export { customTraceLine }

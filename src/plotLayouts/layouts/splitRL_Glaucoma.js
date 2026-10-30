@@ -6,7 +6,7 @@ import { calcEventLayout, eventAxis, buildEvents } from "./parts/event";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
 import { convertDomain } from "./parts/domain";
-import { getSplitColors } from "../../colors";
+import { getColor, getSplitColors } from "../../colors";
 import { errorY } from "./parts/errorY";
 
 /**
@@ -116,15 +116,15 @@ const build = {
 		const VFI = {
 			...yTrace('y1', eye.VFI, eye.VFI.name),
 			mode: 'lines+markers',
-			hovertemplate: '%{y}<br>%{x}<extra></extra>',
-			line: customTraceLine({ dashed: true }),
+			hovertemplate: `%{y} <sup>${eye.VFI.name}</sup><br>%{x}<extra>VFI</extra>`,
+			line: customTraceLine({ color: getColor('standard'), dashed: true }),
 		};
 
 		const MD = {
 			...yTrace('y1', eye.MD, eye.MD.name),
 			mode: 'lines+markers',
-			hovertemplate: '%{y}<br>%{x}<extra></extra>',
-			line: customTraceLine({ dashed: true }),
+			hovertemplate: `%{y} <sup>${eye.MD.name}</sup><br>%{x}<extra>MD</extra>`,
+			line: customTraceLine({ color: getColor('orange'), dashed: true }),
 		};
 
 		const VA = {
