@@ -112,6 +112,7 @@ export const getAxis = function ( options ){
 			axis.tickvals = options.range.vals;
 			axis.ticktext = options.range.text;
 
+
 			const
 				r0 = options.range.vals[0],
 				rLast = options.range.vals.at(-1)

@@ -31,7 +31,7 @@ const build = {
 			// plotTitle: layoutData.plotHeader,
 			xaxis: x1,
 			yaxes: [ y1 ],
-			colors: 'posNeg',
+			colors: 'duo',
 			legend: getLegend.horizontal('top', 1,true)
 		});
 
@@ -70,7 +70,6 @@ const build = {
 			}
 		}
 
-
 		const percentageGuide = ( plot, y, name, isDashed ) => ({
 			...yTrace(y, plot, name),
 			mode: 'lines',
@@ -85,7 +84,7 @@ const build = {
 			marker: {
 				symbol: 'circle',
 				size: isCurrent ? 10 : 8,
-				color: colors.getColor(isCurrent ? 'blue' : 'standard')
+				color: isCurrent ? colors.getBlue('spike') : colors.getColor( 'standard')
 			},
 			customdata: plot.surgeon,
 			hovertemplate: `<b>%{customdata}</b><br>Operations: <b>%{x}</b><br>PCR Avg: <b>%{y}</b><extra></extra>`,
@@ -97,9 +96,9 @@ const build = {
 		this.data = [
 			percentageGuide(plotData.upper99, 'y1', 'OE 99.8%'),
 			percentageGuide(plotData.upper95, 'y1', 'OE 95%', true),
-			PCR_average( plotData.NODAverage, 'NOD Average', dataLine( colors.getColor(`blue`), true ), 'NOD' ),
-			PCR_Curve( plotData.NODAverage,  0.998, 'NOD 99.8%',  smoothLine( colors.getColor(`blue`) ), 'NOD' ),
-			PCR_Curve( plotData.NODAverage,  0.95, 'NOD 95%',  smoothLine( colors.getColor(`blue`), true ), 'NOD' ),
+			PCR_average( plotData.NODAverage, 'NOD Average', dataLine( colors.getBlue(), true ), 'NOD' ),
+			PCR_Curve( plotData.NODAverage,  0.998, 'NOD 99.8%',  smoothLine( colors.getBlue() ), 'NOD' ),
+			PCR_Curve( plotData.NODAverage,  0.95, 'NOD 95%',  smoothLine( colors.getBlue(), true ), 'NOD' ),
 			PCR_average( plotData.LocalAverage, 'Local Average', dataLine( colors.getColor(`orange`), true ), 'Local' ),
 			PCR_Curve( plotData.LocalAverage,  0.998, 'Local 99.8%',  smoothLine( colors.getColor(`orange`) ), 'Local' ),
 			PCR_Curve( plotData.LocalAverage,  0.95, 'Local 95%',  smoothLine( colors.getColor(`orange`), true ), 'Local' ),

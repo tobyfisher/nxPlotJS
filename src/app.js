@@ -51,6 +51,8 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	if( nxLayout === undefined ){
 		console.error(`Requested plot template: "${requestedPlotLayout}" is undefined. plotTemplates:\n${Array.from(plotTemplates.keys()).join("\n")}` );
 		return false;
+	} else {
+		debug.log(`layout: "${requestedPlotLayout}"`);
 	}
 
 	/**

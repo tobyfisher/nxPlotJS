@@ -1,6 +1,8 @@
 import { markerFor } from "./markerFor";
 import { getAxis } from "../../../getAxis";
 import { yTrace } from "./yTrace";
+import { isDarkTheme } from "../../../helpers/isDarkTheme";
+import { getBlue } from "../../../colors";
 
 /**
  * Domain layout adjusts to number of Events (Reports, Mgmt, Drugs, etc)
@@ -57,9 +59,13 @@ const eventTrace = ( eventData, yaxis, color ) => {
 	trace.mode = "markers";
 	trace.showlegend = false;
 	trace.marker = markerFor(eventData.event);
-	trace.marker.opacity = 0.9;
+	trace.marker.opacity = isDarkTheme() ? 0.8 :  0.9;
 	trace.customdata = eventData.customdata;
 	trace.hovertemplate = '%{y}<br>%{customdata}<br>%{x}<extra></extra>';
+
+	if( eventData.event === "report"){
+		trace.marker.color = getBlue();
+	}
 
 	return trace;
 }
@@ -81,7 +87,7 @@ const horizontalBarTrace = (
 	marker: {
 		cornerradius: 1,
 		thicknessmode: "fraction",
-		opacity: 0.9,
+		opacity: isDarkTheme() ? 0.8 :  0.9,
 		color: sideColors.barBgColor,
 		line: {
 			width: 2,

@@ -36,7 +36,7 @@ const build = {
 			legend: getLegend.horizontal('top'),
 			xaxis: x1,
 			yaxes: [ y1, y2 ],
-			rangeSlider: true,
+			rangeSlider: true
 		});
 
 		return this

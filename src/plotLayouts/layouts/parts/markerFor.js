@@ -6,26 +6,29 @@ import * as debug from "../../../debug";
  * @param many {Number}
  */
 export const markerFor = ( type ) => {
-	let symbol = "circle"
-	let size = 8;
+	let symbol = "diamond"
+	let size = 12;
 
 	switch ( type ){
 		case 'management':
-			symbol = "diamond-open-dot";
-			size = 12;
+			symbol = "diamond";
+			size = 11;
 			break;
 		case "report":
+			symbol = "diamond-open-dot";
+			size = 11;
+			break;
 		case 'image':
+			symbol = "circle";
+			size = 10;
+			break;
+		case 'drop':
 			symbol = "circle";
 			size = 11;
 			break;
-		case 'drop':
-			symbol = "circle-open";
-			size = 12;
-			break;
 		case 'injection':
 			symbol = "star-diamond";
-			size = 12;
+			size = 11;
 			break;
 		default :
 			debug.error(`markerFor: Unknown marker type: ${ type }`);

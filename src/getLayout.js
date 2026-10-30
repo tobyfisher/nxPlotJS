@@ -11,7 +11,7 @@ import { isDarkTheme } from "./helpers/isDarkTheme";
 	Options:
 	{
  		legend: false, 			// Optional {Boolean || Object} customise any of the defaults
-		colors: 'varied', 		// Optional {String} varied" or "posNeg" or "rightEye" (defaults to "blues")
+		colors: 'standard', 	// Optional {String} (see colors.getColorSeries())
 		plotTitle: false, 		// Optional {String}
 		xaxis: x1,				// Required {Object} xaxis - see getAxis!
 		yaxes: [ y1 ],			// Required {Array} all yaxes - see getAxis!
