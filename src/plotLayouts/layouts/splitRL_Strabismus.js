@@ -3,7 +3,7 @@ import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
-import { dataLine } from "./parts/lines";
+import { customTraceLine, dataLine } from "./parts/lines";
 import * as colors from "../../colors";
 import { buildEvents, calcEventLayout, eventAxis } from "./parts/event";
 import { convertDomain } from "./parts/domain";
@@ -100,7 +100,7 @@ const build = {
 			...yTrace('y1', eye.BEO, eye.BEO.name),
 			mode: 'lines+markers',
 			hovertemplate: '%{y}<br>%{x}',
-			line: dataLine( colors.getColor(`BEO`), true)
+			line: customTraceLine( { color: colors.getColor(`BEO`), dashed: true }),
 		}
 
 		return [ VA, BEO, all, ...buildEvents(eye.events, 'y2', sideSpecificColours) ]

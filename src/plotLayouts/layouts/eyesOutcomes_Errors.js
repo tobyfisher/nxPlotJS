@@ -4,7 +4,7 @@ import { getLayout } from "../../getLayout";
 import { core } from "../core";
 import { errorY } from "./parts/errorY";
 import { yTrace } from "./parts/yTrace";
-import { dataLine } from "./parts/lines";
+import { customTraceLine, dataLine } from "./parts/lines";
 import { getLegend } from "../../getLegend";
 
 const build = {
@@ -65,7 +65,7 @@ const build = {
 		const customTrace = ( plot, y, name, eye, lineColor ) => ({
 			...yTrace(y, plot, `${eye}: ${name} `),
 			hovertemplate: `Mean ± SD<br>${name}: %{y}<br>(N: %{x})`,
-			line: dataLine(lineColor, true),
+			line: customTraceLine({ color: lineColor, dashed: true }),
 			error_y: errorY(plot)
 		});
 

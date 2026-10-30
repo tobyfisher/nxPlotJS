@@ -1,7 +1,7 @@
 import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
-import { dashedLine } from "./parts/lines";
+import { customTraceLine } from "./parts/lines";
 import { calcEventLayout, eventAxis, buildEvents } from "./parts/event";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
@@ -117,7 +117,14 @@ const build = {
 			...yTrace('y1', eye.VFI, eye.VFI.name),
 			mode: 'lines+markers',
 			hovertemplate: '%{y}<br>%{x}<extra></extra>',
-			line: dashedLine(),
+			line: customTraceLine({ dashed: true }),
+		};
+
+		const MD = {
+			...yTrace('y1', eye.MD, eye.MD.name),
+			mode: 'lines+markers',
+			hovertemplate: '%{y}<br>%{x}<extra></extra>',
+			line: customTraceLine({ dashed: true }),
 		};
 
 		const VA = {
@@ -133,7 +140,7 @@ const build = {
 			error_y: errorY(eye.IOP)
 		};
 
-		return [ VFI, IOP, VA, ...buildEvents(eye.events, 'y4', sideSpecificColours) ]
+		return [ VFI, MD, IOP, VA, ...buildEvents(eye.events, 'y4', sideSpecificColours) ]
 	}
 }
 

@@ -1,7 +1,7 @@
 import { getAxis } from "../../getAxis";
 import { toolBar } from "../../toolBar";
 import { splitCore } from "../splitCore";
-import { dashedLine, smoothLine } from "./parts/lines";
+import { customTraceLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
 import { getBlue, getEventColor } from "../../colors";
@@ -44,9 +44,9 @@ const build = {
 		// Total Vol | %  y1 | y2
 
 		const domainLayout = [
-			convertDomain([ 100-eventDomainHeight, 100 ]),
-			convertDomain([ 54, 96].map(x => x - eventDomainHeight)),
-			convertDomain([ 0, 50-eventDomainHeight])
+			convertDomain([ 100 - eventDomainHeight, 100 ]),
+			convertDomain([ 54, 96 ].map(x => x - eventDomainHeight)),
+			convertDomain([ 0, 50 - eventDomainHeight ])
 		];
 
 		this.procedureVericalHeight = domainLayout[1][1];
@@ -90,9 +90,8 @@ const build = {
 		});
 
 		// Events
-		const y5 = eventAxis( domainLayout[0], layoutData.allEvents )
+		const y5 = eventAxis(domainLayout[0], layoutData.allEvents)
 		this.addEventAnnotations(layoutData.allEvents, 'y5');
-
 
 		/**
 		 * set up base layout for both plots
@@ -124,14 +123,14 @@ const build = {
 			...yTrace('y2', eye.change, eye.change.name),
 			mode: 'lines',
 			hovertemplate: `${eye.change.name}: %{y}<br>%{x}`,
-			line: smoothLine( getBlue(), true, 1 )
+			line: customTraceLine({ smooth: true, width: 1, color: getBlue() })
 		}
 
 		const CRT = {
 			...yTrace('y3', eye.CRT, `${eye.CRT.name}`),
 			mode: 'lines+markers',
 			hovertemplate: 'CRT: %{y}<br>%{x}',
-			line: dashedLine()
+			line: customTraceLine({ dashed: true })
 		};
 
 		const VA = {
