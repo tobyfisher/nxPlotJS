@@ -19,11 +19,11 @@ const legendDefaults = {
 
 export const getLegend = {
 
-	horizontal( yanchor, y = 1, toggleSelf = false  ) {
+	horizontal( yanchor, y = 1, toggleSelf = false, alignRight = false  ) {
 		const legend = Object.assign(legendDefaults, {
 			orientation: 'h',
-			xanchor: 'left',
-			x: 0,
+			xanchor: alignRight ? 'right' : 'left',
+			x: alignRight ? 1 : 0,
 			yanchor,
 			y
 		});

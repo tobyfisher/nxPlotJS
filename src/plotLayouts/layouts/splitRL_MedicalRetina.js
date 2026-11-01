@@ -116,28 +116,28 @@ const build = {
 		const volume = {
 			...yTrace('y1', eye.volume, eye.volume.name),
 			mode: 'lines+markers',
-			hovertemplate: `${eye.volume.name}: %{y}<br>%{x}`,
-			line: customTraceLine({ color: getColor('orange') })
+			hovertemplate: `${eye.volume.name} %{y} <sup>mm3</sup><br>%{x}<extra></extra>`,
+			line: customTraceLine({ color: getColor('standard') })
 		}
 
 		const change = {
 			...yTrace('y2', eye.change, eye.change.name),
 			mode: 'lines',
-			hovertemplate: `${eye.change.name}: %{y}<br>%{x}`,
+			hovertemplate: `Δ %{y}%<br>%{x}<extra></extra>`,
 			line: customTraceLine({ smooth: true, width: 1, color: getBlue(), dashed: true })
 		}
 
 		const CRT = {
 			...yTrace('y3', eye.CRT, `${eye.CRT.name}`),
 			mode: 'lines+markers',
-			hovertemplate: 'CRT: %{y}<br>%{x}',
+			hovertemplate: 'CRT %{y} <sup>µm</sup><br>%{x}<extra></extra>',
 			line: customTraceLine({ color: getColor('primary') })
 		};
 
 		const VA = {
 			...yTrace('y4', eye.VA, eye.VA.name),
 			mode: 'lines+markers',
-			hovertemplate: `${eye.VA.name}: %{y}<br>%{x}`
+			hovertemplate: `${eye.VA.name} %{y}<br>%{x}<extra></extra>`
 		}
 
 		return [ volume, change, CRT, VA, ...buildEvents(eye.events, 'y5') ]

@@ -11,6 +11,10 @@ export const toolBar = {
 	div: null,
 	hoverMode: 'closest',  // default, but shown as 'Single' as this makes sense?
 	currentVA: 'currentVA',
+	eNum: {
+		VAUnitRequest: "VAUnitChange",
+		plotHoverMode: "PlotHoverMode"
+	},
 
 	/**
 	 * Setup - hard link with the current layout object
@@ -39,12 +43,12 @@ export const toolBar = {
 
 	userChangesSomething( what, newVal ){
 		switch( what ){
-			case "plotPointsHoverMode":
+			case this.eNum.plotHoverMode:
 				this.hoverMode = newVal;
 				debug.log(`change hovermode to "${newVal}"`);
 				this.layout.relayout();
 			break;
-			case "vaUnits":
+			case this.eNum.VAUnitRequest:
 				if( newVal !== this.currentVA){
 					debug.log(`User requests VA Units change: "${newVal}"`);
 				}
@@ -59,7 +63,7 @@ export const toolBar = {
 	 */
 	allowUserToChangeHoverMode(){
 		this.buildDropDown(
-			'plotPointsHoverMode',
+			this.eNum.plotHoverMode,
 			'Plots hover info show:',
 			[
 				{ text: 'Single', value: this.hoverMode }, // default
@@ -86,14 +90,20 @@ export const toolBar = {
 		});
 
 		this.buildDropDown(
-			'vaUnits',
+			this.eNum.VAUnitRequest,
 			'Change VA Units',
 			selectOptions
 		);
 	},
 
 	buildDropDown( userSelects, labelText, selectOptions ){
-		const select = utils.buildElem('select');
+		const
+			label = utils.buildElem('label', false, labelText),
+			select = utils.buildElem('select'),
+			id = `toolBar-${userSelects}`;
+
+		select.id = id;
+		label.setAttribute('for', id);
 
 		for ( const opt of selectOptions ){
 			const newOpt = document.createElement("option");
@@ -105,7 +115,7 @@ export const toolBar = {
 		// update DOM
 		const div = utils.buildDiv('plot-tool');
 		div.append(
-			utils.buildElem('label', false, labelText),
+			label,
 			select
 		);
 		this.div.append(div);

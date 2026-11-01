@@ -55,7 +55,7 @@ export const getLayout = function ( options ){
 		// default set up for hoverlabels
 		hoverlabel: {
 			bgcolor: colors.getColor('max'),
-			bordercolor: colors.getBlue('spike'),
+			bordercolor: colors.getBlue('annotate'),
 			align: "left",
 			font: {
 				size: dark ? 10 : 11, // override base font

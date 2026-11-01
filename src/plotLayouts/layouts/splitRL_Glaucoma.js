@@ -114,30 +114,34 @@ const build = {
 
 		const VFI = {
 			...yTrace('y1', eye.VFI, eye.VFI.name),
+			nxTrace: 'VFI',
 			mode: 'lines+markers',
-			hovertemplate: `%{y} <sup>${eye.VFI.name}</sup><br>%{x}<extra>VFI</extra>`,
+			hovertemplate: `${eye.VFI.name} %{y}<br>%{x}<extra>VFI</extra>`,
 			line: customTraceLine({ color: getColor('standard'), dashed: true }),
 			zorder: 1,
 		};
 
 		const MD = {
 			...yTrace('y1', eye.MD, eye.MD.name),
+			nxTrace: 'MD',
 			mode: 'lines+markers',
-			hovertemplate: `%{y} <sup>${eye.MD.name}</sup><br>%{x}<extra>MD</extra>`,
+			hovertemplate: `${eye.MD.name} %{y}<br>%{x}<extra>MD</extra>`,
 			line: customTraceLine({ color: getColor('orange') }),
 			zorder: 1,
 		};
 
 		const VA = {
 			...yTrace('y2', eye.VA,  eye.VA.name),
+			nxTrace: 'VA',
 			mode: 'lines+markers',
-			hovertemplate: `%{y} <sup>${eye.VA.name}</sup><br>%{x}<extra>VA</extra>`,
+			hovertemplate: `${eye.VA.name} %{y}<br>%{x}<extra>VA</extra>`,
 		}
 
 		const IOP = {
 			...yTrace('y3', eye.IOP, eye.IOP.name),
+			nxTrace: 'IOP',
 			mode: 'lines+markers',
-			hovertemplate: 'IOP: %{y}<br>%{x}<extra></extra>',
+			hovertemplate: 'IOP %{y}<br>%{x}<extra></extra>',
 			error_y: errorY(eye.IOP),
 			line: customTraceLine({ color: getColor('primary') }),
 		};

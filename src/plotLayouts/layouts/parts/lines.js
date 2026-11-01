@@ -1,28 +1,19 @@
-const customTraceLine = ( opts ) => {
-	const line = { width: 2 };
+export const customTraceLine = (opts = {}) => {
+	const {
+		width = 2,
+		color,
+		dashed = false,
+		dash,
+		smooth = false,
+		smoothing = 1,
+	} = opts;
 
-	if( opts.dashed ){
-		line.dash = "2px,2px";
-	}
-
-	if( opts.dash ){
-		line.dash = opts.dash;
-	}
-
-	if( opts.width ){
-		line.width = opts.width;
-	}
-
-	if( opts.color ){
-		line.color = opts.color;
-	}
-
-	if( opts.smooth ){
-		line.shape = "spline";
-		line.smoothing = 1;
-	}
-
-	return line;
-}
-
-export { customTraceLine }
+	return {
+		// retain width even if 0 was passed
+		width: width ?? 2,
+		...(color != null ? { color } : {}),
+		// explicit precedence for dash vs dashed
+		...(dash != null ? { dash } : dashed ? { dash: "2px,2px" } : {}),
+		...(smooth ? { shape: "spline", smoothing } : {}),
+	};
+};

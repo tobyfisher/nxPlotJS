@@ -31,7 +31,7 @@ const build = {
 			xaxis: x1,
 			yaxes: [ y1 ],
 			colors: 'duo',
-			legend: getLegend.horizontal('top', 1,true)
+			legend: getLegend.horizontal('top', 1,true, true)
 		});
 
 		return this
