@@ -87,6 +87,11 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	 */
 	if( isSplitPlot ){
 		splitLayoutView.init( nxLayout );
+
+		document.addEventListener( 'oesReportDate', ( event ) => {
+			const { side, date } = event.detail;
+			nxLayout.highlightDate( side, date );
+		})
 	}
 
 	/**

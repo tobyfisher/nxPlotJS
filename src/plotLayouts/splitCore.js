@@ -63,7 +63,7 @@ const splitPlots = {
 		}
 
 		// any reports?
-		if ( plotData.hasOwnProperty('reports') ){
+		if ( this.eventAnnotations.indexOf("Reports" > -1) ){
 			// add report date line and track shape index
 			const shapeIndex = addReportDateLine( sideSpecificLayout, "2027-01-01" );
 			eyePlot.set('reportShapeIndex', `shapes[${shapeIndex}]`);
@@ -177,22 +177,27 @@ const splitPlots = {
 	/**
 	 * Report need to show where they exist on the appropriate plot
 	 * @param eye
-	 * @param isoDate
+	 * @param isoDate {String | false }
 	 */
-	highlightDate( eye, isoDate = "" ){
-		if( this.plots.has(eye) === false ) return;
-		const side = this.plots.get(eye);
+	highlightDate( eye, isoDate ){
 
-		if( side.has('reportShapeIndex') === false) return;
+		const side = eye === 'right' ? 'R' : 'L';
 
-		const shapeRef = side.get('reportShapeIndex');
+		if( this.plots.has(side) === false ) return;
+		const plot = this.plots.get(side);;
+
+		if( plot.has('reportShapeIndex') === false) return;
+
+		const shapeRef = plot.get('reportShapeIndex');
+
+		console.log( isoDate );
 
 		const update = {};
-		update[`${shapeRef}.visible`] = (isoDate !== "");
+		update[`${shapeRef}.visible`] = isoDate;
 		update[`${shapeRef}.x0`] = isoDate;
 		update[`${shapeRef}.x1`] = isoDate;
 
-		Plotly.relayout(side.get('div'), update);
+		Plotly.relayout(plot.get('div'), update);
 	},
 
 	plotlyThemeChange(){
