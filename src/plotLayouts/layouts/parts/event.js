@@ -1,8 +1,5 @@
-import { markerFor } from "./markerFor";
 import { getAxis } from "../../../getAxis";
-import { yTrace } from "./yTrace";
-import { isDarkTheme } from "../../../helpers/isDarkTheme";
-import { getBlue } from "../../../colors";
+import { eventHorizontalBar, eventTrace } from "./eventTrace";
 
 /**
  * Domain layout adjusts to number of Events (Reports, Mgmt, Drugs, etc)
@@ -45,7 +42,7 @@ const buildEvents = ( events, yaxis, sideColors ) => {
 
 	for( const event of events ) {
 		if ( event.event === "durationBar" ){
-			traces.push(horizontalBarTrace(event, yaxis, sideColors ));
+			traces.push(eventHorizontalBar(event, yaxis, sideColors ));
 		} else {
 			traces.push(eventTrace(event, yaxis));
 		}
@@ -54,49 +51,7 @@ const buildEvents = ( events, yaxis, sideColors ) => {
 	return traces;
 };
 
-const eventTrace = ( eventData, yaxis, color ) => {
-	const trace = yTrace(yaxis, eventData, eventData.name);
-	trace.mode = "markers";
-	trace.showlegend = false;
-	trace.marker = markerFor(eventData.event);
-	trace.marker.opacity = isDarkTheme() ? 0.8 :  0.9;
-	trace.customdata = eventData.customdata;
-	trace.hovertemplate = '%{y}<br>%{customdata}<br>%{x}<extra></extra>';
 
-	if( eventData.event === "report"){
-		trace.marker.color = getBlue();
-	}
-
-	return trace;
-}
-
-const horizontalBarTrace = (
-	{ xStart, msDuration, name, y, customdata },
-	yaxis, sideColors ) => ({
-	type: 'bar',
-	orientation: 'h',
-	width: 0.6,
-	yaxis,
-	base: Date.parse(xStart),
-	x: [ msDuration ],
-	y,
-	name,
-	customdata,
-	xperiodalignment: "start",
-	showlegend: false,
-	marker: {
-		cornerradius: 1,
-		thicknessmode: "fraction",
-		opacity: isDarkTheme() ? 0.8 :  0.9,
-		color: sideColors.barBgColor,
-		line: {
-			width: 2,
-			color: sideColors.barLineColor,
-		}
-	},
-	xhoverformat: "%e %b %Y",
-	hovertemplate: '%{y}<br>%{customdata}<extra></extra>',
-});
 
 export { calcEventLayout, eventAxis, buildEvents };
 

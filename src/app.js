@@ -1,7 +1,7 @@
 import * as debug from "./debug";
 import * as layouts from "./plotLayouts/layouts";
 import { getBlue, getColor, getColorSeries } from "./colors";
-import { setupSplitLayoutView } from "./helpers/splitLayoutView";
+import { setupSplitLayoutView, splitLayoutView } from "./helpers/splitLayoutView";
 
 /**
  * nxPlotJS - Facade pattern
@@ -64,19 +64,30 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	}
 
 	/**
-	 * However, if it's a "splitRL.." template graphDiv must have 2 child divs for each plot
+	 * However, if it's a "splitRL.." layout graphDiv must have 2 child divs
+	 * one for each plot, and nxPlot expects the following DOM structure
 	 *
-	 * |- <div class="oes-right-side"><!-- JS hook --></div>
-	 * |- <div class="oes-left-side"><!-- JS hook --></div>
+	 * |-- <div class="oes-right-side">
+	 * |   |-- <div class="right-eye-plot">
+	 * |   |-- <div class="reports-left-eye">
+	 * |-- <div class="oes-left-side">
+	 * |   |-- <div class="left-eye-plot">
+	 * |   |-- <div class="reports-right-eye">
+	 *
 	 */
-	nxLayout.setPlotlyDiv( graphDiv, requestedPlotLayout.startsWith('splitRL') );
+
+	const isSplitPlot = requestedPlotLayout.startsWith('splitRL');
+
+	nxLayout.setPlotlyDiv( graphDiv, isSplitPlot );
 	nxLayout.prebuild(); // prebuild hook (optional), used to set up the toolbar
 
 	/**
 	 * set up split layout view controller in the oe-full-header\
 	 * (only if DOM exists...)
 	 */
-	setupSplitLayoutView( nxLayout );
+	if( isSplitPlot ){
+		splitLayoutView.init( nxLayout );
+	}
 
 	/**
 	 * nxPlotJS will react to an OE theme change
