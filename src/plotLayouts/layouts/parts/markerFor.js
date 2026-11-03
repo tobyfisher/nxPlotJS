@@ -1,4 +1,5 @@
 import * as debug from "../../../debug";
+import { getBlue } from "../../../colors";
 /**
  * return settings for "marker" style in data
  * @returns {Object}
@@ -7,33 +8,32 @@ import * as debug from "../../../debug";
  */
 export const markerFor = ( type ) => {
 	let symbol = "diamond"
-	let size = 12;
+	let size = 11;
 
-	switch ( type ){
-		case 'management':
-			symbol = "diamond";
-			size = 11;
-			break;
-		case "report":
-			symbol = "diamond-open-dot";
-			size = 11;
-			break;
-		case 'image':
-			symbol = "circle";
-			size = 10;
-			break;
-		case 'drop':
-			symbol = "circle";
-			size = 11;
-			break;
-		case 'injection':
-			symbol = "star-diamond";
-			size = 11;
-			break;
-		default :
-			debug.error(`markerFor: Unknown marker type: ${ type }`);
+	if( type === "report"){
+		return {
+			symbol:"diamond-open-dot",
+			size,
+			color: getBlue()
+		}
+	} else {
+		switch ( type ){
+			case 'management':
+				symbol = "diamond";
+				break;
+			case 'drug':
+			case 'drop':
+				symbol = "circle";
+				break;
+			case 'injection':
+				symbol = "star-diamond";
+				break;
+			default :
+				debug.error(`markerFor: Unknown marker type: ${ type }`);
 
+		}
+
+		return { symbol, size  };
 	}
 
-	return { symbol, size  };
 };

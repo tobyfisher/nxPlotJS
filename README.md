@@ -119,7 +119,7 @@ If custom traces are required you can use the layout and pass in your own trace 
 
 ```js
 /** nxPlot */
-nxPlot('_layoutOnly', 'graphDiv-id-here')
+nxPlot('basicLayoutOnly', 'graphDiv-id-here')
   .buildLayout({ 
       xaxis: { title: 'Age (Yrs)' },
       yaxis: { y1: { title: 'Mean Deviation (dB)' } }
@@ -127,7 +127,7 @@ nxPlot('_layoutOnly', 'graphDiv-id-here')
   .buildData( customTracesArray )
   .plotlyReact();
 ```
-> [iDG: _layoutOnly example](https://idg.knowego.com/edge/analytics/glaucoma-visual-field-progression/)
+> [iDG: basicLayoutOnly example](https://idg.knowego.com/edge/analytics/glaucoma-visual-field-progression/)
 
 ### Handling CF, HM, PL, NPL
 The `base_value` for these are respectively `1,2,3,4`. However, some consideration will need to be given to what values are used in respect to the choosen VA scale. e.g. for logMAR, iDG has them set for 1.4, 1.6, 1.8 and 2:

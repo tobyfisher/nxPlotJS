@@ -7,15 +7,13 @@ const eventTrace = ( eventData, yaxis ) => {
 
 	const marker = markerFor(eventData.event);
 	marker.opacity = isDarkTheme() ? 0.8 :  0.9;
-	if( eventData.event === "report"){
-		marker.color = getBlue();
-	}
 
 	const trace = {
 		...yTrace(yaxis, eventData, eventData.name),
 		mode: "markers",
 		showlegend: false,
 		marker,
+		nxReport: eventData.event === "report",
 		customdata: eventData.customdata,
 		hovertemplate: '%{y}<br>%{customdata}<br>%{x}<extra></extra>',
 	}
@@ -23,9 +21,7 @@ const eventTrace = ( eventData, yaxis ) => {
 	return trace;
 }
 
-const eventHorizontalBar = (
-	{ xStart, msDuration, name, y, customdata },
-	yaxis, sideColors ) => ({
+const eventHorizontalBar = ({ xStart, msDuration, name, y, customdata }, yaxis, sideColors ) => ({
 	type: 'bar',
 	orientation: 'h',
 	width: 0.6,

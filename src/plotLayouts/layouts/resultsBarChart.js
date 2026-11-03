@@ -1,6 +1,6 @@
+import { core } from "../core";
 import { getAxis } from "../../getAxis";
 import { getLayout } from "../../getLayout";
-import { core } from "../core";
 
 const build = {
 
@@ -30,15 +30,27 @@ const build = {
 		return this
 	},
 
-	/**
-	 * Pass in data as Plotly expects
-	 * only the standardise layout for nxPlot is used
-	 */
-	buildData( dataTrace ){
+	buildData( plotData ){
+
+		/**
+		 * Data - for Plotly
+		 * Simple trace, trace colours controlled by the Layout
+		 */
+		const trace = {
+			y: plotData.y,
+			name: plotData.name,
+			type: 'bar',
+			hovertemplate: '%{y}<br>%{customdata}<br>Results: %{x}<extra></extra>',
+		};
+
+		// optional trace settings if provide by plotData:
+		if ( plotData.hasOwnProperty('x') ) trace.x = plotData.x;
+
 		/** plotly data **/
-		this.data = dataTrace;
+		this.data = [ trace ];
+
 		return this
 	}
 }
 
-export const _layoutOnly = { ...core, ...build };
+export const resultsBarChart = { ...core, ...build };

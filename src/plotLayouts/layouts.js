@@ -1,5 +1,5 @@
-export * from './layouts/_layoutOnly';
-export * from './layouts/barChart';
+export * from './layouts/basicLayoutOnly';
+export * from './layouts/resultsBarChart';
 export * from './layouts/eyesOutcomes_Errors';
 export * from './layouts/outcomes_Errors';
 export * from './layouts/splitRL_Adherence';

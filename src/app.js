@@ -24,14 +24,15 @@ if( window.hasOwnProperty('Plotly') ){
 }
 
 const allowedTemplates = new Set([
-	"barChart",
-	"PCR_Risk",
-	"eyesOutcomes_Errors",
-	"outcomes_Errors",
 	"splitRL_Adherence",
 	"splitRL_Glaucoma",
 	"splitRL_MedicalRetina",
-	"splitRL_Strabismus"
+	"splitRL_Strabismus",
+	"resultsBarChart",
+	"PCR_Risk",
+	"eyesOutcomes_Errors",
+	"outcomes_Errors",
+	"basicLayoutOnly"
 ]);
 
 
@@ -48,7 +49,7 @@ const nxPlot = ( requestedPlotLayout, divID ) => {
 	 * check requested nxLayout exists
 	 */
 	if( nxLayout === undefined ){
-		console.error(`Requested plot template: "${requestedPlotLayout}" is undefined. plotTemplates:\n${Array.from(plotTemplates.keys()).join("\n")}` );
+		console.error(`Requested plot template: "${requestedPlotLayout}" unknown. plotTemplates:\n${Array.from(plotTemplates.keys()).join("\n")}` );
 		return false;
 	} else {
 		debug.log(`layout: "${requestedPlotLayout}"`);

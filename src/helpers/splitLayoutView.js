@@ -81,6 +81,12 @@ export const splitLayoutView = {
 		div.addEventListener('pointerdown', ( { target } ) => {
 			this.changeViewMode(target);
 		});
+
+		document.addEventListener( "nxPlotReportDate", ( e )=>{
+			const { date, eye } = e.detail;
+			const plotSide = eye === "R" ? "right" : "left";
+			this.changeViewMode( this.viewBtns[plotSide] );
+		});
 	},
 
 	/**

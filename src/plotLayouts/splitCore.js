@@ -134,9 +134,17 @@ const splitPlots = {
 					{ displayModeBar: false, responsive: true }
 				);
 
-				// side.get('div').on('plotly_hover', function(data){
-				// 	console.log( data );
-				// })
+				/**
+				 * Managing all Plotly interaction will be handled
+				 * externally, outside nxPlotJS, however, Reports are
+				 * special so nxPlot will broadcast a report date
+				 */
+				side.get('div').on('plotly_click', function(data){
+					console.log(data);
+					if( data.points[0].data.nxReport ){
+						document.dispatchEvent(new CustomEvent('nxPlotReportDate', { detail: { date: data.points[0].x, eye }} ));
+					}
+				})
 			}
 		});
 	},
