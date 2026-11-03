@@ -8,6 +8,7 @@ import { getLegend } from "../../getLegend";
 import { convertDomain } from "./parts/domain";
 import { getColor, getSplitColors } from "../../colors";
 import { errorY } from "./parts/errorY";
+import { annotateTest } from "../layoutAnnotations";
 
 /**
  * OES(Summary) Glaucoma
@@ -25,8 +26,8 @@ const build = {
 		this.toolBar.allowUserToChangeHoverMode();
 	},
 
-	setSelectableUnits( { current, available } ){
-		this.toolBar.allowUserToSelectUnits( current, available);
+	setChangeableUnits( units ){
+		this.toolBar.allowUserToChangeUnits( units );
 		return this
 	},
 
@@ -112,21 +113,12 @@ const build = {
 		
 		const sideSpecificColours = getSplitColors(side)
 
-		const VFI = {
-			...yTrace('y1', eye.VFI, eye.VFI.name),
-			nxTrace: 'VFI',
+		const VF = {
+			...yTrace('y1', eye.VF, eye.VF.name),
+			nxTrace: 'VF',
 			mode: 'lines+markers',
-			hovertemplate: `${eye.VFI.name} %{y}<br>%{x}<extra>VFI</extra>`,
-			line: customTraceLine({ color: getColor('standard'), dashed: true }),
-			zorder: 1,
-		};
-
-		const MD = {
-			...yTrace('y1', eye.MD, eye.MD.name),
-			nxTrace: 'MD',
-			mode: 'lines+markers',
-			hovertemplate: `${eye.MD.name} %{y}<br>%{x}<extra>MD</extra>`,
-			line: customTraceLine({ color: getColor('orange') }),
+			hovertemplate: `${eye.VF.name} %{y}<br>%{x}<extra>MD</extra>`,
+			line: customTraceLine({ color: getColor('standard') }),
 			zorder: 1,
 		};
 
@@ -146,7 +138,8 @@ const build = {
 			line: customTraceLine({ color: getColor('primary') }),
 		};
 
-		return [ VA, VFI, MD, IOP, ...buildEvents(eye.events, 'y4', sideSpecificColours) ]
+
+		return [ VA, VF, IOP, ...buildEvents(eye.events, 'y4', sideSpecificColours) ]
 	}
 }
 

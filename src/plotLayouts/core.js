@@ -24,7 +24,7 @@ export const core = {
 	/**
 	 * API
 	 */
-	setSelectableUnits(){
+	setSelectableVAUnits(){
 		debug.error('needs overwriting in specific layout');
 	},
 

@@ -10,9 +10,8 @@ export const toolBar = {
 	layout: null,
 	div: null,
 	hoverMode: 'closest',  // default, but shown as 'Single' as this makes sense?
-	currentVA: 'currentVA',
 	eNum: {
-		VAUnitRequest: "VAUnitChange",
+		unitRequestPrefix: "unitChange-",
 		plotHoverMode: "PlotHoverMode"
 	},
 
@@ -42,18 +41,17 @@ export const toolBar = {
 	},
 
 	userChangesSomething( what, newVal ){
-		switch( what ){
+		switch ( what ){
 			case this.eNum.plotHoverMode:
 				this.hoverMode = newVal;
 				debug.log(`change hovermode to "${newVal}"`);
 				this.layout.relayout();
-			break;
+				break;
 			case this.eNum.VAUnitRequest:
-				if( newVal !== this.currentVA){
-					debug.log(`User requests VA Units change: "${newVal}"`);
-				}
-			break;
-			default: return;
+				debug.log(`User requests VA Units change: "${newVal}"`);
+				break;
+			default:
+				return;
 		}
 	},
 
@@ -64,9 +62,9 @@ export const toolBar = {
 	allowUserToChangeHoverMode(){
 		this.buildDropDown(
 			this.eNum.plotHoverMode,
-			'Plots hover info show:',
+			'Hover data',
 			[
-				{ text: 'Single', value: this.hoverMode }, // default
+				{ text: 'Specific', value: this.hoverMode }, // default
 				{ text: 'Closest', value: 'x' },
 				{ text: 'Grouped', value: 'x unified' }
 			]);
@@ -77,23 +75,21 @@ export const toolBar = {
 	},
 
 	/**
-	 * Selectable units (VA)
-	 * @param current {String}
-	 * @param available {Array}
+	 * Changeable units within the plot
 	 */
-	allowUserToSelectUnits: function ( current, available ){
+	allowUserToChangeUnits( units ){
 
-		const selectOptions = [ { text: current, value: this.currentVA } ];
+		for ( const [ name, options ] of Object.entries(units) ){
+			const { label, current, available } = options;
+			const selectOptions = [ { text: current, value: 0 } ];
+			available.forEach(opt => selectOptions.push(opt));
 
-		available.forEach(  opt => {
-			selectOptions.push( opt )
-		});
-
-		this.buildDropDown(
-			this.eNum.VAUnitRequest,
-			'Change VA Units',
-			selectOptions
-		);
+			this.buildDropDown(
+				this.eNum.unitRequestPrefix + name,
+				label,
+				selectOptions
+			);
+		}
 	},
 
 	buildDropDown( userSelects, labelText, selectOptions ){

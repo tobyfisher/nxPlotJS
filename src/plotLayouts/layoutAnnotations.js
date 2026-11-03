@@ -116,4 +116,21 @@ const annotateEventNames = ( events, yaxis ) => {
 	return events.map(annotate);
 }
 
-export { addLayoutVerticals, addLayoutHorizontals, annotateEventNames };
+const annotateTest = ( name, yaxis ) => ({
+	...annotateBase,
+	font: {
+		color: getColor('highlight'),
+		size: 10,
+		weight: fontWeight()
+	},
+	text: name,
+	y: name,
+	yref: yaxis, // assign to the yaxis
+	x: 0,
+	xanchor: "left",
+	xref: "paper",
+	opacity: isDarkTheme() ? 0.6 : 0.8
+});
+
+
+export { addLayoutVerticals, addLayoutHorizontals, annotateEventNames, annotateTest };

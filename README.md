@@ -28,7 +28,7 @@ After DOMContentLoaded, request a layout template, provide the `div` hook id, pa
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         nxPlot('outcomes_Errors', "js-plot-outcomes") // layout, div id
-        .setSelectableUnits() // [optional]
+        .setSelectableVAUnits() // [optional]
         .buildLayout() // provide layout object 
         .buildData() // provide data for plotting
         .addHorizontalLines() // [optional]
@@ -83,7 +83,7 @@ UI changes of layout requires the following DOM in the header bar, nxPlotJS will
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         nxPlot('splitRL_Glaucoma', 'js-nxplot-split')
-        .setSelectableUnits() // if there are selectable VA units
+        .setSelectableVAUnits() // if there are selectable VA units
         .buildLayout() // provide layout object
         .buildRightData()// provide data for Right Eye
         .buildLeftData() // provide data for Left Eye

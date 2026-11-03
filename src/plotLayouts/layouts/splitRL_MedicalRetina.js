@@ -23,8 +23,8 @@ const build = {
 		this.toolBar.allowUserToChangeHoverMode();
 	},
 
-	setSelectableUnits( { current, available } ){
-		this.toolBar.allowUserToSelectUnits(current, available);
+	setChangeableUnits( units ){
+		this.toolBar.allowUserToChangeUnits( units );
 		return this
 	},
 

@@ -140,7 +140,6 @@ const splitPlots = {
 				 * special so nxPlot will broadcast a report date
 				 */
 				side.get('div').on('plotly_click', function(data){
-					console.log(data);
 					if( data.points[0].data.nxReport ){
 						document.dispatchEvent(new CustomEvent('nxPlotReportDate', { detail: { date: data.points[0].x, eye }} ));
 					}
@@ -197,8 +196,6 @@ const splitPlots = {
 		if( plot.has('reportShapeIndex') === false) return;
 
 		const shapeRef = plot.get('reportShapeIndex');
-
-		console.log( isoDate );
 
 		const update = {};
 		update[`${shapeRef}.visible`] = isoDate;

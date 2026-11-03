@@ -24,7 +24,7 @@ const eventTrace = ( eventData, yaxis ) => {
 const eventHorizontalBar = ({ xStart, msDuration, name, y, customdata }, yaxis, sideColors ) => ({
 	type: 'bar',
 	orientation: 'h',
-	width: 0.6,
+	width: 0.7,
 	yaxis,
 	base: Date.parse(xStart),
 	x: [ msDuration ],
@@ -40,7 +40,7 @@ const eventHorizontalBar = ({ xStart, msDuration, name, y, customdata }, yaxis, 
 		opacity: isDarkTheme() ? 0.8 :  0.9,
 		color: sideColors.barBgColor,
 		line: {
-			width: 2,
+			width: 1,
 			color: sideColors.barLineColor,
 		}
 	}

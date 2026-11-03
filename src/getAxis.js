@@ -192,6 +192,7 @@ export const getAxis = function ( options ){
 		axis.spikethickness = isDarkTheme() ? 0.5 : 1.5;
 		axis.spikedash = isDarkTheme() ? "1px,3px" : "2px,3px";
 		axis.spikemode = "across";
+		axis.spikesnap = "cursor"; // "data" or "hovered data" (default)
 	}
 
 	return axis;
