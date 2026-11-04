@@ -25,6 +25,7 @@ if( window.hasOwnProperty('Plotly') ){
 
 const allowedTemplates = new Set([
 	"splitRL_Adherence",
+	"splitRL_Cataract",
 	"splitRL_Glaucoma",
 	"splitRL_MedicalRetina",
 	"splitRL_Strabismus",
@@ -36,7 +37,6 @@ const allowedTemplates = new Set([
 ]);
 
 
-
 const plotTemplates = new Map();
 for( const template of allowedTemplates){
 	plotTemplates.set(template, layouts[template]);
@@ -44,6 +44,9 @@ for( const template of allowedTemplates){
 
 const nxPlot = ( requestedPlotLayout, divID ) => {
 	let nxLayout = plotTemplates.get(requestedPlotLayout);
+
+	console.log( plotTemplates);
+	console.log( requestedPlotLayout);
 
 	/**
 	 * check requested nxLayout exists

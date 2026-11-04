@@ -99,6 +99,7 @@ const build = {
 		this.setBaseLayoutForSplitPlots({
 			legend: getLegend.horizontal('bottom', domainLayout[2][1]), // position relative to subplots
 			yaxes: [ y1, y2, y3, y4, y5 ],
+			dateRange: layoutData.xaxis.dateRange,
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});

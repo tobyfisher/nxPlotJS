@@ -24,8 +24,15 @@ const build = {
 		this.toolBar.allowUserToChangeHoverMode();
 	},
 
+	setChangeableUnits( units ){
+		this.toolBar.allowUserToChangeUnits( units );
+		return this
+	},
+
+
 	buildLayout( layoutData ){
 		this.storeLayoutDataForRebuild(layoutData);
+
 		/**
 		 * Axes
 		 * Domain allocation for sub-plot layout: (note: 0 - 1, 0 being the bottom)
@@ -64,6 +71,7 @@ const build = {
 		this.setBaseLayoutForSplitPlots({
 			legend:  getLegend.horizontal('bottom', domainLayout[1][1]), // position relative to subplots
 			yaxes: [ y1, y2 ],
+			dateRange: layoutData.xaxis.dateRange,
 			subplot: domainLayout.length, // num of sub-plots
 			hovermode: this.toolBar.getHoverMode()
 		});
