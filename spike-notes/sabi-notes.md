@@ -1,8 +1,8 @@
-# NOtes  
+# Notes  
 
 Updates/changes/notes from Reports UIX work and after feedback from David Haider
 
-_(Sabi, sorry, bit of brain dump but hopefully helpful!)_
+_(Sorry Sabi, a bit of brain dump but hopefully helpful!)_
 
 ## Requirements
 
@@ -127,8 +127,38 @@ for nxPlot pass this:
 
 ### Events
 
-If an Event is a "single" event then use this:
+Lots of examples in the JSON files but generally:
 
-but if it's a duration (drug, etc) then use this
+If an Event is a "single" event then use this approach:
+
+```JSON
+{
+  "event": "injection",
+  "name": "Eylea 8mg",
+  "x": [
+    "2016-06-03",
+    "2016-07-01",
+    "2016-07-29"
+  ],
+  "y": [
+    "Eylea 8mg",
+    "Eylea 8mg",
+    "Eylea 8mg"
+  ]
+}
+```
+
+but if it's a duration (drug, etc) then use this approach
+
+```JSON
+{
+  "event": "durationBar",
+  "name": "Acetazolamide 250mg modified release capsules",
+  "xStart": "2017-10-01",
+  "msDuration": 86400000,
+  "y": ["Acetazolamide 250mg modified release capsules"],
+  "customdata": ["01 Oct 2017<br>1 (drop), twice a day"]
+}
+```
 
 
