@@ -105,7 +105,7 @@ UI changes of layout requires the following DOM in the header bar, nxPlotJS will
 > [iDG: SplitPlot for GL](https://idg.knowego.com/y26/oes-summary/glaucoma/)
 > 
 > [iDG: SplitPlot for MR](https://idg.knowego.com/y26/oes-summary/medical-retina/)
-> /
+> 
 > [iDG: SplitPlot for SP](https://idg.knowego.com/y26/oes-summary/strabismus/)
 
 
