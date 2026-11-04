@@ -135,16 +135,18 @@ nxPlot('basicLayoutOnly', 'graphDiv-id-here')
   .buildData( customTracesArray )
   .plotlyReact();
 ```
-> [iDG: basicLayoutOnly example](https://idg.knowego.com/edge/analytics/glaucoma-visual-field-progression/)
 
 ### Handling CF, HM, PL, NPL
-The `base_value` for these are respectively `1,2,3,4`. However, some consideration will need to be given to what values are used in respect to the choosen VA scale. e.g. for logMAR, iDG has them set for 1.4, 1.6, 1.8 and 2:
+To sucessfully plot these VA "off-the-scale" values, a "false" appropriate value in the unit scale must be assigned. e.g. for LogMAR
 ```js
-customTicks: {
-    vals: [-0.2, 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2],
-    text: [-0.2, 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, "CF", "HM", "LP", "NLP"],
-    reverseRange: true
-}
+y2: {
+	title: "VA - logMAR",
+		range: {
+		vals: [-0.2, 0, 0.2, 0.6, 1, 1.4, 1.8, 2, 2.1, 2.2, 2.3], 
+        text: [-0.2, 0, 0.2, 0.6, 1, 1.4, 1.8, "CF", "HM", "LP", "NLP"],
+        reverseRange: true
+	},
+},
 ```
 
 ## Purging Plotly
