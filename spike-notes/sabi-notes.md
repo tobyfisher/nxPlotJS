@@ -124,7 +124,6 @@ No Events or Reports? then like this:
 for nxPlot pass this:
 `allEvents: ["No events"],`
 
-
 ### Events
 
 Lots of examples in the JSON files but generally:
@@ -148,8 +147,6 @@ If an Event is a "single" event then use this approach:
 }
 ```
 
-
-
 but if it's a duration (drug, etc) then use this approach
 
 ```JSON
@@ -163,4 +160,26 @@ but if it's a duration (drug, etc) then use this approach
 }
 ```
 
+and for reports
 
+```JSON
+{
+  "event": "report",
+  "name": "Reports",
+  "x": [
+    "2012-01-12",
+    "2012-01-13",
+    "2012-04-21"
+  ],
+  "y": [
+    "Reports",
+    "Reports",
+    "Reports"
+  ],
+  "customdata": [
+    "OCT, VF",
+    "OCT, VF",
+    "OCT, RADIAL, VF, WIDE"
+  ]
+}
+```
