@@ -133,7 +133,7 @@ If an Event is a "single" event then use this approach:
 
 ```JSON
 {
-  "event": "injection",
+  "event": "injection", // <-- 'management', 'drug', 'drop','injection'
   "name": "Eylea 8mg",
   "x": [
     "2016-06-03",
@@ -147,6 +147,8 @@ If an Event is a "single" event then use this approach:
   ]
 }
 ```
+
+
 
 but if it's a duration (drug, etc) then use this approach
 
