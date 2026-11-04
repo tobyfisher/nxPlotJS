@@ -1,4 +1,4 @@
-# Sabi notes: 4th Nov   
+# NOtes  
 
 Updates/changes/notes from Reports UIX work and after feedback from David Haider
 
@@ -9,8 +9,6 @@ _(Sabi, sorry, bit of brain dump but hopefully helpful!)_
 - nxPlotJS 1.1.0 
 - plotly-basic-4.1.2.min.js
 - nxblu: 6.5.0 https://github.com/openeyes/nxblu/releases/tag/6.5.0
-
-## Notes
 
 ### OEScape DOM updates
 
