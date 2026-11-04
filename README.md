@@ -138,15 +138,15 @@ nxPlot('basicLayoutOnly', 'graphDiv-id-here')
 
 ### Handling CF, HM, PL, NPL
 To sucessfully plot these VA "off-the-scale" values, a "false" appropriate value in the unit scale must be assigned. e.g. for LogMAR
-```JSON
+```JS
 y2: {
-	title: "VA - logMAR",
-		range: {
-		vals: [-0.2, 0, 0.2, 0.6, 1, 1.4, 1.8, 2, 2.1, 2.2, 2.3], 
+    title: "VA - logMAR", 
+    range: {
+        vals: [-0.2, 0, 0.2, 0.6, 1, 1.4, 1.8, 2, 2.1, 2.2, 2.3], 
         text: [-0.2, 0, 0.2, 0.6, 1, 1.4, 1.8, "CF", "HM", "LP", "NLP"],
         reverseRange: true
-	},
-},
+    }
+}
 ```
 
 ## Purging Plotly
