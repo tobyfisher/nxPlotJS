@@ -52,10 +52,20 @@ Two plots, one for each eye: two separate Ploy.ly Plots, but both using the same
 The correct DOM structure for Summary UI is expected and **must** be available, nxPlotJS will look for `oes-right-side` and `oes-left-side` hooks:
 
 ```html
-<div class="oe-full-content oes-v2 oeplot use-full-screen" id="js-nxplot-split">
-	<div class="oes-split-grid split-1-1">
-		<div class="oes-right-side"><!-- Plotly JS --></div>
-		<div class="oes-left-side"><!-- Plotly JS --></div>
+<div class="oes-right-side">
+	<div class="right-eye-plot">
+		<!-- Plotly JS -->
+	</div>
+	<div class="reports-left-eye" hidden>
+		<!-- Reports for left eye -->
+	</div>
+</div>
+<div class="oes-left-side">
+	<div class="left-eye-plot">
+		<!-- Plotly JS -->
+	</div>
+	<div class="reports-right-eye" hidden>
+		<!-- Reports for right eye -->
 	</div>
 </div>
 ```
@@ -65,10 +75,11 @@ Layout format is managed through CSS classes on `oes-split-grid`
 UI changes of layout requires the following DOM in the header bar, nxPlotJS will then manage the layout:
 
 ```html
-<div class="oes-ui-manage-layout" data-oes-layout="split-1-1" id="js-nxplot-manage-layout">
-    <div class="oes-layout-btn" id="js-nx-right"><i class="oe-i lat-R small"></i></div>
-    <div class="oes-layout-btn" id="js-nx-left"><i class="oe-i lat-L small"></i></div>
-    <div class="oes-layout-btn" id="js-nx-layout"><i class="oes-layout-icon i-1-1"></i></div>
+<div class="oes-ui-manage-layout" data-oes-split="1-1" id="js-nxplot-manage-layout">
+	<div class="oes-layout-btn" id="js-nx-right"><i class="oe-i lat-R small"></i></div>
+	<div class="oes-layout-btn" id="js-nx-left"><i class="oe-i lat-L small"></i></div>
+	<div class="oes-layout-btn" id="js-nx-both"><i class="oe-i chart"></i></div>
+	<div class="oes-layout-btn" id="js-nx-layout"><i class="oes-layout-icon i-1-1"></i></div>
 </div>
 ```
 
@@ -77,7 +88,7 @@ UI changes of layout requires the following DOM in the header bar, nxPlotJS will
 ```html
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        nxPlot('splitRL_Glaucoma', 'js-nxplot-split')
+        nxPlot('splitRL_{name-of-layout}', 'js-nxplot-split')
         .setChangeableUnits() // if there are change units
         .buildLayout() // provide layout object
         .buildRightData()// provide data for Right Eye
@@ -89,11 +100,13 @@ UI changes of layout requires the following DOM in the header bar, nxPlotJS will
 </script>
 ```
 
-> [iDG: SplitPlot for Glaucoma](https://idg.knowego.com/edge/oes/glaucoma/)
+> [iDG: SplitPlot for CA](https://idg.knowego.com/y26/oes-summary/cataract/)
 > 
-> [iDG: SplitPlot for MR](https://idg.knowego.com/edge/oes/medical-retina/)
+> [iDG: SplitPlot for GL](https://idg.knowego.com/y26/oes-summary/glaucoma/)
 > 
-> [iDG: SplitPlot for Adherence](https://idg.knowego.com/edge/oes/adherence/)
+> [iDG: SplitPlot for MR](https://idg.knowego.com/y26/oes-summary/medical-retina/)
+> /
+> [iDG: SplitPlot for SP](https://idg.knowego.com/y26/oes-summary/strabismus/)
 
 
 
