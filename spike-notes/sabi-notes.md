@@ -157,7 +157,7 @@ but if it's a duration (drug, etc) then use this approach
   "event": "durationBar",
   "name": "Acetazolamide 250mg modified release capsules",
   "xStart": "2017-10-01",
-  "msDuration": 86400000,
+  "msDuration": 86400000, // <-- duration in milliseconds 
   "y": ["Acetazolamide 250mg modified release capsules"],
   "customdata": ["01 Oct 2017<br>1 (drop), twice a day"]
 }
