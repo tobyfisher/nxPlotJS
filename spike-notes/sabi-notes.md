@@ -183,3 +183,16 @@ and for reports
   ]
 }
 ```
+
+### Date ranges in OEScape splitPlots 
+
+Date range needs to be set for the xaxis to display correctly:
+
+```JS
+xaxis: {
+    dateRange: {
+        firstDate: "2002-12-07", // <-- first date in data -1 MONTH
+        lastDate: "2018-03-10", // <-- last date in data +1 MONTH
+    }
+}
+```
