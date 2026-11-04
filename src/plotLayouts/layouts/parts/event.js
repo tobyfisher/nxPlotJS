@@ -7,7 +7,7 @@ import { eventHorizontalBar, eventTrace } from "./eventTrace";
  * @param numOfEvents
  */
 const calcEventLayout = ( numOfEvents = 0 ) => {
-	const row = 4; // % percentage of plot
+	const row = 3; // % percentage of plot
 	const domainShift = row * numOfEvents;
 	return Math.max(row, domainShift);
 }

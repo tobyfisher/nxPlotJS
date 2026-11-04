@@ -4,7 +4,7 @@ import { splitCore } from "../splitCore";
 import { customTraceLine } from "./parts/lines";
 import { yTrace } from "./parts/yTrace";
 import { getLegend } from "../../getLegend";
-import { getBlue, getColor } from "../../colors";
+import { getBlue, getColor, getSplitColors } from "../../colors";
 import { buildEvents, calcEventLayout, eventAxis } from "./parts/event";
 import { convertDomain } from "./parts/domain";
 
@@ -112,7 +112,9 @@ const build = {
 	 * Data traces need to be built slightly differently
 	 * for each eye side plot
 	 */
-	buildSideDataTraces( eye ){
+	buildSideDataTraces( eye, side ){
+
+		const sideSpecificColours = getSplitColors(side)
 
 		const volume = {
 			...yTrace('y1', eye.volume, eye.volume.name),
@@ -141,7 +143,7 @@ const build = {
 			hovertemplate: `${eye.VA.name} %{y}<br>%{x}<extra></extra>`
 		}
 
-		return [ volume, change, CRT, VA, ...buildEvents(eye.events, 'y5') ]
+		return [ volume, change, CRT, VA, ...buildEvents(eye.events, 'y5', sideSpecificColours) ];
 	}
 };
 

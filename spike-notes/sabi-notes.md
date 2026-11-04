@@ -35,9 +35,9 @@ Slight DOM change to support the Report UIX
 </div>
 ```
 
-#### Reports (showing for Right Eye Reports)
+#### Reports (Right Eye Reports demo'd)
 
-Full UIX is now demo'd on iDG for Right and Left reports in all OEScapes on iDG (although, left only demos no reports to show). Isolated Reports UIX (no plots) is here:
+Full UIX is now demo'd on iDG for Right and Left reports in all OEScapes on iDG (although, left only demos no reports to show) but here is the isolated Reports UIX (no plots):
 https://idg.knowego.com/y26/oes-summary/reports-uix/
 
 ```html
