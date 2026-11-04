@@ -74,7 +74,7 @@ Layout format is managed through CSS classes on `oes-split-grid`
 
 UI changes of layout requires the following DOM in the header bar, nxPlotJS will then manage the layout:
 
-```html
+```HTML
 <div class="oes-ui-manage-layout" data-oes-split="1-1" id="js-nxplot-manage-layout">
 	<div class="oes-layout-btn" id="js-nx-right"><i class="oe-i lat-R small"></i></div>
 	<div class="oes-layout-btn" id="js-nx-left"><i class="oe-i lat-L small"></i></div>
@@ -85,7 +85,7 @@ UI changes of layout requires the following DOM in the header bar, nxPlotJS will
 
 ### Split plot example
 
-```html
+```HTML
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         nxPlot('splitRL_{name-of-layout}', 'js-nxplot-split')
@@ -116,7 +116,7 @@ Horizontal & verical lines can be added to a plot, but in the case of SplitPlots
 
 #### Examples; both expect an Array
 
-```js
+```JS
 .addHorizontalLines([ { 'name': 'Target IOP', 'y': 15, 'yaxis': 'y3' } ])
 .addVerticalLines([ { name: 'Over 14 days', x: 14 } ], 1)
 ```
@@ -138,7 +138,7 @@ nxPlot('basicLayoutOnly', 'graphDiv-id-here')
 
 ### Handling CF, HM, PL, NPL
 To sucessfully plot these VA "off-the-scale" values, a "false" appropriate value in the unit scale must be assigned. e.g. for LogMAR
-```js
+```JSON
 y2: {
 	title: "VA - logMAR",
 		range: {
