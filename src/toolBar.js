@@ -11,7 +11,7 @@ export const toolBar = {
 	div: null,
 	hoverMode: 'closest',  // default, but shown as 'Single' as this makes sense?
 	eNum: {
-		unitRequestPrefix: "unitChange-",
+		unitRequestPrefix: "change-",
 		plotHoverMode: "PlotHoverMode"
 	},
 
@@ -96,7 +96,7 @@ export const toolBar = {
 		const
 			label = utils.buildElem('label', false, labelText),
 			select = utils.buildElem('select'),
-			id = `toolBar-${userSelects}`;
+			id = `nxToolBar-${userSelects}`;
 
 		select.id = id;
 		label.setAttribute('for', id);

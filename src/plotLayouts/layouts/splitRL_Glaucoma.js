@@ -133,7 +133,8 @@ const build = {
 			...yTrace('y3', eye.IOP, eye.IOP.name),
 			nxTrace: 'IOP',
 			mode: 'lines+markers',
-			hovertemplate: 'IOP %{y}<br>%{x}<extra></extra>',
+			customdata: eye.IOP.customdata,
+			hovertemplate: 'IOP %{y}<br>%{x}<br>%{customdata}<extra></extra>',
 			error_y: errorY(eye.IOP),
 			line: customTraceLine({ color: getColor('primary') }),
 		};

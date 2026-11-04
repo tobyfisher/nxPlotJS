@@ -13,7 +13,7 @@ Wrapper for Ploy.ly JS to provide a consistent UIX for all chart plots shown in 
 `<head>` JS script loads **nxPlot**, _obviously requires Plot.ly JS first to work_
 ```html
 <script defer src="**/plotly-4.1.1.min.js"></script>
-<script defer src="**/nxPlot.1.0.0.min.js"></script>
+<script defer src="**/nxPlot.1.1.0.min.js"></script>
 ```
 After `DOMContentLoaded` global access is available to `nxPlot`
 
@@ -27,8 +27,8 @@ After DOMContentLoaded, request a layout template, provide the `div` hook id, pa
 ```html
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        nxPlot('outcomes_Errors', "js-plot-outcomes") // layout, div id
-        .setSelectableVAUnits() // [optional]
+        nxPlot('{plot-layout-name}', "js-nxplot") // layout, div id
+        .setChangeableUnits() // [optional]
         .buildLayout() // provide layout object 
         .buildData() // provide data for plotting
         .addHorizontalLines() // [optional]
@@ -39,18 +39,13 @@ After DOMContentLoaded, request a layout template, provide the `div` hook id, pa
 ```
 
 #### iDG single plot layouts examples:
-> [iDG: Outcomes with Errors](https://idg.knowego.com/edge/analytics/glaucoma-outcomes/)
+> [iDG: PCR Risk](https://idg.knowego.com/y26/analytics/ca-pcr-risk/)
 
-> [iDG: Bar Chart](https://idg.knowego.com/edge/analytics/search-results-barchart/)
+> [iDG: Search Results Bar Chart](https://idg.knowego.com/y26/analytics/advanced-search/)
 
-> [iDG: Bar Chart (with vertical)](https://idg.knowego.com/edge/analytics/treatment-targets/)
-
-> [iDG: Eyes Outcomes with Errors](https://idg.knowego.com/edge/analytics/mr-outcomes/)
-
-> [iDG: Summary eyes: BEO, Right & Left](https://idg.knowego.com/edge/oes/beo-demo/)
 ---
 
-### Splits plots (in Summary)
+### Splits plots (OEScape a.k.a Summary)
 
 Two plots, one for each eye: two separate Ploy.ly Plots, but both using the same layout (and possibly the same horizontal targets lines e.g. target IOP, etc)
 
@@ -83,7 +78,7 @@ UI changes of layout requires the following DOM in the header bar, nxPlotJS will
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         nxPlot('splitRL_Glaucoma', 'js-nxplot-split')
-        .setSelectableVAUnits() // if there are selectable VA units
+        .setChangeableUnits() // if there are change units
         .buildLayout() // provide layout object
         .buildRightData()// provide data for Right Eye
         .buildLeftData() // provide data for Left Eye
